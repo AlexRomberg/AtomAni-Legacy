@@ -1,7 +1,8 @@
 <?php
 
 /*
-  Copyright (c) 2020 Michel Fäh, Dario Romandini
+
+    Copyright (c) 2020 Alexander Romberg, Dario Romandini
 */
 
 ?>
