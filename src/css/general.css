@@ -8,3 +8,18 @@
     box-sizing: border-box;
     font-family: 'Muli', sans-serif;
 }
+
+
+/*--- footer ---*/
+
+footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100vw;
+    padding: 3px;
+    padding-right: 3px;
+    background-color: #00f;
+    text-align: right;
+    padding-right: 20px;
+    color: white;
+}
