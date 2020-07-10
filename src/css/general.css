@@ -1,3 +1,10 @@
 /*
     Copyright (c) 2020 Alexander Romberg, Dario Romandini
 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Muli', sans-serif;
+}
