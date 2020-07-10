@@ -15,9 +15,8 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     <link href="https://fonts.googleapis.com/css2?family=Muli:wght@500&display=swap" rel="stylesheet">
 </head>
 
-<div class="container">
-
-    <body>
+<body>
+    <main>
         <div class="background">
             <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.ict4us.com%2Fr.kuijt%2Fimages%2Fen_atom.gif&f=1&nofb=1">
         </div>
@@ -57,5 +56,5 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
         <footer>
             ©Alexander, Dario
         </footer>
-    </body>
-</div>
+    </main>
+</body>
