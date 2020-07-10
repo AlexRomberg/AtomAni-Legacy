@@ -1,0 +1,94 @@
+/*
+    Copyright (c) 2020 Alexander Romberg, Dario Romandini
+*/
+
+
+/*--- Background ---*/
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-color: #eee;
+    filter: blur(20px);
+}
+
+.background img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 40%;
+}
+
+
+/*--- Foreground ---*/
+
+.foreground {
+    width: 100vw;
+    height: 100vh;
+}
+
+.foreground .controls {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    min-width: 500px;
+}
+
+.foreground img {
+    width: 300px;
+}
+
+.foreground ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.foreground li {
+    margin: 0px;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: blue;
+    border-radius: 8px;
+}
+
+.foreground a {
+    text-decoration: none;
+    color: white;
+    font-size: 2em;
+    font-style: bold;
+}
+
+
+/*--- Animation ---
+
+svg #O {
+    animation: rotation 10s infinite linear;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+        transform-origin: 33% center;
+    }
+    100% {
+        transform: rotate(360deg);
+        transform-origin: 33% center;
+    }
+}
+*/
+
+
+/*--- footer ---*/
+
+footer {
+    position: fixed;
+    bottom: 0px;
+}
