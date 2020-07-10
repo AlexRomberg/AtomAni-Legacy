@@ -3,4 +3,4 @@ Eine Semesterarbeit der Kantonsschule Frauenfeld Abt. IMS
 Von Alexander Romberg und Dario Romandini
 
 ## Beschreibung
-In diesem Projekt wird dem alten Atomarium ein neuer Anstrch verpasst.
+In diesem Projekt wird dem alten Atomarium ein neuer Anstrich verpasst.
