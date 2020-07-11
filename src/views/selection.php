@@ -16,6 +16,8 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 </head>
 
 <?php
+    error_reporting(0);
+
     $CardData = json_decode(file_get_contents("../res/experiments.json"), true);
 
     function drawCard($name, $imgName, $id, $referenceSelf) {
