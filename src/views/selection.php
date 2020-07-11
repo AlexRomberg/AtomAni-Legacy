@@ -21,13 +21,12 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     $CardData = json_decode(file_get_contents("../res/experiments.json"), true);
 
     function drawCard($name, $imgName, $id, $referenceSelf) {
-        echo('<li class="card">');
         if ($referenceSelf) {
-            echo('<a href="./selection.php?id='.$id.'">');
+            echo('<a class="card" href="./selection.php?id='.$id.'">');
         } else {
-            echo('<a href="./experiment.php?id='.$id.'">');
+            echo('<a class="card" href="./experiment.php?id='.$id.'">');
         }
-        echo('<img src="../res/'.$imgName.'" alt="Cristal Imageexample"><div class="Text"><h2>'.$name.'</h2></div></a></li>');
+        echo('<img src="../res/'.$imgName.'" alt="Cristal Imageexample"><div class="Text"><h2>'.$name.'</h2></div></a>');
     }
 
     function parseData($cardData, $path) {
@@ -62,12 +61,12 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 
         <main>
             <h1>Experiments</h1>
-            <ul class="selection">
+            <div class="selection">
                 <?php
                     $currentData = parseData($CardData, $_GET['id']);
                     drawCardsOfLayer($currentData);
                 ?>
-            </ul>
+            </div>
         </main>
         <footer>
             ©Alexander, Dario
