@@ -19,16 +19,24 @@
     width: 350px;
     height: 200px;
     margin: 20px;
-    border-radius: 5px;
+    border-radius: 7px;
     overflow: hidden;
     text-align: center;
+    transition: 0.25s;
     -webkit-box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.4);
     box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.4);
 }
 
+.card:hover {
+    -webkit-box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.6);
+    box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.6);
+}
+
 .card img {
     height: calc(100% - 50px);
+    user-select: none;
 }
 
 .card .Text {
