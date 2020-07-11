@@ -1,0 +1,52 @@
+{
+    "0": {
+        "name": "Temperature",
+        "imgName": "thermometer.png",
+        "subexperiments": {
+            "0.0": {
+                "name": "Kristallschmelze",
+                "imgName": "exampleCristal.png"
+            },
+            "0.1": {
+                "name": "Beispiel 1",
+                "imgName": "exampleCristal.png"
+            },
+            "0.2": {
+                "name": "Beispielgruppe 1",
+                "imgName": "exampleCristal.png",
+                "subexperiments": {
+                    "0.2.0": {
+                        "name": "Beispiel 1.1",
+                        "imgName": "exampleCristal.png"
+                    },
+                    "0.2.1": {
+                        "name": "Beispiel 1.2",
+                        "imgName": "exampleCristal.png"
+                    },
+                    "0.2.2": {
+                        "name": "Beispiel 1.3",
+                        "imgName": "exampleCristal.png"
+                    }
+                }
+            }
+        }
+    },
+    "1": {
+        "name": "Beispielgruppe 1",
+        "imgName": "groupExample.png",
+        "subexperiments": {
+            "1.0": {
+                "name": "Beispiel 1",
+                "imgName": "exampleCristal.png"
+            },
+            "1.1": {
+                "name": "Beispiel 2",
+                "imgName": "exampleCristal.png"
+            },
+            "1.2": {
+                "name": "Beispiel 3",
+                "imgName": "exampleCristal.png"
+            }
+        }
+    }
+}

@@ -26,7 +26,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
         } else {
             echo('<a class="card" href="./experiment.php?id='.$id.'">');
         }
-        echo('<img src="../res/'.$imgName.'" alt="Cristal Imageexample"><div class="Text"><h2>'.$name.'</h2></div></a>');
+        echo('<img src="../res/img/'.$imgName.'" alt="Cristal Imageexample"><div class="Text"><h2>'.$name.'</h2></div></a>');
     }
 
     function parseData($cardData, $path) {
