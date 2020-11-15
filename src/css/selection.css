@@ -1,0 +1,49 @@
+/*
+    Copyright (c) 2020 Alexander Romberg, Dario Romandini
+*/
+
+.selection {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #eee;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    list-style: none;
+}
+
+.card {
+    background-color: #efefef;
+    width: 350px;
+    height: 200px;
+    margin: 20px;
+    border-radius: 7px;
+    overflow: hidden;
+    text-align: center;
+    transition: 0.25s;
+    -webkit-box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.4);
+}
+
+.card:hover {
+    -webkit-box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.6);
+    box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.6);
+}
+
+.card img {
+    height: calc(100% - 50px);
+    user-select: none;
+}
+
+.card .Text {
+    bottom: 0px;
+    padding: 5px;
+    height: 50px;
+    width: 100%;
+    background-color: blue;
+    color: white;
+}
