@@ -1,6 +1,5 @@
 #folders
 /node_modules/
 
-#files
-*.afdesign
-
+#afdesign-files
+src/res/icons.afdesign
