@@ -1,2 +1,5 @@
 #folders
 /node_modules/
+
+#afdesign-files
+src/res/icons.afdesign
