@@ -11,3 +11,8 @@
     flex-flow: row nowrap;
     justify-content: stretch;
 }
+
+.simulationWindow #sim {
+    width: 800px);
+    height: 400px;
+}

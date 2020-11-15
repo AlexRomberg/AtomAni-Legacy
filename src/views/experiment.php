@@ -13,6 +13,9 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Muli:wght@500&display=swap" rel="stylesheet">
+
+    <!-- scripts -->
+    <script type="module" src="../js/simulation.js" defer></script>
 </head>
 
 <body>
@@ -24,6 +27,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
         <div class="simulationWindow">
             <div class="simulation">
                 <!-- Simulation Code -->
+                <canvas id="sim"></canvas>
             </div>
             <div class="control">
                 <!-- Controls -->
