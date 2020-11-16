@@ -45,7 +45,15 @@
     height: 50px;
     width: 100%;
     background-color: var(--accent);
-    color: var(--forgroundAccent);
+    color: var(--foregroundAccent);
+}
+
+h2 {
+    color: var(--foregroundAccent);
+}
+
+a {
+    text-decoration-color: var(--foregroundAccent);
 }
 
 @media (prefers-color-scheme: dark) {
