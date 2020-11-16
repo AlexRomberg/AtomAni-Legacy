@@ -71,9 +71,10 @@
 }
 
 
-/*--- Animation ---
+/* --- Animation --- */
 
-svg #O {
+svg #O path {
+    transform-origin: 165px;
     animation: rotation 10s infinite linear;
 }
 
@@ -87,4 +88,3 @@ svg #O {
         transform-origin: 33% center;
     }
 }
-*/
