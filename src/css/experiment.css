@@ -5,7 +5,7 @@
 .simulationWindow {
     margin-top: 20px;
     width: 100%;
-    background-color: #eee;
+    background-color: var(--backgroundLight);
     border-radius: 10px;
     display: flex;
     flex-flow: row nowrap;
@@ -48,7 +48,8 @@
     margin: 10px
 }
 
-.diagramm h4, .controll h4 {
+.diagramm h4,
+.controll h4 {
     text-align: left;
     margin: 5px;
 }
@@ -72,13 +73,11 @@
     .diagramm {
         margin-right: 10px;
     }
-    
     .controll:last-of-type,
     .diagramm:last-of-type {
         margin-right: 0px;
     }
-    
-    .controlPane  { 
+    .controlPane {
         height: unset;
     }
 }

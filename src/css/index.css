@@ -12,7 +12,7 @@
     width: 100vw;
     height: 100vh;
     z-index: -1;
-    background-color: #eee;
+    background-color: var(--backgroundLight);
     filter: blur(20px);
 }
 
@@ -55,10 +55,10 @@
     margin: 0px;
     margin-top: 10px;
     padding: 10px 20px;
-    background-color: blue;
+    background-color: var(--accent);
     border-radius: 8px;
     text-decoration: none;
-    color: white;
+    color: var(--foregroundAccent);
     font-size: 2em;
     font-style: bold;
     display: block;

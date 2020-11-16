@@ -21,6 +21,14 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Muli', sans-serif;
+    /* variables */
+    --backgroundLight: #eee;
+    --backgroundDark: #ddd;
+    --backgroundCard: #efefef;
+    --foreground: #000;
+    --foregroundAccent: white;
+    --accent: blue;
+    color: var(--foreground);
 }
 
 
@@ -28,7 +36,7 @@
 
 header {
     width: 100%;
-    background-color: #ddd;
+    background-color: var(--backgroundDark);
     height: 4em;
     padding: 5px 20px;
 }
