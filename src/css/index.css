@@ -86,3 +86,9 @@ svg #O path {
         transform-origin: 33% center;
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #0000;
+    }
+}

@@ -21,6 +21,8 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Muli', sans-serif;
+    color: var(--foreground);
+    transition: 0s !important;
     /* variables */
     --backgroundLight: #eee;
     --backgroundDark: #ddd;
@@ -28,7 +30,14 @@
     --foreground: #000;
     --foregroundAccent: white;
     --accent: blue;
-    color: var(--foreground);
+}
+
+
+/*--- html/body ---*/
+
+html,
+body {
+    background-color: var(--backgroundLight);
 }
 
 
@@ -55,8 +64,19 @@ footer {
     width: 100%;
     padding: 3px;
     padding-right: 3px;
-    background-color: #00f;
+    background-color: var(--accent);
     text-align: right;
     padding-right: 20px;
-    color: white;
+    color: var(--foregroundAccent);
+}
+
+@media (prefers-color-scheme: dark) {
+    * {
+        --backgroundLight: #3c3f40;
+        --backgroundDark: #404345;
+        --backgroundCard: #393b3c;
+        --foreground: #ddd;
+        --foregroundAccent: #ceccca;
+        --accent: #2020b9;
+    }
 }

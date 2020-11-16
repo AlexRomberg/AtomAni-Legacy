@@ -47,3 +47,9 @@
     background-color: var(--accent);
     color: var(--forgroundAccent);
 }
+
+@media (prefers-color-scheme: dark) {
+    .selection {
+        background-color: #302f2f;
+    }
+}

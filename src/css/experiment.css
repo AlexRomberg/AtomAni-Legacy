@@ -5,7 +5,7 @@
 .simulationWindow {
     margin-top: 20px;
     width: 100%;
-    background-color: var(--backgroundLight);
+    background-color: #1002;
     border-radius: 10px;
     display: flex;
     flex-flow: row nowrap;
