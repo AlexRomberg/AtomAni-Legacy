@@ -49,7 +49,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 
                 <ul>
                     <li><a href="src/views/selection.php">Experiments</a></li>
-                    <li><a href="src/views/#help.php">Help</a></li>
+                    <li><a href="src/views/help.html">Help</a></li>
                 </ul>
             </div>
         </div>
