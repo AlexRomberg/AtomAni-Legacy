@@ -25,6 +25,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     <meta name="theme-color" content="#ffffff">
 
     <!-- scripts -->
+    <script type="module" src="../js/experiment.js" defer></script>
     <script type="module" src="../js/simulation.js" defer></script>
 </head>
 
