@@ -1,4 +1,4 @@
-import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/build/three.module.js';
+import * as THREE from '../res/three.module.js';
 
 function main() {
     const canvas = document.querySelector('#sim');
