@@ -1,4 +1,4 @@
-import * as THREE from '../res/three.module.js';
+import * as THREE from '../res/lib/three.module.js';
 
 function main() {
     const canvas = document.querySelector('#sim');
