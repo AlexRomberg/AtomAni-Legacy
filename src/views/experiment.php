@@ -9,10 +9,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     <!-- stylesheets -->
     <link rel="stylesheet" href="../css/general.css">
     <link rel="stylesheet" href="../css/menu.css">
-    <link rel="stylesheet" href="../css/experiment.css">
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Muli:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/experiment.css">>
 
     <!-- scripts -->
     <script type="module" src="../js/simulation.js" defer></script>

@@ -9,10 +9,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 
     <!-- stylesheets -->
     <link rel="stylesheet" href="src/css/general.css">
-    <link rel="stylesheet" href="src/css/index.css">
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Muli:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/css/index.css">>
 </head>
 
 <body>

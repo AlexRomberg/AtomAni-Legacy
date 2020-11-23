@@ -10,47 +10,47 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     <link rel="stylesheet" href="../css/general.css">
     <link rel="stylesheet" href="../css/menu.css">
     <link rel="stylesheet" href="../css/selection.css">
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Muli:wght@500&display=swap" rel="stylesheet">
 </head>
 
 <?php
-    error_reporting(0);
+error_reporting(0);
 
-    $CardData = json_decode(file_get_contents("../res/experiments.json"), true);
+$CardData = json_decode(file_get_contents("../res/experiments.json"), true);
 
-    function drawCard($name, $imgName, $id, $referenceSelf) {
-        if ($referenceSelf) {
-            echo('<a class="card" href="./selection.php?id='.$id.'">');
-        } else {
-            echo('<a class="card" href="./experiment.php?id='.$id.'">');
-        }
-        echo('<img src="../res/img/'.$imgName.'" alt="Cristal Imageexample"><div class="Text"><h2>'.$name.'</h2></div></a>');
+function drawCard($name, $imgName, $id, $referenceSelf)
+{
+    if ($referenceSelf) {
+        echo ('<a class="card" href="./selection.php?id=' . $id . '">');
+    } else {
+        echo ('<a class="card" href="./experiment.php?id=' . $id . '">');
     }
+    echo ('<img src="../res/img/' . $imgName . '" alt="Cristal Imageexample"><div class="Text"><h2>' . $name . '</h2></div></a>');
+}
 
-    function parseData($cardData, $path) {
-        $returnJson = $cardData;
-        if (!isset($path)) {
-            return $cardData;
-        } else {
-            $dir = explode('.',$path);
+function parseData($cardData, $path)
+{
+    $returnJson = $cardData;
+    if (!isset($path)) {
+        return $cardData;
+    } else {
+        $dir = explode('.', $path);
 
-            $nextId = null;      // used to reproduce id structure of json
-            foreach ($dir as $key) {
-                $nextId .= $key;
-                $returnJson = $returnJson[$nextId]['subexperiments'];
-                $nextId .= '.';
-            }
-        }
-        return $returnJson;
-    }
-
-    function drawCardsOfLayer($data) {
-        foreach ($data as $key => $value) {
-            drawCard($value['name'], $value['imgName'], $key, array_key_exists('subexperiments', $value));
+        $nextId = null;      // used to reproduce id structure of json
+        foreach ($dir as $key) {
+            $nextId .= $key;
+            $returnJson = $returnJson[$nextId]['subexperiments'];
+            $nextId .= '.';
         }
     }
+    return $returnJson;
+}
+
+function drawCardsOfLayer($data)
+{
+    foreach ($data as $key => $value) {
+        drawCard($value['name'], $value['imgName'], $key, array_key_exists('subexperiments', $value));
+    }
+}
 ?>
 
 <body>
@@ -63,8 +63,8 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
             <h1>Experiments</h1>
             <div class="selection">
                 <?php
-                    $currentData = parseData($CardData, $_GET['id']);
-                    drawCardsOfLayer($currentData);
+                $currentData = parseData($CardData, $_GET['id']);
+                drawCardsOfLayer($currentData);
                 ?>
             </div>
         </main>
