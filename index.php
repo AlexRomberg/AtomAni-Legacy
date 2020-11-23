@@ -28,7 +28,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 <body>
     <main>
         <div class="background">
-            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.ict4us.com%2Fr.kuijt%2Fimages%2Fen_atom.gif&f=1&nofb=1">
+            <img src="src/res/atom.gif">
         </div>
         <div class="foreground">
             <div class="controls">
