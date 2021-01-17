@@ -16,24 +16,69 @@
 .simulationWindow #sim {
     margin-bottom: -4px;
     height: 500px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
-.control {
+.controlPane {
     width: 100%;
-    min-height: 200px;
+    height: 500px;
     padding: 10px;
     display: flex;
     flex-flow: column nowrap;
     scrollbar-width: thin;
+    overflow-y: scroll;
+}
+
+.controll,
+.diagramm {
+    height: 50px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    width: 100%;
+    min-width: 200px;
+    background-color: #0002;
+}
+
+.diagramm {
+    height: 100px;
+}
+
+.simulationWindow h3 {
+    margin: 10px
+}
+
+.diagramm h4, .controll h4 {
+    text-align: left;
+    margin: 5px;
 }
 
 @media only screen and (max-width: 890px) {
     .simulationWindow {
         flex-flow: column nowrap;
     }
-    .control {
-        overflow-y: hidden;
-        overflow-x: scroll;
+    .simulationWindow #sim {
+        border-bottom-left-radius: 0px;
+        border-top-right-radius: 10px;
+    }
+    .diagramms,
+    .controlls {
+        display: flex;
         flex-flow: row nowrap;
+        overflow-x: auto;
+        scrollbar-width: thin;
+    }
+    .controll,
+    .diagramm {
+        margin-right: 10px;
+    }
+    
+    .controll:last-of-type,
+    .diagramm:last-of-type {
+        margin-right: 0px;
+    }
+    
+    .controlPane  { 
+        height: unset;
     }
 }

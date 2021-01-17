@@ -58,7 +58,7 @@ function main() {
         for (let y = 0; y < 10; y++) {
             const row = new Array();
             for (let z = 0; z < 10; z++) {
-                const atom = makeInstance(geometry, 0x993399, 30 * (x - 5), 30 * (y - 5), 30 * (z - 5));
+                const atom = makeInstance(geometry, 0x009aff, 30 * (x - 5), 30 * (y - 5), 30 * (z - 5));
                 row.push(atom);
             }
             plane.push(row);

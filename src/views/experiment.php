@@ -25,6 +25,8 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     <meta name="theme-color" content="#ffffff">
 
     <!-- scripts -->
+    <script src="../res/lib/Chart.bundle.min.js" defer></script>
+    <script src="../res/lib/jquery.min.js" defer></script>
     <script type="module" src="../js/experiment.js" defer></script>
     <script type="module" src="../js/simulation.js" defer></script>
 </head>
@@ -40,8 +42,27 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
                 <!-- Simulation Code -->
                 <canvas id="sim"></canvas>
             </div>
-            <div class="control">
+            <div class="controlPane">
                 <!-- Controls -->
+                <div>
+                    <h3>Diagramme</h3>
+                    <div class="diagramms">
+                        <div class="diagramm">
+                            <h4>Geschwindigkeit</h4>
+                        </div>
+                        <div class="diagramm">
+                            <h4>Temperatur</h4>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3>Steuerung</h3>
+                    <div class="controlls">
+                        <div class="controll">
+                            <h4>Temperatur</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
