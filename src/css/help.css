@@ -11,6 +11,7 @@ nav h2 {
     font-size: 1.7em
 }
 
+
 /* --- sidebarNav ---*/
 
 nav {
@@ -30,6 +31,7 @@ nav a:hover {
     background-color: #0002;
 }
 
+
 /*--- main ---*/
 
 main {
@@ -44,4 +46,8 @@ main {
     margin-left: auto;
     margin-right: auto;
     display: block;
+}
+
+main h1 {
+    margin-top: 20px;
 }
