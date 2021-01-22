@@ -25,10 +25,8 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     <meta name="theme-color" content="#ffffff">
 
     <!-- scripts -->
-    <script src="../res/lib/Chart.bundle.min.js" defer></script>
-    <script src="../res/lib/jquery.min.js" defer></script>
+    <script src="../res/lib/jquery.min.js"></script>
     <script type="module" src="../js/experiment.js" defer></script>
-    <script type="module" src="../js/simulation.js" defer></script>
 </head>
 
 <body>
@@ -39,7 +37,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
         <h1>Simulation</h1>
         <div class="simulationWindow">
             <div class="simulation">
-                <!-- Simulation Code -->
+                <!-- Simulation -->
                 <canvas id="sim"></canvas>
             </div>
             <div class="controlPane">

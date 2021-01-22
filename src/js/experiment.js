@@ -1,3 +1,8 @@
+import * as Atoms from './atoms.js';
+import * as Simulation from './simulation.js';
+
+
+// simulationWindow resizing
 window.addEventListener("resize", handleResize);
 
 function handleResize() {
@@ -10,5 +15,10 @@ function handleResize() {
     }
     $("#sim").css("width", windowWidth + "px");
 }
-
 handleResize();
+
+// simulation
+let renderInfo = Simulation.init();
+let AtomList = Atoms.generateGrid(2, 2, 2);
+Simulation.addAtoms(AtomList, renderInfo.scene);
+Simulation.startAnimation(renderInfo);
