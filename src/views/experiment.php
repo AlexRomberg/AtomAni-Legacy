@@ -52,9 +52,6 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
                                 <canvas id="fpsChart"></canvas>
                             </div>
                         </div>
-                        <div class="diagramm">
-                            <h4>Temperatur</h4>
-                        </div>
                     </div>
                 </div>
                 <div>
@@ -62,6 +59,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
                     <div class="controlls">
                         <div class="controll">
                             <h4>Temperatur</h4>
+                            <input type="range" class="slider" id="temp" min="-3" max="3" value="0" step="1">
                         </div>
                     </div>
                 </div>
