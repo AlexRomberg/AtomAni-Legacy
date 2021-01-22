@@ -55,5 +55,5 @@ export function addPoint(chart, point, label) {
         data.shift();
     }
 
-    chart.update();
+    chart.update(250);
 }
