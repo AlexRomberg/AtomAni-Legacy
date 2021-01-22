@@ -1,5 +1,6 @@
 import * as Three from '../res/lib/Three.module.js';
 import * as Chart from './experimentChart.js';
+import * as Calc from './calc.js';
 
 let AtomList = new Array();
 let AnimationRunning = false;
@@ -84,8 +85,8 @@ export function startAnimation(renderInfo) {
             camera.updateProjectionMatrix();
         }
 
+        Calc.updatePositions(AtomList);
 
-        // calculation goes here
         AtomList.forEach(atom => {
             atom.object.position.x += (Math.random() * 2) - 1;
             atom.object.position.y += (Math.random() * 2) - 1;

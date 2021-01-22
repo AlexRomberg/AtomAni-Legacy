@@ -19,6 +19,6 @@ handleResize();
 
 // simulation
 let renderInfo = Simulation.init();
-let AtomList = Atoms.generateGrid(2, 2, 2);
+let AtomList = Atoms.generateGrid(10, 10, 10);
 Simulation.addAtoms(AtomList, renderInfo.scene);
 Simulation.startAnimation(renderInfo);
