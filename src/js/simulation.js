@@ -1,9 +1,12 @@
 import * as Three from '../res/lib/Three.module.js';
+import { OrbitControls } from '../res/lib/OrbitControls.js';
+// const OrbitControls = require('../res/lib/OrbitControls.js')
 import * as Chart from './experimentChart.js';
 
 let AtomList = new Array();
 let AnimationRunning = false;
 let Charts = {};
+let controls;
 
 export function init() {
     const canvas = document.querySelector('#sim');
@@ -29,6 +32,10 @@ export function init() {
     const light = new Three.DirectionalLight(color, intensity);
     light.position.set(-1, 2, 4);
     scene.add(light);
+
+    // OrbitControl
+    controls = new OrbitControls(camera, renderer.domElement);
+
 
     // add Charts
     initCharts();
@@ -92,6 +99,7 @@ export function startAnimation(renderInfo) {
             atom.object.position.z += (Math.random() * 2) - 1;
         });
 
+        controls.update(); // updates OrbitControl
         renderer.render(scene, camera);
         if (AnimationRunning) {
             requestAnimationFrame(render);
