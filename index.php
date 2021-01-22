@@ -11,14 +11,24 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     <link rel="stylesheet" href="src/css/general.css">
     <link rel="stylesheet" href="src/css/index.css">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Muli:wght@500&display=swap" rel="stylesheet">
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/src/res/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/src/res/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/src/res/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/src/res/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/src/res/favicon/safari-pinned-tab.svg" color="#0002ff">
+    <link rel="shortcut icon" href="/src/res/favicon/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="AtomAni">
+    <meta name="application-name" content="AtomAni">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/src/res/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
 </head>
 
 <body>
     <main>
         <div class="background">
-            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.ict4us.com%2Fr.kuijt%2Fimages%2Fen_atom.gif&f=1&nofb=1">
+            <img src="src/res/atom.gif">
         </div>
         <div class="foreground">
             <div class="controls">
@@ -49,7 +59,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 
                 <ul>
                     <li><a href="src/views/selection.php">Experiments</a></li>
-                    <li><a href="src/views/#help.php">Help</a></li>
+                    <li><a href="src/views/help.html">Help</a></li>
                 </ul>
             </div>
         </div>

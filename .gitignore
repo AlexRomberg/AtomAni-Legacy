@@ -1,5 +1,8 @@
-#folders
+# folders
 /node_modules/
 
-#afdesign-files
-src/res/icons.afdesign
+# afdesign-files
+*.afdesign
+
+# personal notes
+*planing.md
