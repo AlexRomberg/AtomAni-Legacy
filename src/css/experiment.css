@@ -32,16 +32,12 @@
 
 .controll,
 .diagramm {
-    height: 50px;
+    min-height: 50px;
     margin-bottom: 10px;
     border-radius: 5px;
     width: 100%;
     min-width: 200px;
     background-color: #0002;
-}
-
-.diagramm {
-    height: 100px;
 }
 
 .simulationWindow h3 {

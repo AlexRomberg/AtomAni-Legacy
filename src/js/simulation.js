@@ -1,11 +1,13 @@
-import * as THREE from '../res/lib/three.module.js';
+import * as Three from '../res/lib/Three.module.js';
+import * as Chart from './experimentChart.js';
 
 let AtomList = new Array();
 let AnimationRunning = false;
+let Charts = {};
 
 export function init() {
     const canvas = document.querySelector('#sim');
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new Three.WebGLRenderer({
         canvas
     });
 
@@ -14,21 +16,28 @@ export function init() {
     const aspect = 1.5; // the canvas default
     const near = 1;
     const far = 100000;
-    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    const camera = new Three.PerspectiveCamera(fov, aspect, near, far);
     camera.position.z = 1000;
 
     // scene
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x404040);
+    const scene = new Three.Scene();
+    scene.background = new Three.Color(0x404040);
 
     // lighting
     const color = 0xFFFFFF;
     const intensity = 1;
-    const light = new THREE.DirectionalLight(color, intensity);
+    const light = new Three.DirectionalLight(color, intensity);
     light.position.set(-1, 2, 4);
     scene.add(light);
 
+    // add Charts
+    initCharts();
+
     return { renderer, camera, scene };
+}
+
+function initCharts() {
+    Charts.temp = Chart.generateChart('fpsChart', 'rgba(200,0,0,1)', 'rgba(170,0,0,0.4)');
 }
 
 export function addAtoms(atoms, scene) {
@@ -58,8 +67,16 @@ export function startAnimation(renderInfo) {
     let camera = renderInfo.camera;
 
     // render
+    let prevTime = 0;
+    let frame = 0;
+
     function render(time) {
-        time *= 0.001; // convert time to seconds
+        frame++;
+        // time
+        let passedTime = time - prevTime; // get time since last frame
+        prevTime = time;
+
+        logFPS(passedTime, frame);
 
         if (resizeRendererToDisplaySize(renderer)) {
             const canvas = renderer.domElement;
@@ -82,6 +99,12 @@ export function startAnimation(renderInfo) {
     }
 
     requestAnimationFrame(render);
+}
+
+function logFPS(passedTime, frame) {
+    if (frame % 10 == 0) {
+        Chart.addPoint(Charts.temp, 1000 / passedTime, frame);
+    }
 }
 
 export function stopAnimation() {

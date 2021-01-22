@@ -26,6 +26,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 
     <!-- scripts -->
     <script src="../res/lib/jquery.min.js"></script>
+    <script src="../res/lib/Chart.bundle.min.js"></script>
     <script type="module" src="../js/experiment.js" defer></script>
 </head>
 
@@ -46,7 +47,10 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
                     <h3>Diagramme</h3>
                     <div class="diagramms">
                         <div class="diagramm">
-                            <h4>Geschwindigkeit</h4>
+                            <h4>FPS</h4>
+                            <div class="chart-container" style="position: relative; width:100%; height: 150px;">
+                                <canvas id="fpsChart"></canvas>
+                            </div>
                         </div>
                         <div class="diagramm">
                             <h4>Temperatur</h4>

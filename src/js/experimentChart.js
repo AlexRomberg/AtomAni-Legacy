@@ -1,7 +1,4 @@
-// import
-import * as Chart from "../res/lib/Chart.bundle.min.js";
-
-const maxPoints = 100;
+const maxPoints = 50;
 
 export function generateChart(canvasId, borderColor, backgroundColor) {
     let type = 'line';
@@ -16,7 +13,7 @@ export function generateChart(canvasId, borderColor, backgroundColor) {
     let options = {
         aspectRatio: 3,
         maintainAspectRatio: false,
-        responsive: false,
+        responsive: true,
         scales: {
             yAxes: [{
                 ticks: {
@@ -58,6 +55,5 @@ export function addPoint(chart, point, label) {
         data.shift();
     }
 
-    chart.height = 200;
     chart.update();
 }
