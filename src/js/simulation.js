@@ -1,6 +1,7 @@
 import * as Three from '../res/lib/three.module.js';
 import { OrbitControls } from '../res/lib/OrbitControls.js';
 import * as Chart from './experimentChart.js';
+import * as Calc from './calc.js';
 
 let AtomList = new Array();
 let AnimationRunning = false;
@@ -51,7 +52,6 @@ export function addAtoms(atoms, scene) {
         scene.add(atom.object);
         AtomList.push(atom);
     });
-    console.log(AtomList);
 }
 
 function resizeRendererToDisplaySize(renderer) {
@@ -66,8 +66,7 @@ function resizeRendererToDisplaySize(renderer) {
     return needResize;
 }
 
-export function startAnimation(renderInfo) {
-    AnimationRunning = true;
+export function startRendering(renderInfo) {
     let renderer = renderInfo.renderer;
     let scene = renderInfo.scene;
     let camera = renderInfo.camera;
@@ -78,31 +77,29 @@ export function startAnimation(renderInfo) {
 
     function render(time) {
         frame++;
+
         // time
-        let passedTime = time - prevTime; // get time since last frame
+        let timeStep = time - prevTime; // get time since last frame
         prevTime = time;
 
-        logFPS(passedTime, frame);
-
+        // responsiveness
         if (resizeRendererToDisplaySize(renderer)) {
             const canvas = renderer.domElement;
             camera.aspect = canvas.clientWidth / canvas.clientHeight;
             camera.updateProjectionMatrix();
         }
 
+        controls.update(); // updates OrbitControls
 
-        // calculation goes here
-        AtomList.forEach(atom => {
-            atom.object.position.x += (Math.random() * 2) - 1;
-            atom.object.position.y += (Math.random() * 2) - 1;
-            atom.object.position.z += (Math.random() * 2) - 1;
-        });
+        if (AnimationRunning && frame < 1100) {
+            logFPS(timeStep, frame);
 
-        controls.update(); // updates OrbitControl
-        renderer.render(scene, camera);
-        if (AnimationRunning) {
-            requestAnimationFrame(render);
+            // calculation
+            Calc.updatePositions(AtomList, timeStep);
         }
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
 
     requestAnimationFrame(render);
@@ -114,6 +111,10 @@ function logFPS(passedTime, frame) {
     }
 }
 
-export function stopAnimation() {
+export function stop() {
     AnimationRunning = false;
+}
+
+export function start() {
+    AnimationRunning = true;
 }

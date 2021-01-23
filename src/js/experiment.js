@@ -19,6 +19,16 @@ handleResize();
 
 // simulation
 let renderInfo = Simulation.init();
-let AtomList = Atoms.generateGrid(2, 2, 2);
+// let AtomList = Atoms.generateGrid(2, 1, 1);
+let AtomList = [
+    Atoms.create("ar", 30, 100, 0),
+    Atoms.create("ar", -30, 100, 0),
+    Atoms.create("ne", 40, 0, 0),
+    Atoms.create("ne", -40, 0, 0),
+    Atoms.create("Kr", 50, -100, 0),
+    Atoms.create("Kr", -50, -100, 0)
+]
 Simulation.addAtoms(AtomList, renderInfo.scene);
-Simulation.startAnimation(renderInfo);
+Simulation.startRendering(renderInfo);
+
+setInterval(() => { Simulation.start(); }, 1000);
