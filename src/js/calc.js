@@ -1,12 +1,14 @@
-const MaxDistance = 10000;
-const epsilon = 10; /* <- lookup */
-const sigma = 10; /* <- lookup */
+const MaxDistance = 1000000;
+const CONST_k = 1.380658e-23;
+const atomMass = 0.336e-25;
+const epsilon = 36.83 * CONST_k;
+const sigma = 2.79;
 const sigma6 = sigma * sigma * sigma * sigma * sigma * sigma;
 const sigma12 = sigma6 * sigma6;
 
-export function updatePositions(atomList) {
+export function updatePositions(atomList, timeStep) {
     let forces = getForce(atomList);
-
+    setNewPositions(atomList, forces, timeStep);
 }
 
 function getForce(atomList) {
@@ -54,4 +56,46 @@ function getForce(atomList) {
         }
     }
     return forces;
+}
+
+function setNewPositions(atomList, forces, timeStep) {
+    let invAtomMass = 1 / atomMass;
+
+    let oldPos = {
+        x: atomList[0].object.position.x,
+        y: atomList[0].object.position.y,
+        z: atomList[0].object.position.z
+    };
+    for (let atom = 0; atom < atomList.length; atom++) {
+        // acceleration
+        let acceleration = {
+            x: forces[atom].x * invAtomMass,
+            y: forces[atom].y * invAtomMass,
+            z: forces[atom].z * invAtomMass
+        };
+
+        // velocity
+        atomList[atom].velocity.x += acceleration.x * timeStep;
+        atomList[atom].velocity.y += acceleration.y * timeStep;
+        atomList[atom].velocity.z += acceleration.z * timeStep;
+
+
+        // positions
+        atomList[atom].object.position.x += atomList[atom].velocity.x * timeStep;
+        atomList[atom].object.position.y += atomList[atom].velocity.y * timeStep;
+        atomList[atom].object.position.z += atomList[atom].velocity.z * timeStep;
+    }
+    console.log('delta pos', {
+        x: atomList[0].object.position.x - oldPos.x,
+        y: atomList[0].object.position.y - oldPos.y,
+        z: atomList[0].object.position.z - oldPos.z
+    });
+}
+
+export function moveRandom(atomList) {
+    atomList.forEach(atom => {
+        atom.object.position.x += (Math.random() * 2) - 1;
+        atom.object.position.y += (Math.random() * 2) - 1;
+        atom.object.position.z += (Math.random() * 2) - 1;
+    });
 }

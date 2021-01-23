@@ -5,7 +5,9 @@ let SegmentHeight = 30;
 let Geometry = new THREE.SphereGeometry(Radius, SegmentWidth, SegmentHeight);
 
 const atomColors = {
-    "he": 0x009aff,
+    "ne": 0x009aff,
+    "ar": 0x04AD00,
+    "cr": 0xE8E200
 }
 
 export function updateGeometry(radius, segmentWidth, segmentHeight) {
@@ -22,7 +24,12 @@ export function create(type, x, y, z) {
 
     const atom = {
         object: new THREE.Mesh(Geometry, material),
-        type
+        type,
+        velocity: {
+            x: 0,
+            y: 0,
+            z: 0
+        }
     };
 
     // set atom position
@@ -40,7 +47,7 @@ export function generateGrid(X, Y, Z) {
     for (let x = 0; x < X; x++) {
         for (let y = 0; y < Y; y++) {
             for (let z = 0; z < Z; z++) {
-                let atom = this.create("he", 30 * (x - (X / 2)), 30 * (y - (Y / 2)), 30 * (z - (Z / 2)));
+                let atom = this.create("ne", 30 * (x - (X / 2)), 30 * (y - (Y / 2)), 30 * (z - (Z / 2)));
                 atomList.push(atom);
             }
         }
