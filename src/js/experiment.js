@@ -25,8 +25,8 @@ let AtomList = [
     Atoms.create("ar", -30, 100, 0),
     Atoms.create("ne", 40, 0, 0),
     Atoms.create("ne", -40, 0, 0),
-    Atoms.create("Kr", 50, -100, 0),
-    Atoms.create("Kr", -50, -100, 0)
+    Atoms.create("kr", 50, -100, 0),
+    Atoms.create("kr", -50, -100, 0)
 ]
 Simulation.addAtoms(AtomList, renderInfo.scene);
 Simulation.startRendering(renderInfo);

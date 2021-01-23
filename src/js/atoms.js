@@ -7,7 +7,7 @@ let Geometry = new THREE.SphereGeometry(Radius, SegmentWidth, SegmentHeight);
 const atomColors = {
     "ne": 0x009aff,
     "ar": 0x04AD00,
-    "cr": 0xE8E200
+    "kr": 0xE8E200
 }
 
 export function updateGeometry(radius, segmentWidth, segmentHeight) {
