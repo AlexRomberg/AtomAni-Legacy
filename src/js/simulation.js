@@ -1,6 +1,5 @@
-import * as Three from '../res/lib/Three.module.js';
+import * as Three from '../res/lib/three.module.js';
 import { OrbitControls } from '../res/lib/OrbitControls.js';
-// const OrbitControls = require('../res/lib/OrbitControls.js')
 import * as Chart from './experimentChart.js';
 
 let AtomList = new Array();
