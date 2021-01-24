@@ -1,3 +1,5 @@
+import { Vector } from '../res/lib/vector.js';
+
 const MaxDistance = 1000000;
 const CONST_k = 1.380658e-23;
 const atomMass = 0.336e-25;
@@ -13,23 +15,14 @@ export function updatePositions(atomList, timeStep) {
 
 function getForce(atomList) {
     let forces = new Array(atomList.length);
-    forces.fill({ x: 0.0, y: 0.0, z: 0.0 });
+    forces.fill(new Vector(0, 0, 0));
 
     for (let atom = 0; atom < atomList.length; atom++) {
         for (let target = atom + 1; target < atomList.length; target++) {
-            let atomX = atomList[atom].object.position.x;
-            let atomY = atomList[atom].object.position.y;
-            let atomZ = atomList[atom].object.position.z;
+            let atomPos = new Vector(dropIsVector(atomList[atom].object.position));
+            let targetPos = new Vector(dropIsVector(atomList[target].object.position));
 
-            let targetX = atomList[target].object.position.x;
-            let targetY = atomList[target].object.position.y;
-            let targetZ = atomList[target].object.position.z;
-
-            let distanceV = {
-                x: targetX - atomX,
-                y: targetY - atomY,
-                z: targetZ - atomZ
-            };
+            let distanceV = Vector.sub(targetPos, atomPos);
             let length2 = distanceV.x * distanceV.x + distanceV.y * distanceV.y + distanceV.z * distanceV.z;
 
             if (length2 < MaxDistance) {
@@ -37,21 +30,11 @@ function getForce(atomList) {
                 let length8 = length2 * length6;
                 let force = 24 * epsilon * (2 * sigma12 / (length8 * length6) - sigma6 / length8);
 
-                distanceV.x *= force;
-                distanceV.y *= force;
-                distanceV.z *= force;
+                distanceV = Vector.mul(distanceV, force)
 
-                forces[atom] = {
-                    x: (forces[atom].x + distanceV.x),
-                    y: (forces[atom].y + distanceV.y),
-                    z: (forces[atom].z + distanceV.z)
-                };
-
-                forces[target] = {
-                    x: (forces[target].x - distanceV.x),
-                    y: (forces[target].y - distanceV.y),
-                    z: (forces[target].z - distanceV.z)
-                };
+                forces[atom] = Vector.add(forces[atom], distanceV);
+                forces[target] = Vector.sub(forces[target], distanceV);
+                // console.log("Kraft: ", forces[atom], "Distanz: ", distanceV.x);
             }
         }
     }
@@ -61,29 +44,18 @@ function getForce(atomList) {
 function setNewPositions(atomList, forces, timeStep) {
     let invAtomMass = 1 / atomMass;
 
-    let oldPos = {
-        x: atomList[0].object.position.x,
-        y: atomList[0].object.position.y,
-        z: atomList[0].object.position.z
-    };
+    let oldPos = new Vector(dropIsVector(atomList[0].object.position));
     for (let atom = 0; atom < atomList.length; atom++) {
         // acceleration
-        let acceleration = {
-            x: forces[atom].x * invAtomMass,
-            y: forces[atom].y * invAtomMass,
-            z: forces[atom].z * invAtomMass
-        };
-
+        let acceleration = Vector.mul(forces[atom], invAtomMass);
         // velocity
-        atomList[atom].velocity.x += acceleration.x * timeStep;
-        atomList[atom].velocity.y += acceleration.y * timeStep;
-        atomList[atom].velocity.z += acceleration.z * timeStep;
-
+        atomList[atom].velocity = Vector.add(atomList[atom].velocity, Vector.mul(acceleration, timeStep));
 
         // positions
-        atomList[atom].object.position.x += atomList[atom].velocity.x * timeStep;
-        atomList[atom].object.position.y += atomList[atom].velocity.y * timeStep;
-        atomList[atom].object.position.z += atomList[atom].velocity.z * timeStep;
+        let pos = Vector.mul(atomList[atom].velocity, timeStep);
+        atomList[atom].object.position.x += pos.x;
+        atomList[atom].object.position.y += pos.y;
+        atomList[atom].object.position.z += pos.z;
     }
     console.log('delta pos', {
         x: atomList[0].object.position.x - oldPos.x,
@@ -98,4 +70,12 @@ export function moveRandom(atomList) {
         atom.object.position.y += (Math.random() * 2) - 1;
         atom.object.position.z += (Math.random() * 2) - 1;
     });
+}
+
+function dropIsVector(obj) {
+    return {
+        x: obj.x,
+        y: obj.y,
+        z: obj.z
+    };
 }

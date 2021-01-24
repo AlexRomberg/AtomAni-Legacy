@@ -1,4 +1,6 @@
 import * as THREE from '../res/lib/three.module.js';
+import { Vector } from '../res/lib/vector.js';
+
 let Radius = 10
 let SegmentWidth = 30;
 let SegmentHeight = 30;
@@ -25,11 +27,7 @@ export function create(type, x, y, z) {
     const atom = {
         object: new THREE.Mesh(Geometry, material),
         type,
-        velocity: {
-            x: 0,
-            y: 0,
-            z: 0
-        }
+        velocity: new Vector(0, 0, 0)
     };
 
     // set atom position
