@@ -91,7 +91,7 @@ export function startRendering(renderInfo) {
 
         controls.update(); // updates OrbitControls
 
-        if (AnimationRunning && frame < 1100) {
+        if (AnimationRunning) {
             logFPS(timeStep, frame);
 
             // calculation

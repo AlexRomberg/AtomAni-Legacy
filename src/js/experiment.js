@@ -21,12 +21,8 @@ handleResize();
 let renderInfo = Simulation.init();
 // let AtomList = Atoms.generateGrid(2, 1, 1);
 let AtomList = [
-    Atoms.create("ar", 30, 100, 0),
-    Atoms.create("ar", -30, 100, 0),
-    Atoms.create("ne", 40, 0, 0),
-    Atoms.create("ne", -40, 0, 0),
-    Atoms.create("kr", 50, -100, 0),
-    Atoms.create("kr", -50, -100, 0)
+    Atoms.create("ar", 25, 0, 0),
+    Atoms.create("ne", -25, 0, 0) /* blau */
 ]
 Simulation.addAtoms(AtomList, renderInfo.scene);
 Simulation.startRendering(renderInfo);

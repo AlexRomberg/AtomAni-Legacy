@@ -1,10 +1,11 @@
 import { Vector } from '../res/lib/vector.js';
 
-const MaxDistance = 10000000;
+const MaxDistance = 100000000000;
 const CONST_k = 1.380658e-23;
-const atomMass = 3.36e-26;
-const epsilon = 36.83 * CONST_k;
-const sigma = 2.79e-2;
+const atomMass = 3.36e5;
+const epsilon = 1.8;
+const sigma = 15;
+const sigma2 = Math.pow(sigma, 2);
 
 export function updatePositions(atomList, timeStep) {
     let forces = getForce(atomList);
@@ -24,9 +25,8 @@ function getForce(atomList) {
             let length2 = distanceV.x * distanceV.x + distanceV.y * distanceV.y + distanceV.z * distanceV.z;
 
             if (length2 < MaxDistance) {
-                let forcePotDistance6 = (sigma * sigma / length2) * (sigma * sigma / length2) * (sigma * sigma / length2);
-                let force = 4 * epsilon * forcePotDistance6 * (forcePotDistance6 - 1);
-
+                let force = 24 * epsilon * (Math.pow((sigma2 / length2), 3) - 2 * Math.pow((sigma2 / length2), 6));
+                // console.log("Kraft: ", force, " Distanz: ", Math.sqrt(length2));
                 distanceV = Vector.mul(distanceV, force)
 
                 forces[atom] = Vector.add(forces[atom], distanceV);
@@ -52,6 +52,7 @@ function setNewPositions(atomList, forces, timeStep) {
         atomList[atom].object.position.x += pos.x;
         atomList[atom].object.position.y += pos.y;
         atomList[atom].object.position.z += pos.z;
+        // console.log("Neue Position", atom, ": ", pos);
     }
 }
 
