@@ -1,12 +1,10 @@
 import { Vector } from '../res/lib/vector.js';
 
-const MaxDistance = 1000000;
+const MaxDistance = 10000000;
 const CONST_k = 1.380658e-23;
-const atomMass = 0.336e-25;
+const atomMass = 3.36e-26;
 const epsilon = 36.83 * CONST_k;
-const sigma = 2.79;
-const sigma6 = sigma * sigma * sigma * sigma * sigma * sigma;
-const sigma12 = sigma6 * sigma6;
+const sigma = 2.79e-2;
 
 export function updatePositions(atomList, timeStep) {
     let forces = getForce(atomList);
@@ -26,15 +24,13 @@ function getForce(atomList) {
             let length2 = distanceV.x * distanceV.x + distanceV.y * distanceV.y + distanceV.z * distanceV.z;
 
             if (length2 < MaxDistance) {
-                let length6 = length2 * length2 * length2;
-                let length8 = length2 * length6;
-                let force = 24 * epsilon * (2 * sigma12 / (length8 * length6) - sigma6 / length8);
+                let forcePotDistance6 = (sigma * sigma / length2) * (sigma * sigma / length2) * (sigma * sigma / length2);
+                let force = 4 * epsilon * forcePotDistance6 * (forcePotDistance6 - 1);
 
                 distanceV = Vector.mul(distanceV, force)
 
                 forces[atom] = Vector.add(forces[atom], distanceV);
                 forces[target] = Vector.sub(forces[target], distanceV);
-                // console.log("Kraft: ", forces[atom], "Distanz: ", distanceV.x);
             }
         }
     }
@@ -57,11 +53,6 @@ function setNewPositions(atomList, forces, timeStep) {
         atomList[atom].object.position.y += pos.y;
         atomList[atom].object.position.z += pos.z;
     }
-    console.log('delta pos', {
-        x: atomList[0].object.position.x - oldPos.x,
-        y: atomList[0].object.position.y - oldPos.y,
-        z: atomList[0].object.position.z - oldPos.z
-    });
 }
 
 export function moveRandom(atomList) {
