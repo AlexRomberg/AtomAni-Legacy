@@ -59,7 +59,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
                     <div class="controlls">
                         <div class="controll">
                             <h4>Temperatur</h4>
-                            <input type="range" class="slider" id="temp" min="-3" max="3" value="0" step="1">
+                            <input type="range" class="slider" id="temp" min="0.997" max="1.003" value="1" step="0.001">
                         </div>
                     </div>
                 </div>

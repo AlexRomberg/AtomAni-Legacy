@@ -48,6 +48,9 @@ function setNewPositions(atomList, forces, timeStep) {
         // velocity
         atomList[atom].velocity = Vector.add(atomList[atom].velocity, Vector.mul(acceleration, timeStep));
 
+        // temperature
+        atomList[atom].velocity = Vector.mul(atomList[atom].velocity, $('#temp').val());
+
         // positions
         let pos = Vector.mul(atomList[atom].velocity, timeStep);
         atomList[atom].object.position.x += pos.x;
