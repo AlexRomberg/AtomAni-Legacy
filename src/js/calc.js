@@ -1,11 +1,12 @@
 import { Vector } from '../res/lib/vector.js';
 
-const MaxDistance = 100000000000;
+const MaxDistance = 160000;
 const CONST_k = 1.380658e-23;
-const atomMass = 3.36e5;
-const epsilon = 1.8;
-const sigma = 15;
-const sigma2 = Math.pow(sigma, 2);
+
+let atomMass = 336000;
+let epsilon = 0.005;
+let sigma = 31;
+let sigma2 = Math.pow(sigma, 2);
 
 export function updatePositions(atomList, timeStep) {
     let forces = getForce(atomList);
