@@ -3,6 +3,13 @@ import { Vector } from '../res/lib/vector.js';
 const MaxDistance = 160000;
 const CONST_k = 1.380658e-23;
 
+/*
+--- official values ---
+let atomMass = 0.336e-25;
+let epsilon = 36.83 * CONST_k;
+let sigma = 2.79;
+
+--- my values ---*/
 let atomMass = 336000;
 let epsilon = 0.005;
 let sigma = 31;
@@ -26,8 +33,8 @@ function getForce(atomList) {
             let length2 = distanceV.x * distanceV.x + distanceV.y * distanceV.y + distanceV.z * distanceV.z;
 
             if (length2 < MaxDistance) {
-                let force = 24 * epsilon * (Math.pow((sigma2 / length2), 3) - 2 * Math.pow((sigma2 / length2), 6));
-                // console.log("Kraft: ", force, " Distanz: ", Math.sqrt(length2));
+                let forcePart = (sigma2 / length2) * (sigma2 / length2) * (sigma2 / length2);
+                let force = 24 * epsilon * (forcePart - 2 * forcePart * forcePart);
                 distanceV = Vector.mul(distanceV, force)
 
                 forces[atom] = Vector.add(forces[atom], distanceV);
@@ -56,7 +63,6 @@ function setNewPositions(atomList, forces, timeStep) {
         atomList[atom].object.position.x += pos.x;
         atomList[atom].object.position.y += pos.y;
         atomList[atom].object.position.z += pos.z;
-        // console.log("Neue Position", atom, ": ", pos);
     }
 }
 
@@ -68,6 +74,7 @@ export function moveRandom(atomList) {
     });
 }
 
+// removes isVector attribute to fit into Vector class
 function dropIsVector(obj) {
     return {
         x: obj.x,
