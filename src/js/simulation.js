@@ -4,6 +4,7 @@ import * as Chart from './experimentChart.js';
 import * as Calc from './calc.js';
 
 let AtomList = new Array();
+let WallList = new Array();
 let AnimationRunning = false;
 let Charts = {};
 let controls;
@@ -54,6 +55,13 @@ export function addAtoms(atoms, scene) {
     });
 }
 
+export function addWalls(walls, scene) {
+    walls.forEach(wall => {
+        scene.add(wall.object);
+        WallList.push(wall);
+    });
+}
+
 function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
     const pixelRatio = window.devicePixelRatio;
@@ -95,7 +103,7 @@ export function startRendering(renderInfo) {
             logFPS(timeStep, frame);
 
             // calculation
-            Calc.updatePositions(AtomList, timeStep);
+            Calc.updatePositions(AtomList, WallList, timeStep);
         }
 
         renderer.render(scene, camera);

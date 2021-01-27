@@ -1,6 +1,7 @@
 import { Vector } from '../res/lib/vector.js';
 
 const MaxDistance = 160000;
+const WALL_WIDTH = 30;
 const CONST_k = 1.380658e-23;
 
 /*
@@ -15,8 +16,9 @@ let epsilon = 0.005;
 let sigma = 31;
 let sigma2 = Math.pow(sigma, 2);
 
-export function updatePositions(atomList, timeStep) {
-    let forces = getForce(atomList);
+export function updatePositions(atomList, wallList, timeStep) {
+    let forces = getForce(atomList, wallList);
+    calculateWalls(wallList, atomList);
     setNewPositions(atomList, forces, timeStep);
 }
 
@@ -45,6 +47,36 @@ function getForce(atomList) {
     return forces;
 }
 
+function calculateWalls(wallList, atomList) {
+    atomList.forEach(atom => {
+        let switchableDirections = { x: false, y: false, z: false };
+        wallList.forEach(wall => {
+            switchableDirections.x = switchableDirections.x || isInWall(atom.object.position.x, wall.position.x, wall.scale.x, atom.velocity.x);
+            switchableDirections.y = switchableDirections.y || isInWall(atom.object.position.y, wall.position.y, wall.scale.y, atom.velocity.y);
+            switchableDirections.z = switchableDirections.z || isInWall(atom.object.position.z, wall.position.z, wall.scale.z, atom.velocity.z);
+        });
+        switchDirections(switchableDirections, atom);
+    });
+}
+
+// removes isVector attribute to fit into Vector class
+function dropIsVector(obj) {
+    return {
+        x: obj.x,
+        y: obj.y,
+        z: obj.z
+    };
+}
+
+// Atom functions --------------------------------------
+export function moveRandom(atomList) {
+    atomList.forEach(atom => {
+        atom.object.position.x += (Math.random() * 2) - 1;
+        atom.object.position.y += (Math.random() * 2) - 1;
+        atom.object.position.z += (Math.random() * 2) - 1;
+    });
+}
+
 function setNewPositions(atomList, forces, timeStep) {
     let invAtomMass = 1 / atomMass;
 
@@ -66,19 +98,19 @@ function setNewPositions(atomList, forces, timeStep) {
     }
 }
 
-export function moveRandom(atomList) {
-    atomList.forEach(atom => {
-        atom.object.position.x += (Math.random() * 2) - 1;
-        atom.object.position.y += (Math.random() * 2) - 1;
-        atom.object.position.z += (Math.random() * 2) - 1;
-    });
+// Wall functions --------------------------------------
+function isInWall(position, wallBeginning, boxScale, velocity) {
+    // let inWall = (position >= wallBeginning + boxScale && position <= wallBeginning + boxScale + WALL_WIDTH); // right, top, front
+    // inWall = inWall || (position <= wallBeginning && position >= wallBeginning - WALL_WIDTH); // left, bottom, back
+    if (velocity > 0) {
+        return (position >= wallBeginning + boxScale); // right, top, front
+    } else {
+        return (position <= wallBeginning); // left, bottom, back
+    }
 }
 
-// removes isVector attribute to fit into Vector class
-function dropIsVector(obj) {
-    return {
-        x: obj.x,
-        y: obj.y,
-        z: obj.z
-    };
+function switchDirections(sides, atom) {
+    if (sides.x) { atom.velocity[0] *= -1; }
+    if (sides.y) { atom.velocity[1] *= -1; }
+    if (sides.z) { atom.velocity[2] *= -1; }
 }
