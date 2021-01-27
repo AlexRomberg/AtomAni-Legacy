@@ -31,9 +31,7 @@ export function create(type, x, y, z) {
     };
 
     // set atom position
-    atom.object.position.x = x;
-    atom.object.position.y = y;
-    atom.object.position.z = z;
+    atom.object.position.set(x, y, z);
 
     return atom;
 }
