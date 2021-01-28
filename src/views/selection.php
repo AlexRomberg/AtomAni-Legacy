@@ -68,6 +68,10 @@ function drawCardsOfLayer($data)
 ?>
 
 <body>
+    <script>
+        0
+        // prevents css loading errors
+    </script>
     <div class="container">
         <header>
             <a href="../../index.php"><img src="../res/logo.svg" alt="AtomAni-Logo"></a>

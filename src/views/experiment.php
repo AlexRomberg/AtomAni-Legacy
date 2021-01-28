@@ -30,6 +30,10 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 </head>
 
 <body>
+    <script>
+        0
+        // prevents css loading errors
+    </script>
     <header>
         <a href="../../index.php"><img src="../res/logo.svg" alt="AtomAni-Logo"></a>
     </header>
@@ -71,34 +75,10 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
                                     } else {
                                         header('Location: selection.php');
                                     }
-            ],
-            atoms: [{
-                    type: 'grid',
-                    x: -60,
-                    y: -60,
-                    z: -60,
-                    width: 5,
-                    height: 5,
-                    depth: 5,
-                    atomType: "ne"
-                },
-                {
-                    type: 'single',
-                    x: 200,
-                    y: 200,
-                    z: 200,
-                    atomType: "ar"
-                }
-            ],
-            walls: [{
-                x: -300,
-                y: -300,
-                z: -300,
-                width: 600,
-                height: 600,
-                depth: 600
-            }]
-        };
+                                } else {
+                                    header('Location: selection.php');
+                                }
+                                ?>;
         Experiment.initSimulation(simulationScript);
     </script>
 </body>
