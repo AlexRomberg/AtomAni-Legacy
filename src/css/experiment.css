@@ -15,14 +15,14 @@
 
 .simulationWindow #sim {
     margin-bottom: -4px;
-    height: calc(100vh - 200px) !important;
+    height: calc(100vh - 250px) !important;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
 
 .controlPane {
     width: 100%;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 250px);
     padding: 10px;
     display: flex;
     flex-flow: column nowrap;
