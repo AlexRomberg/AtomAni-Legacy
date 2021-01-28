@@ -64,19 +64,13 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     </footer>
     <script type="module">
         import * as Experiment from '../js/experiment.js';
-        let simulationScript = {
-            charts: [{
-                    id: 'fps',
-                    title: 'FPS',
-                    fillColor: 'rgba(170,0,0,0.4)',
-                    lineColor: 'rgba(200,0,0,1)'
-                },
-                {
-                    id: 'avgVel',
-                    title: 'Geschwindigkeit',
-                    fillColor: 'rgba(0,0,170,0.4)',
-                    lineColor: 'rgba(0,0,200,1)'
-                }
+        let simulationScript = <?php
+                                if (isset($_GET['id'])) {
+                                    if (file_exists('../res/experiments/' . $_GET['id'] . '.json')) {
+                                        echo (file_get_contents('../res/experiments/' . $_GET['id'] . '.json'));
+                                    } else {
+                                        header('Location: selection.php');
+                                    }
             ],
             atoms: [{
                     type: 'grid',
