@@ -1,6 +1,6 @@
 const maxPoints = 50;
 
-export function generateChart(canvasId, borderColor, backgroundColor) {
+export function generateChart(canvasId, chartTitle, borderColor, backgroundColor) {
     let type = 'line';
     let data = {
         datasets: [{
@@ -32,6 +32,7 @@ export function generateChart(canvasId, borderColor, backgroundColor) {
     };
     let defaults = { global: { animation: { duration: 0 } } }
 
+    createChartBox(chartTitle, canvasId);
 
     var ctx = document.getElementById(canvasId).getContext('2d');
     let chart = new Chart(ctx, {
@@ -56,4 +57,8 @@ export function addPoint(chart, point, label) {
     }
 
     chart.update(250);
+}
+
+function createChartBox(chartTitle, canvasId) {
+    $('.diagramms').append('<div class="diagramm"><h4>' + chartTitle + '</h4 ><div class="chart-container" style="position: relative; width:100%; height: 150px;"><canvas id="' + canvasId + '"></canvas></div></div >');
 }

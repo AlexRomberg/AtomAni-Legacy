@@ -6,7 +6,7 @@ import * as Calc from './calc.js';
 let AtomList = new Array();
 let WallList = new Array();
 let AnimationRunning = false;
-let Charts = {};
+let Charts = [];
 let controls;
 
 export function init() {
@@ -37,15 +37,16 @@ export function init() {
     // OrbitControl
     controls = new OrbitControls(camera, renderer.domElement);
 
-
-    // add Charts
-    initCharts();
-
     return { renderer, camera, scene };
 }
 
-function initCharts() {
-    Charts.temp = Chart.generateChart('fpsChart', 'rgba(200,0,0,1)', 'rgba(170,0,0,0.4)');
+export function initCharts(chartList) {
+    chartList.forEach(chartObject => {
+        Charts.push({
+            id: chartObject.id,
+            object: Chart.generateChart(chartObject.id, chartObject.title, chartObject.lineColor, chartObject.fillColor),
+        });
+    });
 }
 
 export function addAtoms(atoms, scene) {
@@ -100,10 +101,14 @@ export function startRendering(renderInfo) {
         controls.update(); // updates OrbitControls
 
         if (AnimationRunning) {
-            logFPS(timeStep, frame);
-
             // calculation
             Calc.updatePositions(AtomList, WallList, timeStep);
+
+            if (frame % 10 == 0) {
+                let chartInfo = Calc.getChartInfo();
+                chartInfo['fps'] = 1000 / timeStep;
+                updateCharts(chartInfo, time);
+            }
         }
 
         renderer.render(scene, camera);
@@ -113,16 +118,17 @@ export function startRendering(renderInfo) {
     requestAnimationFrame(render);
 }
 
-function logFPS(passedTime, frame) {
-    if (frame % 10 == 0) {
-        Chart.addPoint(Charts.temp, 1000 / passedTime, frame);
-    }
-}
-
 export function stop() {
     AnimationRunning = false;
 }
 
 export function start() {
     AnimationRunning = true;
+}
+
+// ChartInfo
+function updateCharts(chartInfo, time) {
+    Charts.forEach(chart => {
+        Chart.addPoint(chart.object, chartInfo[chart.id], Math.round(time / 100) / 10);
+    });
 }

@@ -46,12 +46,12 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
                 <div>
                     <h3>Diagramme</h3>
                     <div class="diagramms">
-                        <div class="diagramm">
+                        <!-- <div class="diagramm">
                             <h4>FPS</h4>
                             <div class="chart-container" style="position: relative; width:100%; height: 150px;">
                                 <canvas id="fpsChart"></canvas>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div>

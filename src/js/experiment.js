@@ -25,6 +25,19 @@ let WallList = new Array();
 WallList.push(Walls.initBox(-300, -300, -300, 600, 600, 600));
 Simulation.addAtoms(AtomList, renderInfo.scene);
 Simulation.addWalls(WallList, renderInfo.scene);
+Simulation.initCharts([{
+        id: 'fps',
+        title: 'FPS',
+        fillColor: 'rgba(170,0,0,0.4)',
+        lineColor: 'rgba(200,0,0,1)'
+    },
+    {
+        id: 'avgVel',
+        title: 'Geschningigkeit',
+        fillColor: 'rgba(0,0,170,0.4)',
+        lineColor: 'rgba(0,0,200,1)'
+    }
+]);
 Simulation.startRendering(renderInfo);
 
 setInterval(() => { Simulation.start(); }, 1000);
