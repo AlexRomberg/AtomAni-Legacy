@@ -50,3 +50,24 @@ export function generateGrid(type, X, Y, Z, width, height, depth) {
     }
     return atomList;
 }
+
+export function loadFromScript(atomOptions) {
+    let atomList = new Array();
+    atomOptions.forEach(atomOption => {
+        switch (atomOption.type) {
+            case 'single':
+                atomList.push(this.create(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z));
+                break;
+            case 'grid':
+                let atomGrid = this.generateGrid(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, atomOption.width, atomOption.height, atomOption.depth);
+                atomGrid.forEach(atom => {
+                    atomList.push(atom);
+                });
+                break;
+            default:
+                atomList.push(this.create(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z));
+                break;
+        }
+    });
+    return atomList;
+}

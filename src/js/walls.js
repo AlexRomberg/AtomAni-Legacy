@@ -19,3 +19,11 @@ export function createBox(id, x, y, z, width, height, depth) {
     };
     return box;
 }
+
+export function loadFromScript(wallOptions) {
+    let wallList = new Array();
+    wallOptions.forEach(wallOption => {
+        wallList.push(this.createBox(wallList.length, wallOption.x, wallOption.y, wallOption.z, wallOption.width, wallOption.height, wallOption.depth));
+    });
+    return wallList;
+}

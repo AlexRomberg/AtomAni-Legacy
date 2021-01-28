@@ -18,26 +18,17 @@ function handleResize() {
 }
 handleResize();
 
-// simulation
-let renderInfo = Simulation.init();
-let AtomList = Atoms.generateGrid(5, 5, 5);
-let WallList = new Array();
-WallList.push(Walls.initBox(-300, -300, -300, 600, 600, 600));
-Simulation.addAtoms(AtomList, renderInfo.scene);
-Simulation.addWalls(WallList, renderInfo.scene);
-Simulation.initCharts([{
-        id: 'fps',
-        title: 'FPS',
-        fillColor: 'rgba(170,0,0,0.4)',
-        lineColor: 'rgba(200,0,0,1)'
-    },
-    {
-        id: 'avgVel',
-        title: 'Geschningigkeit',
-        fillColor: 'rgba(0,0,170,0.4)',
-        lineColor: 'rgba(0,0,200,1)'
-    }
-]);
-Simulation.startRendering(renderInfo);
+export function initSimulation(SimulationScript) {
+    // simulation
+    let renderInfo = Simulation.init();
+    let atomList = Atoms.loadFromScript(SimulationScript.atoms);
+    let WallList = Walls.loadFromScript(SimulationScript.walls);
 
-setInterval(() => { Simulation.start(); }, 1000);
+    Simulation.addAtoms(atomList, renderInfo.scene);
+    Simulation.addWalls(WallList, renderInfo.scene);
+    Simulation.initCharts(SimulationScript.charts);
+
+    Simulation.startRendering(renderInfo);
+
+    setInterval(() => { Simulation.start(); }, 1000);
+}

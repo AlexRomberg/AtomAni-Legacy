@@ -27,7 +27,6 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     <!-- scripts -->
     <script src="../res/lib/jquery.min.js"></script>
     <script src="../res/lib/Chart.bundle.min.js"></script>
-    <script type="module" src="../js/experiment.js" defer></script>
 </head>
 
 <body>
@@ -46,12 +45,6 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
                 <div>
                     <h3>Diagramme</h3>
                     <div class="diagramms">
-                        <!-- <div class="diagramm">
-                            <h4>FPS</h4>
-                            <div class="chart-container" style="position: relative; width:100%; height: 150px;">
-                                <canvas id="fpsChart"></canvas>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
                 <div>
@@ -69,4 +62,49 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     <footer>
         ©Alexander, Dario
     </footer>
+    <script type="module">
+        import * as Experiment from '../js/experiment.js';
+        let simulationScript = {
+            charts: [{
+                    id: 'fps',
+                    title: 'FPS',
+                    fillColor: 'rgba(170,0,0,0.4)',
+                    lineColor: 'rgba(200,0,0,1)'
+                },
+                {
+                    id: 'avgVel',
+                    title: 'Geschwindigkeit',
+                    fillColor: 'rgba(0,0,170,0.4)',
+                    lineColor: 'rgba(0,0,200,1)'
+                }
+            ],
+            atoms: [{
+                    type: 'grid',
+                    x: -60,
+                    y: -60,
+                    z: -60,
+                    width: 5,
+                    height: 5,
+                    depth: 5,
+                    atomType: "ne"
+                },
+                {
+                    type: 'single',
+                    x: 200,
+                    y: 200,
+                    z: 200,
+                    atomType: "ar"
+                }
+            ],
+            walls: [{
+                x: -300,
+                y: -300,
+                z: -300,
+                width: 600,
+                height: 600,
+                depth: 600
+            }]
+        };
+        Experiment.initSimulation(simulationScript);
+    </script>
 </body>
