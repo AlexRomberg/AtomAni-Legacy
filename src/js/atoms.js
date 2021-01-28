@@ -38,12 +38,12 @@ export function create(type, x, y, z) {
 
 
 // patterns
-export function generateGrid(X, Y, Z) {
+export function generateGrid(type, X, Y, Z, width, height, depth) {
     let atomList = new Array();
-    for (let x = 0; x < X; x++) {
-        for (let y = 0; y < Y; y++) {
-            for (let z = 0; z < Z; z++) {
-                let atom = this.create("ne", 30 * (x - (X / 2)), 30 * (y - (Y / 2)), 30 * (z - (Z / 2)));
+    for (let x = 0; x < width; x++) {
+        for (let y = 0; y < height; y++) {
+            for (let z = 0; z < depth; z++) {
+                let atom = this.create(type, 30 * x + X, 30 * y + Y, 30 * z + Z);
                 atomList.push(atom);
             }
         }
