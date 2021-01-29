@@ -32,7 +32,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     </script>
     <main>
         <div class="background">
-            <img src="src/res/atom.gif">
+            <!-- space for animation -->
         </div>
         <div class="foreground">
             <div class="controls">

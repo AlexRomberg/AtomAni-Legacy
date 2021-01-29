@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Copyright (c) 2020 Alexander Romberg, Dario Romandini
+Copyright (c) 2021 Alexander Romberg
 -->
 
 <head>
