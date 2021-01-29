@@ -72,9 +72,7 @@ Copyright (c) 2021 Alexander Romberg
             </div>
         </div>
     </main>
-    <footer>
-        ©Alexander
-    </footer>
+    <?php require("footer.php") ?>
     <script type="module">
         import * as Experiment from '../js/experiment.js';
         let simulationScript = <?php

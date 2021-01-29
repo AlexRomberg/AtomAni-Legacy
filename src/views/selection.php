@@ -86,8 +86,6 @@ function drawCardsOfLayer($data)
                 ?>
             </div>
         </main>
-        <footer>
-            ©Alexander
-        </footer>
+        <?php require("footer.php") ?>
     </div>
 </body>

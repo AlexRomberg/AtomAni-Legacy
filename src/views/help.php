@@ -27,11 +27,11 @@ Copyright (c) 2021 Alexander Romberg
             <nav>
                 <h2>Hilfe</h2>
                 <ul>
-                    <li><a href="help.html#AtomAni">AtomAni</a></li>
-                    <li><a href="help.html#Selection">Experimentwahl</a></li>
-                    <li><a href="help.html#Simulation">Simulation</a></li>
-                    <!-- <li><a href="help.html#Script">Simulationsscript</a></li> -->
-                    <li><a href="help.html#Credits">Credits</a></li>
+                    <li><a href="help.php#AtomAni">AtomAni</a></li>
+                    <li><a href="help.php#Selection">Experimentwahl</a></li>
+                    <li><a href="help.php#Simulation">Simulation</a></li>
+                    <!-- <li><a href="help.php#Script">Simulationsscript</a></li> -->
+                    <li><a href="help.php#Credits">Credits</a></li>
                 </ul>
             </nav>
             <main>
@@ -68,8 +68,6 @@ Copyright (c) 2021 Alexander Romberg
                 <p></p>
             </main>
         </div>
-        <footer>
-            ©Alexander
-        </footer>
+        <?php require("footer.php") ?>
     </div>
 </body>

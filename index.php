@@ -61,13 +61,11 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 
 
                 <ul>
-                    <li><a href="src/views/selection.php">Experiments</a></li>
-                    <li><a href="src/views/help.html">Help</a></li>
+                    <li><a href="src/views/selection.php">Experimente</a></li>
+                    <li><a href="src/views/help.php">Hilfe</a></li>
                 </ul>
             </div>
         </div>
-        <footer>
-            ©Alexander
-        </footer>
+        <?php require("src/views/footer.php") ?>
     </main>
 </body>
