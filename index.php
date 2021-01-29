@@ -67,7 +67,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
             </div>
         </div>
         <footer>
-            ©Alexander, Dario
+            ©Alexander
         </footer>
     </main>
 </body>

@@ -87,7 +87,7 @@ function drawCardsOfLayer($data)
             </div>
         </main>
         <footer>
-            ©Alexander, Dario
+            ©Alexander
         </footer>
     </div>
 </body>

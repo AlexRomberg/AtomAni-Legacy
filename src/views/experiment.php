@@ -64,7 +64,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
         </div>
     </main>
     <footer>
-        ©Alexander, Dario
+        ©Alexander
     </footer>
     <script type="module">
         import * as Experiment from '../js/experiment.js';
