@@ -63,6 +63,12 @@ export function addWalls(walls, scene) {
     });
 }
 
+export function clearCanvas(scene) {
+    scene.children.length = 1;
+    AtomList = new Array();
+    WallList = new Array();
+}
+
 function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
     const pixelRatio = window.devicePixelRatio;
@@ -124,6 +130,13 @@ export function stop() {
 
 export function start() {
     AnimationRunning = true;
+}
+
+export function reset(scene) {
+    AnimationRunning = false;
+    clearCanvas(scene);
+    console.log(scene.children);
+    Chart.remove();
 }
 
 // ChartInfo

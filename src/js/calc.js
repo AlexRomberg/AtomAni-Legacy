@@ -24,7 +24,9 @@ let ChartValues = {
 }
 
 export function updatePositions(atomList, wallList, timeStep) {
-    if (timeStep > 200) { timeStep = 200; } //prevent too long timessteps
+    timeStep *= Number($('#btnSpeed').attr('value')); // change simulation speed
+
+    if (timeStep > 100) { timeStep = 100; } // prevent too long timessteps
 
     let forces = getForce(atomList, wallList);
     calculateWalls(wallList, atomList);
@@ -98,7 +100,7 @@ function setNewPositions(atomList, forces, timeStep) {
         atomList[atom].velocity = Vector.add(atomList[atom].velocity, Vector.mul(acceleration, timeStep));
 
         // temperature
-        atomList[atom].velocity = Vector.mul(atomList[atom].velocity, $('#temp').val());
+        atomList[atom].velocity = Vector.mul(atomList[atom].velocity, $('#inpTemp').val());
 
         logAverageVelocity(atomList[atom].velocity);
 

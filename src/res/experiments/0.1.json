@@ -22,5 +22,14 @@
         "width": 600,
         "height": 600,
         "depth": 600
-    }]
+    }],
+    "controls": [{
+            "id": "temp",
+            "name": "Kühlen/Heizen"
+        },
+        {
+            "id": "control",
+            "name": "Simulation"
+        }
+    ]
 }

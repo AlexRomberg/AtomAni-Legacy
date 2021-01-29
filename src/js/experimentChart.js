@@ -62,3 +62,7 @@ export function addPoint(chart, point, label) {
 function createChartBox(chartTitle, canvasId) {
     $('.diagramms').append('<div class="diagramm"><h4>' + chartTitle + '</h4 ><div class="chart-container" style="position: relative; width:100%; height: 150px;"><canvas id="' + canvasId + '"></canvas></div></div >');
 }
+
+export function remove() {
+    $('.diagramms').text('');
+}
