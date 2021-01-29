@@ -1,4 +1,7 @@
-export function handle(simulation, renderInfo) {
+import * as Atoms from './atoms.js';
+import * as Walls from './walls.js';
+
+export function handle(simulation, renderInfo, simulationScript) {
     $('#btnStart').click(() => {
         if ($('#btnStart img').attr('alt') == 'Start') {
             simulation.start();
@@ -13,12 +16,12 @@ export function handle(simulation, renderInfo) {
 
     $('#btnReset').click(() => {
         simulation.reset(renderInfo.scene);
-        let atomList = Atoms.loadFromScript(SimulationScript.atoms);
-        let WallList = Walls.loadFromScript(SimulationScript.walls);
+        let atomList = Atoms.loadFromScript(simulationScript.atoms);
+        let WallList = Walls.loadFromScript(simulationScript.walls);
 
         simulation.addAtoms(atomList, renderInfo.scene);
         simulation.addWalls(WallList, renderInfo.scene);
-        simulation.initCharts(SimulationScript.charts);
+        simulation.initCharts(simulationScript.charts);
         if ($('#btnStart img').attr('alt') != 'Start') {
             setTimeout(() => {
                 simulation.start();

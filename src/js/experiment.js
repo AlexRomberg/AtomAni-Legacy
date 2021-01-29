@@ -34,7 +34,7 @@ export function initSimulation(simulationScript) {
 
     Simulation.startRendering(renderInfo);
 
-    Controls.handle(Simulation, renderInfo);
+    Controls.handle(Simulation, renderInfo, SimulationScript);
 
     setTimeout(() => {
         Simulation.start();

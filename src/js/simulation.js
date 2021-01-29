@@ -135,7 +135,6 @@ export function start() {
 export function reset(scene) {
     AnimationRunning = false;
     clearCanvas(scene);
-    console.log(scene.children);
     Chart.remove();
 }
 
