@@ -28,6 +28,9 @@ export function generateChart(canvasId, chartTitle, borderColor, backgroundColor
             point: {
                 radius: 0
             }
+        },
+        tooltips: {
+            enabled: false
         }
     };
     let defaults = { global: { animation: { duration: 0 } } }
