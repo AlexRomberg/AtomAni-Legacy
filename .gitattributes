@@ -1,0 +1,3 @@
+# correct language detection for github repos
+*.php linguist-language=PHP
+src/res/lib/* linguist-vendored
