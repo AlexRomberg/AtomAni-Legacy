@@ -1,4 +1,4 @@
 <footer>
-    <p>V 0.4 (Beta)</p>
+    <p>V 1.0</p>
     <p>© Alexander <?php echo (date('Y')) ?></p>
 </footer>

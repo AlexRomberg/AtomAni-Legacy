@@ -12,15 +12,5 @@
                 "imgName": "cristal2DExperiment.png"
             }
         }
-    },
-    "1": {
-        "name": "Developement",
-        "imgName": "devGroup.png",
-        "subexperiments": {
-            "1.0": {
-                "name": "Dev",
-                "imgName": "devExperiment.png"
-            }
-        }
     }
 }
