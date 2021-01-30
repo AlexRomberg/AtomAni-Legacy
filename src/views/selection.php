@@ -27,7 +27,7 @@ Copyright (c) 2021 Alexander Romberg
 </head>
 
 <?php
-error_reporting(0);
+// error_reporting(4);
 
 $CardData = json_decode(file_get_contents("../res/experiments.json"), true);
 
@@ -43,17 +43,23 @@ function drawCard($name, $imgName, $id, $referenceSelf)
 
 function parseData($cardData, $path)
 {
-    $returnJson = $cardData;
     if (!isset($path)) {
         return $cardData;
     } else {
+        $returnJson = $cardData;
         $dir = explode('.', $path);
 
         $nextId = null;      // used to reproduce id structure of json
         foreach ($dir as $key) {
             $nextId .= $key;
-            $returnJson = $returnJson[$nextId]['subexperiments'];
-            $nextId .= '.';
+            if (isset($returnJson[$nextId])) {
+                $returnJson = $returnJson[$nextId]['subexperiments'];
+                $nextId .= '.';
+            } else {
+                // path is wrong
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
+                die;
+            }
         }
     }
     return $returnJson;
@@ -81,7 +87,11 @@ function drawCardsOfLayer($data)
             <h1>Experiments</h1>
             <div class="selection">
                 <?php
-                $currentData = parseData($CardData, $_GET['id']);
+                if (isset($_GET['id'])) {
+                    $currentData = parseData($CardData, $_GET['id']);
+                } else {
+                    $currentData = $CardData;
+                }
                 drawCardsOfLayer($currentData);
                 ?>
             </div>
