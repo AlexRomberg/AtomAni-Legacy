@@ -278,7 +278,7 @@ Copyright (c) 2021 Alexander Romberg
                 <h3>Unterstützer</h3>
                 <p>Dario Romandini</p>
                 <p>Hans-Ueli Ehrensperger</p>
-                <p>Dr. Johanes Keller</p>
+                <p>Dr. Johannes Keller</p>
                 <p>Dr. Markus Romberg</p>
                 <p>Philipp Reinhard</p>
                 <p style="height: 40px"></p>
