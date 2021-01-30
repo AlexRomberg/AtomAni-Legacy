@@ -26,13 +26,16 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 </head>
 
 <body>
+    <script>
+        0
+        // prevents css loading errors
+    </script>
     <main>
         <div class="background">
-            <img src="src/res/atom.gif">
+            <!-- space for animation -->
         </div>
         <div class="foreground">
             <div class="controls">
-                <!--<img src="src/res/logo.svg" alt="Logo AtomAni">-->
                 <svg width="100%" height="100%" viewBox="0 0 500 116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                     <g transform="matrix(1,0,0,1.15924,0,0)">
                         <rect x="0" y="0" width="500" height="100.066" style="fill:none;" />
@@ -58,13 +61,11 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 
 
                 <ul>
-                    <li><a href="src/views/selection.php">Experiments</a></li>
-                    <li><a href="src/views/help.html">Help</a></li>
+                    <li><a href="src/views/selection.php">Experimente</a></li>
+                    <li><a href="src/views/help.php">Hilfe</a></li>
                 </ul>
             </div>
         </div>
-        <footer>
-            ©Alexander, Dario
-        </footer>
+        <?php require("src/views/footer.php") ?>
     </main>
 </body>

@@ -1,9 +1,13 @@
-import * as Three from '../res/lib/Three.module.js';
+import * as Three from '../res/lib/three.module.js';
+import { OrbitControls } from '../res/lib/OrbitControls.js';
 import * as Chart from './experimentChart.js';
+import * as Calc from './calc.js';
 
 let AtomList = new Array();
+let WallList = new Array();
 let AnimationRunning = false;
-let Charts = {};
+let Charts = [];
+let controls;
 
 export function init() {
     const canvas = document.querySelector('#sim');
@@ -17,7 +21,7 @@ export function init() {
     const near = 1;
     const far = 100000;
     const camera = new Three.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 1000;
+    camera.position.z = 1500;
 
     // scene
     const scene = new Three.Scene();
@@ -30,14 +34,19 @@ export function init() {
     light.position.set(-1, 2, 4);
     scene.add(light);
 
-    // add Charts
-    initCharts();
+    // OrbitControl
+    controls = new OrbitControls(camera, renderer.domElement);
 
     return { renderer, camera, scene };
 }
 
-function initCharts() {
-    Charts.temp = Chart.generateChart('fpsChart', 'rgba(200,0,0,1)', 'rgba(170,0,0,0.4)');
+export function initCharts(chartList) {
+    chartList.forEach(chartObject => {
+        Charts.push({
+            id: chartObject.id,
+            object: Chart.generateChart(chartObject.id, chartObject.title, chartObject.lineColor, chartObject.fillColor),
+        });
+    });
 }
 
 export function addAtoms(atoms, scene) {
@@ -45,7 +54,19 @@ export function addAtoms(atoms, scene) {
         scene.add(atom.object);
         AtomList.push(atom);
     });
-    console.log(AtomList);
+}
+
+export function addWalls(walls, scene) {
+    walls.forEach(wall => {
+        scene.add(wall.object);
+        WallList.push(wall);
+    });
+}
+
+export function clearCanvas(scene) {
+    scene.children.length = 1;
+    AtomList = new Array();
+    WallList = new Array();
 }
 
 function resizeRendererToDisplaySize(renderer) {
@@ -60,8 +81,7 @@ function resizeRendererToDisplaySize(renderer) {
     return needResize;
 }
 
-export function startAnimation(renderInfo) {
-    AnimationRunning = true;
+export function startRendering(renderInfo) {
     let renderer = renderInfo.renderer;
     let scene = renderInfo.scene;
     let camera = renderInfo.camera;
@@ -72,41 +92,55 @@ export function startAnimation(renderInfo) {
 
     function render(time) {
         frame++;
+
         // time
-        let passedTime = time - prevTime; // get time since last frame
+        let timeStep = time - prevTime; // get time since last frame
         prevTime = time;
 
-        logFPS(passedTime, frame);
-
+        // responsiveness
         if (resizeRendererToDisplaySize(renderer)) {
             const canvas = renderer.domElement;
             camera.aspect = canvas.clientWidth / canvas.clientHeight;
             camera.updateProjectionMatrix();
         }
 
+        controls.update(); // updates OrbitControls
 
-        // calculation goes here
-        AtomList.forEach(atom => {
-            atom.object.position.x += (Math.random() * 2) - 1;
-            atom.object.position.y += (Math.random() * 2) - 1;
-            atom.object.position.z += (Math.random() * 2) - 1;
-        });
+        if (AnimationRunning) {
+            // calculation
+            Calc.updatePositions(AtomList, WallList, timeStep);
+
+            if (frame % 10 == 0) {
+                let chartInfo = Calc.getChartInfo();
+                chartInfo['fps'] = 1000 / timeStep;
+                updateCharts(chartInfo, time);
+            }
+        }
 
         renderer.render(scene, camera);
-        if (AnimationRunning) {
-            requestAnimationFrame(render);
-        }
+        requestAnimationFrame(render);
     }
 
     requestAnimationFrame(render);
 }
 
-function logFPS(passedTime, frame) {
-    if (frame % 10 == 0) {
-        Chart.addPoint(Charts.temp, 1000 / passedTime, frame);
-    }
+export function stop() {
+    AnimationRunning = false;
 }
 
-export function stopAnimation() {
+export function start() {
+    AnimationRunning = true;
+}
+
+export function reset(scene) {
     AnimationRunning = false;
+    clearCanvas(scene);
+    Chart.remove();
+}
+
+// ChartInfo
+function updateCharts(chartInfo, time) {
+    Charts.forEach(chart => {
+        Chart.addPoint(chart.object, chartInfo[chart.id], Math.round(time / 100) / 10);
+    });
 }

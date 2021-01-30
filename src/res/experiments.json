@@ -1,123 +1,25 @@
 {
     "0": {
-        "name": "Temperature",
-        "imgName": "thermometer.png",
+        "name": "Temperatur",
+        "imgName": "thermoGroup.png",
         "subexperiments": {
             "0.0": {
-                "name": "Kristallschmelze",
-                "imgName": "exampleCristal.png"
+                "name": "Kristallschmelze 3D",
+                "imgName": "cristal3DExperiment.png"
             },
             "0.1": {
-                "name": "Beispiel 1",
-                "imgName": "exampleCristal.png"
-            },
-            "0.2": {
-                "name": "Beispielgruppe 1",
-                "imgName": "exampleCristal.png",
-                "subexperiments": {
-                    "0.2.0": {
-                        "name": "Beispiel 1.1",
-                        "imgName": "exampleCristal.png"
-                    },
-                    "0.2.1": {
-                        "name": "Beispiel 1.2",
-                        "imgName": "exampleCristal.png"
-                    },
-                    "0.2.2": {
-                        "name": "Beispiel 1.3",
-                        "imgName": "exampleCristal.png"
-                    }
-                }
+                "name": "Kristallschmelze 2D",
+                "imgName": "cristal2DExperiment.png"
             }
         }
     },
     "1": {
-        "name": "Beispielgruppe 1",
-        "imgName": "groupExample.png",
+        "name": "Developement",
+        "imgName": "devGroup.png",
         "subexperiments": {
             "1.0": {
-                "name": "Beispiel 1",
-                "imgName": "exampleCristal.png"
-            },
-            "1.1": {
-                "name": "Beispiel 2",
-                "imgName": "exampleCristal.png"
-            },
-            "1.2": {
-                "name": "Beispiel 3",
-                "imgName": "exampleCristal.png"
-            }
-        }
-    },
-    "2": {
-        "name": "Beispielgruppe 2",
-        "imgName": "groupExample.png",
-        "subexperiments": {
-            "2.0": {
-                "name": "Beispiel 1",
-                "imgName": "exampleCristal.png"
-            },
-            "2.1": {
-                "name": "Beispiel 2",
-                "imgName": "exampleCristal.png"
-            },
-            "2.2": {
-                "name": "Beispiel 3",
-                "imgName": "exampleCristal.png"
-            }
-        }
-    },
-    "3": {
-        "name": "Beispielgruppe 3",
-        "imgName": "groupExample.png",
-        "subexperiments": {
-            "3.0": {
-                "name": "Beispiel 1",
-                "imgName": "exampleCristal.png"
-            },
-            "3.1": {
-                "name": "Beispiel 2",
-                "imgName": "exampleCristal.png"
-            },
-            "3.2": {
-                "name": "Beispiel 3",
-                "imgName": "exampleCristal.png"
-            }
-        }
-    },
-    "4": {
-        "name": "Beispielgruppe 4",
-        "imgName": "groupExample.png",
-        "subexperiments": {
-            "4.0": {
-                "name": "Beispiel 1",
-                "imgName": "exampleCristal.png"
-            },
-            "4.1": {
-                "name": "Beispiel 2",
-                "imgName": "exampleCristal.png"
-            },
-            "4.2": {
-                "name": "Beispiel 3",
-                "imgName": "exampleCristal.png"
-            }
-        }
-    },
-    "5": {
-        "name": "Beispielgruppe 5",
-        "imgName": "groupExample.png",
-        "subexperiments": {
-            "5.0": {
-                "name": "Beispiel 1",
-                "imgName": "exampleCristal.png"
-            },
-            "5.1": {
-                "name": "Beispiel 2",
-                "imgName": "exampleCristal.png"
-            },
-            "5.2": {
-                "name": "Beispiel 3",
-                "imgName": "exampleCristal.png"
+                "name": "Dev",
+                "imgName": "devExperiment.png"
             }
         }
     }

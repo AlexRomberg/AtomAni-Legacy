@@ -1,7 +1,9 @@
 import * as Atoms from './atoms.js';
+import * as Walls from './walls.js';
 import * as Simulation from './simulation.js';
+import * as Controls from './controls.js';
 
-
+let SimulationScript;
 // simulationWindow resizing
 window.addEventListener("resize", handleResize);
 
@@ -18,7 +20,23 @@ function handleResize() {
 handleResize();
 
 // simulation
-let renderInfo = Simulation.init();
-let AtomList = Atoms.generateGrid(2, 2, 2);
-Simulation.addAtoms(AtomList, renderInfo.scene);
-Simulation.startAnimation(renderInfo);
+export function initSimulation(simulationScript) {
+    SimulationScript = simulationScript;
+
+    let renderInfo = Simulation.init();
+    let atomList = Atoms.loadFromScript(SimulationScript.atoms);
+    let WallList = Walls.loadFromScript(SimulationScript.walls);
+    Controls.loadFromScript(SimulationScript.controls);
+
+    Simulation.addAtoms(atomList, renderInfo.scene);
+    Simulation.addWalls(WallList, renderInfo.scene);
+    Simulation.initCharts(SimulationScript.charts);
+
+    Simulation.startRendering(renderInfo);
+
+    Controls.handle(Simulation, renderInfo, SimulationScript);
+
+    setTimeout(() => {
+        Simulation.start();
+    }, 1000);
+}

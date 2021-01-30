@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Copyright (c) 2020 Alexander Romberg, Dario Romandini
+Copyright (c) 2021 Alexander Romberg
 -->
 
 <head>
@@ -10,6 +10,7 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     <link rel="stylesheet" href="../css/general.css">
     <link rel="stylesheet" href="../css/menu.css">
     <link rel="stylesheet" href="../css/experiment.css">
+    <link rel="stylesheet" href="../css/controls.css">
 
     <!-- favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/src/res/favicon/apple-touch-icon.png">
@@ -27,10 +28,13 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     <!-- scripts -->
     <script src="../res/lib/jquery.min.js"></script>
     <script src="../res/lib/Chart.bundle.min.js"></script>
-    <script type="module" src="../js/experiment.js" defer></script>
 </head>
 
 <body>
+    <script>
+        0
+        // prevents css loading errors
+    </script>
     <header>
         <a href="../../index.php"><img src="../res/logo.svg" alt="AtomAni-Logo"></a>
     </header>
@@ -46,27 +50,42 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
                 <div>
                     <h3>Diagramme</h3>
                     <div class="diagramms">
-                        <div class="diagramm">
-                            <h4>FPS</h4>
-                            <div class="chart-container" style="position: relative; width:100%; height: 150px;">
-                                <canvas id="fpsChart"></canvas>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div>
                     <h3>Steuerung</h3>
                     <div class="controlls">
-                        <div class="controll">
-                            <h4>Temperatur</h4>
-                            <input type="range" class="slider" id="temp" min="-3" max="3" value="0" step="1">
+                        <div class="controll" id="temp" style="display: none;">
+                            <h4></h4>
+                            <input type="range" class="slider" id="inpTemp" min="0.997" max="1.003" value="1" step="0.001">
+                        </div>
+                        <div class="controll" id="control" style="display: none;">
+                            <h4></h4>
+                            <span class="row space-even">
+                                <buttom id="btnSpeed" class="btnRound" value="1">1×</buttom>
+                                <buttom id="btnStart" class="btnRound"><img src="/src/res/img/btnPause.png" alt="Stop"></buttom>
+                                <buttom id="btnReset" class="btnRound"><img src="/src/res/img/btnReload.png" alt="Zurücksetzen"></buttom>
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    <footer>
-        ©Alexander, Dario
-    </footer>
+    <?php require("footer.php") ?>
+    <script type="module">
+        import * as Experiment from '../js/experiment.js';
+        let simulationScript = <?php
+                                if (isset($_GET['id'])) {
+                                    if (file_exists('../res/experiments/' . $_GET['id'] . '.json')) {
+                                        echo (file_get_contents('../res/experiments/' . $_GET['id'] . '.json'));
+                                    } else {
+                                        header('Location: selection.php');
+                                    }
+                                } else {
+                                    header('Location: selection.php');
+                                }
+                                ?>;
+        Experiment.initSimulation(simulationScript);
+    </script>
 </body>
