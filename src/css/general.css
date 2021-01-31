@@ -13,6 +13,14 @@
     src: url(../res/font/muli.woff2) format('woff2');
 }
 
+@font-face {
+    font-family: 'FiraCode';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(../res/font/FiraCode.woff2) format('woff2');
+}
+
 
 /* --- general --- */
 
@@ -53,6 +61,27 @@ header {
 header img {
     height: 3em;
     margin-top: 0.5em;
+}
+
+
+/*--- main ---*/
+
+.title {
+    display: flex;
+    align-items: middle;
+    padding-right: 40px;
+}
+
+.title button {
+    background-color: #0000;
+    border: none;
+    width: 60px;
+    height: 60px;
+}
+
+.title h1 {
+    width: 100%;
+    align-self: center;
 }
 
 
