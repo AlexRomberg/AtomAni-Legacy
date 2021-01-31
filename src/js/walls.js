@@ -1,5 +1,4 @@
 import * as THREE from '../res/lib/three.module.js';
-import { Vector } from '../res/lib/vector.js';
 
 export function createBox(id, x, y, z, width, height, depth) {
     let boxGeo = new THREE.BoxGeometry(width, height, depth);
@@ -13,8 +12,8 @@ export function createBox(id, x, y, z, width, height, depth) {
 
     const box = {
         object: lineSeg,
-        position: new Vector(x, y, z),
-        scale: new Vector(width, height, depth),
+        position: new THREE.Vector3(x, y, z),
+        scale: new THREE.Vector3(width, height, depth),
         id
     };
     return box;
