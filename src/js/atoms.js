@@ -42,7 +42,7 @@ export function generateGrid(type, X, Y, Z, width, height, depth) {
     for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {
             for (let z = 0; z < depth; z++) {
-                let atom = this.create(type, 50 * x + X, 30 * y + Y, 30 * z + Z);
+                let atom = this.create(type, 30 * x + X, 30 * y + Y, 30 * z + Z);
                 atomList.push(atom);
             }
         }
