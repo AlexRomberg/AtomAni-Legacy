@@ -61,16 +61,23 @@ function getForce(atomList) {
     return forces;
 }
 
-function calculateWalls(wallList, atomList) {
-    atomList.forEach(atom => {
-        let switchableDirections = { x: false, y: false, z: false };
+function calculateWalls(wallList, atomList, forces) {
+    for (let atomIndex = 0; atomIndex < atomList.length; atomIndex++) {
+        // let switchableDirections = { x: false, y: false, z: false };
+        // wallList.forEach(wall => {
+        //     switchableDirections.x = switchableDirections.x || isInWall(atom.object.position.x, wall.position.x, wall.scale.x, atom.velocity.x);
+        //     switchableDirections.y = switchableDirections.y || isInWall(atom.object.position.y, wall.position.y, wall.scale.y, atom.velocity.y);
+        //     switchableDirections.z = switchableDirections.z || isInWall(atom.object.position.z, wall.position.z, wall.scale.z, atom.velocity.z);
+        // });
+        // switchDirections(switchableDirections, atom);
         wallList.forEach(wall => {
-            switchableDirections.x = switchableDirections.x || isInWall(atom.object.position.x, wall.position.x, wall.scale.x, atom.velocity.x);
-            switchableDirections.y = switchableDirections.y || isInWall(atom.object.position.y, wall.position.y, wall.scale.y, atom.velocity.y);
-            switchableDirections.z = switchableDirections.z || isInWall(atom.object.position.z, wall.position.z, wall.scale.z, atom.velocity.z);
+            let wallDistances = getDistances(atomList[atomIndex], wall);
+            if (wallDistances) {
+                let force = calculateWallForces(wallDistances);
+                forces[atomIndex] = new THREE.Vector3().addVectors(forces[atomIndex], force);
+            }
         });
-        switchDirections(switchableDirections, atom);
-    });
+    }
 }
 
 // Atom functions --------------------------------------
@@ -103,12 +110,38 @@ function setNewPositions(atomList, forces, timeStep) {
 }
 
 // Wall functions --------------------------------------
-function isInWall(position, wallBeginning, boxScale, velocity) {
-    if (velocity > 0) {
-        return (position >= wallBeginning + boxScale); // right, top, front
-    } else {
-        return (position <= wallBeginning); // left, bottom, back
+function getDistances(atom, wall) {
+    let wallDistances = [
+        0, // x1
+        0, // x2
+        0, // y1
+        0, // y2
+        0, // z1
+        0 // z2
+    ];
+    if ((wallDistances[0] = wall.position.x - atom.object.position.x) >= 0) { return false; };
+    if ((wallDistances[1] = wall.position.x + wall.scale.x - atom.object.position.x) <= 0) { return false; };
+    if ((wallDistances[2] = wall.position.y - atom.object.position.y) >= 0) { return false; };
+    if ((wallDistances[3] = wall.position.y + wall.scale.y - atom.object.position.y) <= 0) { return false; };
+    if ((wallDistances[4] = wall.position.z - atom.object.position.z) >= 0) { return false; };
+    if ((wallDistances[5] = wall.position.z + wall.scale.z - atom.object.position.z) <= 0) { return false; };
+    return wallDistances;
+}
+
+function calculateWallForces(wallDistances) {
+    let force = [0, 0, 0];
+    for (let i = 0; i < force.length; i++) {
+        // first direction
+        let distance2 = wallDistances[2 * i] * wallDistances[2 * i];
+        let forcePart = (sigma2 / distance2) * (sigma2 / distance2) * (sigma2 / distance2);
+        force[i] -= 24 * epsilon * (forcePart - 2 * forcePart * forcePart);
+
+        // second direction
+        distance2 = wallDistances[2 * i + 1] * wallDistances[2 * i + 1];
+        forcePart = (sigma2 / distance2) * (sigma2 / distance2) * (sigma2 / distance2);
+        force[i] += 24 * epsilon * (forcePart - 2 * forcePart * forcePart);
     }
+    return new THREE.Vector3(force[0], force[1], force[2]);
 }
 
 function switchDirections(sides, atom) {
