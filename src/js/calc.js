@@ -16,12 +16,15 @@ let epsilon = 0.005;
 let sigma = 31;
 let sigma2 = Math.pow(sigma, 2);
 
+const AverageIDs = ['avgVel', 'pres'];
 let chartTmp = {
-    avgVel: { x: 0, y: 0, z: 0, count: 0 }
-}
+    avgVel: { x: 0, y: 0, z: 0, count: 0 },
+    pres: { x: 0, y: 0, z: 0, count: 0 }
+};
 let ChartValues = {
-    avgVel: 0
-}
+    avgVel: 0,
+    pres: 0
+};
 
 export function updatePositions(atomList, wallList, timeStep) {
     timeStep *= Number($('#btnSpeed').attr('value')); // change simulation speed
@@ -29,8 +32,10 @@ export function updatePositions(atomList, wallList, timeStep) {
     if (timeStep > 100) { timeStep = 100; } // prevent too long timessteps
 
     let forces = getForce(atomList, wallList);
-    calculateWalls(wallList, atomList);
-    calculateAverage('avgVel')
+    calculateWalls(wallList, atomList, forces);
+    AverageIDs.forEach(id => {
+        calculateAverage(id);
+    });
     setNewPositions(atomList, forces, timeStep);
 }
 
@@ -75,6 +80,7 @@ function calculateWalls(wallList, atomList, forces) {
             if (wallDistances) {
                 let force = calculateWallForces(wallDistances);
                 forces[atomIndex] = new THREE.Vector3().addVectors(forces[atomIndex], force);
+                logAverage(force, 'pres');
             }
         });
     }
@@ -101,7 +107,9 @@ function setNewPositions(atomList, forces, timeStep) {
         // temperature
         let vel = new THREE.Vector3().copy(atomList[atom].velocity.multiplyScalar($('#inpTemp').val()));
 
-        logAverageVelocity(atomList[atom].velocity);
+        if (atomList[atom].velocity.lengthSq() < 100000) {
+            logAverage(atomList[atom].velocity, 'avgVel');
+        }
 
         // positions
         vel.multiplyScalar(timeStep);
@@ -155,11 +163,11 @@ export function getChartInfo() {
     return ChartValues;
 }
 
-function logAverageVelocity(velocity) {
-    chartTmp.avgVel.x += Math.abs(velocity.x);
-    chartTmp.avgVel.y += Math.abs(velocity.y);
-    chartTmp.avgVel.z += Math.abs(velocity.z);
-    chartTmp.avgVel.count++;
+function logAverage(value, name) {
+    chartTmp[name].x += Math.abs(value.x);
+    chartTmp[name].y += Math.abs(value.y);
+    chartTmp[name].z += Math.abs(value.z);
+    chartTmp[name].count++;
 }
 
 function calculateAverage(type) {
