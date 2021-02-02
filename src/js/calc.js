@@ -68,21 +68,24 @@ function getForce(atomList) {
 
 function calculateWalls(wallList, atomList, forces) {
     for (let atomIndex = 0; atomIndex < atomList.length; atomIndex++) {
-        // let switchableDirections = { x: false, y: false, z: false };
-        // wallList.forEach(wall => {
-        //     switchableDirections.x = switchableDirections.x || isInWall(atom.object.position.x, wall.position.x, wall.scale.x, atom.velocity.x);
-        //     switchableDirections.y = switchableDirections.y || isInWall(atom.object.position.y, wall.position.y, wall.scale.y, atom.velocity.y);
-        //     switchableDirections.z = switchableDirections.z || isInWall(atom.object.position.z, wall.position.z, wall.scale.z, atom.velocity.z);
-        // });
-        // switchDirections(switchableDirections, atom);
+        let switchableDirections = { x: false, y: false, z: false };
+        let rebound;
         wallList.forEach(wall => {
-            let wallDistances = getDistances(atomList[atomIndex], wall);
-            if (wallDistances) {
-                let force = calculateWallForces(wallDistances);
-                forces[atomIndex] = new THREE.Vector3().addVectors(forces[atomIndex], force);
-                logAverage(force, 'pres');
+            rebound = wall.type == "rebound";
+            if (rebound) {
+                switchableDirections.x = switchableDirections.x || isInWall(atomList[atomIndex].object.position.x, wall.position.x, wall.scale.x, atomList[atomIndex].velocity.x);
+                switchableDirections.y = switchableDirections.y || isInWall(atomList[atomIndex].object.position.y, wall.position.y, wall.scale.y, atomList[atomIndex].velocity.y);
+                switchableDirections.z = switchableDirections.z || isInWall(atomList[atomIndex].object.position.z, wall.position.z, wall.scale.z, atomList[atomIndex].velocity.z);
+            } else {
+                let wallDistances = getDistances(atomList[atomIndex], wall);
+                if (wallDistances) {
+                    let force = calculateWallForces(wallDistances);
+                    forces[atomIndex] = new THREE.Vector3().addVectors(forces[atomIndex], force);
+                    logAverage(force, 'pres');
+                }
             }
         });
+        if (rebound) { switchDirections(switchableDirections, atomList[atomIndex]) };
     }
 }
 
@@ -118,21 +121,31 @@ function setNewPositions(atomList, forces, timeStep) {
 }
 
 // Wall functions --------------------------------------
+function isInWall(position, wallBeginning, boxScale, velocity) {
+    if (velocity > 0) {
+        return (position >= wallBeginning + boxScale); // right, top, front
+    } else {
+        return (position <= wallBeginning); // left, bottom, back
+    }
+}
+
 function getDistances(atom, wall) {
-    let wallDistances = [
-        0, // x1
-        0, // x2
-        0, // y1
-        0, // y2
-        0, // z1
-        0 // z2
-    ];
-    if ((wallDistances[0] = wall.position.x - atom.object.position.x) >= 0) { return false; };
-    if ((wallDistances[1] = wall.position.x + wall.scale.x - atom.object.position.x) <= 0) { return false; };
-    if ((wallDistances[2] = wall.position.y - atom.object.position.y) >= 0) { return false; };
-    if ((wallDistances[3] = wall.position.y + wall.scale.y - atom.object.position.y) <= 0) { return false; };
-    if ((wallDistances[4] = wall.position.z - atom.object.position.z) >= 0) { return false; };
-    if ((wallDistances[5] = wall.position.z + wall.scale.z - atom.object.position.z) <= 0) { return false; };
+    let wallDistances = [0, 0, 0, 0, 0, 0]; // x,x,y,y,z,z  <- each direction
+    if (wall.type == "force-inside") {
+        if ((wallDistances[0] = wall.position.x - atom.object.position.x) >= 0) { return false; };
+        if ((wallDistances[2] = wall.position.y - atom.object.position.y) >= 0) { return false; };
+        if ((wallDistances[4] = wall.position.z - atom.object.position.z) >= 0) { return false; };
+        if ((wallDistances[1] = wall.position.x + wall.scale.x - atom.object.position.x) <= 0) { return false; };
+        if ((wallDistances[3] = wall.position.y + wall.scale.y - atom.object.position.y) <= 0) { return false; };
+        if ((wallDistances[5] = wall.position.z + wall.scale.z - atom.object.position.z) <= 0) { return false; };
+    } else {
+        wallDistances[0] = wall.position.x - atom.object.position.x;
+        wallDistances[2] = wall.position.y - atom.object.position.y;
+        wallDistances[4] = wall.position.z - atom.object.position.z;
+        wallDistances[1] = wall.position.x + wall.scale.x - atom.object.position.x;
+        wallDistances[3] = wall.position.y + wall.scale.y - atom.object.position.y;
+        wallDistances[5] = wall.position.z + wall.scale.z - atom.object.position.z;
+    }
     return wallDistances;
 }
 
