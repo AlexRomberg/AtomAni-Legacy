@@ -139,15 +139,11 @@ function getDistances(atom, wall) {
 function calculateWallForces(wallDistances) {
     let force = [0, 0, 0];
     for (let i = 0; i < force.length; i++) {
-        // first direction
-        let distance2 = wallDistances[2 * i] * wallDistances[2 * i];
-        let forcePart = (sigma2 / distance2) * (sigma2 / distance2) * (sigma2 / distance2);
-        force[i] -= 24 * epsilon * (forcePart - 2 * forcePart * forcePart);
-
-        // second direction
-        distance2 = wallDistances[2 * i + 1] * wallDistances[2 * i + 1];
-        forcePart = (sigma2 / distance2) * (sigma2 / distance2) * (sigma2 / distance2);
-        force[i] += 24 * epsilon * (forcePart - 2 * forcePart * forcePart);
+        for (let direction = 0; direction < 2; direction++) {
+            let distance = wallDistances[2 * i + direction] / 20; // resize distance to get force-margin on boxes
+            let distance3 = distance * distance * distance;
+            force[i] -= 50 / distance3;
+        }
     }
     return new THREE.Vector3(force[0], force[1], force[2]);
 }
