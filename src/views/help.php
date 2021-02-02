@@ -30,6 +30,7 @@ Copyright (c) 2021 Alexander Romberg
                     <li><a href="help.php#Selection">Experimentwahl</a></li>
                     <li><a href="help.php#Simulation">Simulation</a></li>
                     <li><a href="help.php#Script">Simulationsskript</a></li>
+                    <li><a href="help.php#FAQ">Häufige Fragen</a></li>
                     <li><a href="help.php#Credits">Mitwirkende</a></li>
                 </ul>
             </nav>
@@ -54,6 +55,7 @@ Copyright (c) 2021 Alexander Romberg
                 <ul>
                     <li>Bilder pro Sekunde [fps]</li>
                     <li>Durchschnittliche Atomgeschwindigkeit [avgVel]</li>
+                    <li>Durchschnittlicher Druck in Box [pres]</li>
                 </ul>
                 <h3>Steuerelemente</h3>
                 <ul>
@@ -233,6 +235,20 @@ Copyright (c) 2021 Alexander Romberg
                             600
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            type
+                        </td>
+                        <td>
+                            Art der Wand.(<br>
+                            "rebound": abprallen<br>
+                            "force-inside": abstossende Kraft innen<br>
+                            "force-both": abstossende Kraft beidseitig<br>
+                        </td>
+                        <td>
+                            "force-inside"
+                        </td>
+                    </tr>
                 </table>
                 <h3>Beispiel</h3>
                 <code>"walls": [{
@@ -241,7 +257,8 @@ Copyright (c) 2021 Alexander Romberg
     "z": -300,
     "width": 600,
     "height": 600,
-    "depth": 600
+    "depth": 600,
+    "type": "force-inside"
 }]</code>
                 <h2>Kontrollelemente [controls]</h2>
                 Kontrollelemente lassen sich mithilfe von IDs auswählen.
@@ -268,6 +285,11 @@ Copyright (c) 2021 Alexander Romberg
     "id": "temp",
     "name": "Kühlen/Heizen"
 }]</code>
+                <h1 id="FAQ">Häufige Fragen</h1>
+                <h2>Wieso verschwinden manche Atome bei Kollisionen?</h2>
+                <p>Wenn sich ein Atom zu schnell in ein anderes Atom oder eine Wand bewegt kommt es vor, dass die exponentiell wirkende Kraft eine extreme Beschleunigung zufolge hat. So wird das Atom aus dem Sichtfeld geschleudert und scheint zu verschwinden. Dies kann teilweise auf eine Überlastung des Geräts zurückgeführt werden, welches nicht genügend Berechnungen pro Sekunde durchlaufen kann.</p>
+                <h2>Ich habe einen Fehler gefunden, was soll ich tun?</h2>
+                <p>Das Projekt AtomAni wird auf GitHub verwaltet. Dort lässt sich unter dem Tab "issues" ein Fehler melden. Andernfalls bin ich auch persönlich erreichbar.</p>
                 <h1 id="Credits">Mitwirkende</h1>
                 <h3>Entwicklung</h3>
                 <p>Alexander Romberg</p>
