@@ -13,16 +13,16 @@ Copyright (c) 2021 Alexander Romberg
     <link rel="stylesheet" href="../css/controls.css">
 
     <!-- favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/src/res/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/src/res/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/src/res/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/src/res/favicon/site.webmanifest">
-    <link rel="mask-icon" href="/src/res/favicon/safari-pinned-tab.svg" color="#0002ff">
-    <link rel="shortcut icon" href="/src/res/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="../res/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../res/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../res/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../res/favicon/site.webmanifest">
+    <link rel="mask-icon" href="../res/favicon/safari-pinned-tab.svg" color="#0002ff">
+    <link rel="shortcut icon" href="../res/favicon/favicon.ico">
     <meta name="apple-mobile-web-app-title" content="AtomAni">
     <meta name="application-name" content="AtomAni">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-config" content="/src/res/favicon/browserconfig.xml">
+    <meta name="msapplication-config" content="../res/favicon/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
 
     <!-- scripts -->
@@ -63,8 +63,8 @@ Copyright (c) 2021 Alexander Romberg
                             <h4></h4>
                             <span class="row space-even">
                                 <buttom id="btnSpeed" class="btnRound" value="1">1×</buttom>
-                                <buttom id="btnStart" class="btnRound"><img src="/src/res/img/btnPause.png" alt="Stop"></buttom>
-                                <buttom id="btnReset" class="btnRound"><img src="/src/res/img/btnReload.png" alt="Zurücksetzen"></buttom>
+                                <buttom id="btnStart" class="btnRound"><img src="../res/img/btnPause.png" alt="Stop"></buttom>
+                                <buttom id="btnReset" class="btnRound"><img src="../res/img/btnReload.png" alt="Zurücksetzen"></buttom>
                             </span>
                         </div>
                     </div>
