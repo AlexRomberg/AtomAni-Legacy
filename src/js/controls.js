@@ -2,33 +2,12 @@ import * as Atoms from './atoms.js';
 import * as Walls from './walls.js';
 
 export function handle(simulation, renderInfo, simulationScript) {
-    $('#btnStart').click(() => {
-        if ($('#btnStart img').attr('alt') == 'Start') {
-            simulation.start();
-            $('#btnStart img').attr('alt', 'Stop');
-            $('#btnStart img').attr('src', '/src/res/img/btnPause.png');
-        } else {
-            simulation.stop();
-            $('#btnStart img').attr('alt', 'Start');
-            $('#btnStart img').attr('src', '/src/res/img/btnPlay.png');
-        }
-    });
+    startBtn(simulation);
+    resetBtn(simulation, renderInfo, simulationScript);
+    animationSpeedBtn();
+}
 
-    $('#btnReset').click(() => {
-        simulation.reset(renderInfo.scene);
-        let atomList = Atoms.loadFromScript(simulationScript.atoms);
-        let WallList = Walls.loadFromScript(simulationScript.walls);
-
-        simulation.addAtoms(atomList, renderInfo.scene);
-        simulation.addWalls(WallList, renderInfo.scene);
-        simulation.initCharts(simulationScript.charts);
-        if ($('#btnStart img').attr('alt') != 'Start') {
-            setTimeout(() => {
-                simulation.start();
-            }, 1000);
-        }
-    });
-
+function animationSpeedBtn() {
     $('#btnSpeed').click(() => {
         switch ($('#btnSpeed').attr('value')) {
             case '2':
@@ -50,6 +29,37 @@ export function handle(simulation, renderInfo, simulationScript) {
             default:
                 console.log($('#btnSpeed').val());
                 break;
+        }
+    });
+}
+
+function resetBtn(simulation, renderInfo, simulationScript) {
+    $('#btnReset').click(() => {
+        simulation.reset(renderInfo.scene);
+        let atomList = Atoms.loadFromScript(simulationScript.atoms);
+        let WallList = Walls.loadFromScript(simulationScript.walls);
+
+        simulation.addAtoms(atomList, renderInfo.scene);
+        simulation.addWalls(WallList, renderInfo.scene);
+        simulation.initCharts(simulationScript.charts);
+        if ($('#btnStart img').attr('alt') != 'Start') {
+            setTimeout(() => {
+                simulation.start();
+            }, 1000);
+        }
+    });
+}
+
+function startBtn(simulation) {
+    $('#btnStart').click(() => {
+        if ($('#btnStart img').attr('alt') == 'Start') {
+            simulation.start();
+            $('#btnStart img').attr('alt', 'Stop');
+            $('#btnStart img').attr('src', '/src/res/img/btnPause.png');
+        } else {
+            simulation.stop();
+            $('#btnStart img').attr('alt', 'Start');
+            $('#btnStart img').attr('src', '/src/res/img/btnPlay.png');
         }
     });
 }
