@@ -144,7 +144,15 @@ Ein Kontrollelement besteht aus folgenden Informationen:
 Wenn sich ein Atom zu schnell in ein anderes Atom oder eine Wand bewegt kommt es vor, dass die exponentiell wirkende Kraft eine extreme Beschleunigung zufolge hat. So wird das Atom aus dem Sichtfeld geschleudert und scheint zu verschwinden. Dies kann teilweise auf eine Überlastung des Geräts zurückgeführt werden, welches nicht genügend Berechnungen pro Sekunde durchlaufen kann.
 
 ## Ich habe einen Fehler gefunden, was soll ich tun?
-Das Projekt AtomAni wird auf GitHub verwaltet. Dort lässt sich unter dem Tab "issues" ein Fehler melden. Andernfalls bin ich auch persönlich erreichbar.
+Das Projekt AtomAni wird auf [GitHub](https://github.com/AlexRomberg/AtomAni) verwaltet. Dort lässt sich unter dem Tab "issues" ein Fehler melden. Andernfalls bin ich auch persönlich erreichbar.
+
+# Bibliotheken {#Licenses}
+Dieses Programm verwendet:
+- **[three.js](https://threejs.org/)** unter der **MIT** Lizenz
+- **[parsedown](https://parsedown.org/)** unter der **MIT** Lizenz
+- **[jquery](https://jquery.com/)** unter der **MIT** Lizenz
+
+**[MIT Lizenz](https://opensource.org/licenses/MIT)**
 
 # Mitwirkende {#Credits}
 
@@ -160,6 +168,6 @@ Dr. Jörg Engweiler
 ### Unterstützer
 Dario Romandini<br>
 Hans-Ueli Ehrensperger<br>
-Dr. Johanes Keller<br>
+Dr. Johannes Keller<br>
 Dr. Markus Romberg<br>
 Philipp Reinhard

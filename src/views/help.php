@@ -31,6 +31,7 @@ Copyright (c) 2021 Alexander Romberg
                     <li><a href="help.php#Simulation">Simulation</a></li>
                     <li><a href="help.php#Script">Simulationsskript</a></li>
                     <li><a href="help.php#FAQ">Häufige Fragen</a></li>
+                    <li><a href="help.php#Licenses">Bi­b­lio­theken</a></li>
                     <li><a href="help.php#Credits">Mitwirkende</a></li>
                 </ul>
             </nav>
