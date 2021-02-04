@@ -1,5 +1,4 @@
 import * as THREE from '../res/lib/three.module.js';
-import { Vector } from '../res/lib/vector.js';
 
 let Radius = 10
 let SegmentWidth = 30;
@@ -19,7 +18,7 @@ export function updateGeometry(radius, segmentWidth, segmentHeight) {
     Geometry = new THREE.SphereGeometry(Radius, SegmentWidth, SegmentHeight);
 }
 
-export function create(type, x, y, z) {
+export function create(type = "ne", x = 0, y = 0, z = 0) {
     const material = new THREE.MeshPhongMaterial({
         color: atomColors[type]
     });
@@ -27,7 +26,7 @@ export function create(type, x, y, z) {
     const atom = {
         object: new THREE.Mesh(Geometry, material),
         type,
-        velocity: new Vector(0, 0, 0)
+        velocity: new THREE.Vector3(0, 0, 0)
     };
 
     // set atom position
@@ -38,7 +37,7 @@ export function create(type, x, y, z) {
 
 
 // patterns
-export function generateGrid(type, X, Y, Z, width, height, depth) {
+export function generateGrid(type = "ne", X = 0, Y = 0, Z = 0, width = 1, height = 1, depth = 1) {
     let atomList = new Array();
     for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {

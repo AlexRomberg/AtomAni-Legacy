@@ -27,7 +27,7 @@ Copyright (c) 2021 Alexander Romberg
 </head>
 
 <?php
-// error_reporting(4);
+error_reporting(4);
 
 $CardData = json_decode(file_get_contents("../res/experiments.json"), true);
 
@@ -84,7 +84,10 @@ function drawCardsOfLayer($data)
         </header>
 
         <main>
-            <h1>Experiments</h1>
+            <span class="title">
+                <button id="back" onclick="history.back(-1);"><img src="../res/img/back.svg" alt="<"></button>
+                <h1>Experimente</h1>
+            </span>
             <div class="selection">
                 <?php
                 if (isset($_GET['id'])) {

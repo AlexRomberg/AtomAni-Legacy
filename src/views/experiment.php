@@ -39,7 +39,10 @@ Copyright (c) 2021 Alexander Romberg
         <a href="../../index.php"><img src="../res/logo.svg" alt="AtomAni-Logo"></a>
     </header>
     <main>
-        <h1>Simulation</h1>
+        <span class="title">
+            <button id="back" onclick="history.back(-1);"><img src="../res/img/back.svg" alt="<"></button>
+            <h1>Simulation</h1>
+        </span>
         <div class="simulationWindow">
             <div class="simulation">
                 <!-- Simulation -->
