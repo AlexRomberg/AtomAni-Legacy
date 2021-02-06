@@ -23,7 +23,14 @@ Copyright (c) 2021 Alexander Romberg
     $title = "Simulation";
     require('header.php');
     ?>
-    <main>
+    <main class="no-js">
+        <div class="js-missing-message">
+            <script>
+                let main = Array.prototype.slice.call(document.getElementsByClassName("no-js")); // checks for working JS
+                main[0].classList.remove('no-js');
+            </script>
+            <b>JavaScript ist deaktiviert.</b> Die Animation kann dadurch nicht angezeigt werden.
+        </div>
         <div class="simulationWindow">
             <div class="simulation">
                 <!-- Simulation -->

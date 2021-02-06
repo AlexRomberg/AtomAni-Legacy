@@ -37,6 +37,24 @@
     margin: 5px 0px;
 }
 
+/* --- missing JS --- */
+.js-missing-message {
+    display: none;
+}
+
+.no-js .js-missing-message {
+    display: block;
+    border: solid 3px #f00a;
+    background-color: #f007;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.no-js .simulationWindow {
+    display: none;
+}
+
 @media only screen and (max-width: 890px) {
     .simulationWindow {
         flex-flow: column nowrap;
