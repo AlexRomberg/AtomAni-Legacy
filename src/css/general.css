@@ -29,15 +29,51 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Muli', sans-serif;
-    color: var(--foreground);
-    transition: 0s !important;
+    color: var(--fontColor);
+}
+
+
+/* --- themes --- */
+
+* {
     /* variables */
-    --backgroundLight: #eee;
-    --backgroundDark: #ddd;
-    --backgroundCard: #efefef;
-    --foreground: #000;
-    --foregroundAccent: white;
-    --accent: blue;
+    --accentColor: #0066ff;
+    --accentText: #ffffff;
+    --backgroundColor: #EAEAEA;
+    --headerFooterColor: #B4B4B4;
+    --contentBackgroundColor: #CDCDCD;
+    --contentBackgroundColorDark: #ACACAC;
+    --contentBackgroundColorDarker: #878787;
+    --buttonBackground: #A1A1A1;
+    --button: #444444;
+    --fontColor: #000000;
+    --logoSource: url("../res/img/logo-dark.svg");
+    --logoSourceSmall: url("../res/img/logo-small-dark.svg");
+    --shadow: 1px 2px 5px 0 #0005;
+    --btnPlay: url("../res/img/btnPlay-dark.svg");
+    --btnPause: url("../res/img/btnPause-dark.svg");
+    --btnReload: url("../res/img/btnReload-dark.svg");
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    * {
+        /* variables */
+        --accentColor: #0066ff;
+        --accentText: #ffffff;
+        --backgroundColor: #232323;
+        --headerFooterColor: #1F1F1F;
+        --contentBackgroundColor: #393939;
+        --contentBackgroundColorDark: #505050;
+        --contentBackgroundColorDarker: #676767;
+        --buttonBackground: #393939;
+        --button: #B4B4B4;
+        --fontColor: #B4B4B4;
+        --logoSource: url("../res/img/logo-light.svg");
+        --logoSourceSmall: url("../res/img/logo-small-light.svg");
+        --btnPlay: url("../res/img/btnPlay-light.svg");
+        --btnPause: url("../res/img/btnPause-light.svg");
+        --btnReload: url("../res/img/btnReload-light.svg");
+    }
 }
 
 
@@ -45,7 +81,9 @@
 
 html,
 body {
-    background-color: var(--backgroundLight);
+    background-color: var(--backgroundColor);
+    width: 100%;
+    min-height: 100vh;
 }
 
 
@@ -53,35 +91,61 @@ body {
 
 header {
     width: 100%;
-    background-color: var(--backgroundDark);
-    height: 4em;
+    background-color: var(--headerFooterColor);
+    height: 5em;
     padding: 5px 20px;
-}
-
-header img {
-    height: 3em;
-    margin-top: 0.5em;
-}
-
-
-/*--- main ---*/
-
-.title {
     display: flex;
-    align-items: middle;
-    padding-right: 40px;
+    align-items: center;
+    box-shadow: 0 0 6px 0px #000;
 }
 
-.title button {
-    background-color: #0000;
+header button {
+    background-color: transparent;
     border: none;
-    width: 60px;
-    height: 60px;
+    margin-right: calc(14em);
 }
 
-.title h1 {
-    width: 100%;
-    align-self: center;
+header button svg {
+    border-radius: 50px;
+    margin-top: 4px;
+    height: 5em;
+    border: solid 3px transparent;
+}
+
+.svg-circle {
+    fill: var(--buttonBackground) !important;
+}
+
+header button:hover svg, header button:focus svg {
+    border: solid 3px var(--accentColor);
+}
+
+header button:focus {
+    outline: none;
+}
+
+header button svg:active .svg-circle {
+    fill: var(--accentColor);
+}
+
+
+.svg-arrow {
+    fill: var(--button) !important;
+}
+
+header h1 {
+    flex: 1;
+    font-size: 2.5em;
+    text-align: center;
+}
+
+#logo {
+    height: 3em;
+    width: 14em;
+    margin-top: 0.5em;
+    background: var(--logoSource);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 
@@ -91,20 +155,24 @@ footer {
     position: fixed;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     bottom: 0px;
     width: 100%;
-    padding: 3px 20px;
-    background-color: var(--accent);
-    color: var(--foregroundAccent);
+    padding: 5px 10px;
+    height: 2em;
+    background-color: var(--headerFooterColor);
 }
 
-@media (prefers-color-scheme: dark) {
-    * {
-        --backgroundLight: #3c3f40;
-        --backgroundDark: #404345;
-        --backgroundCard: #393b3c;
-        --foreground: #ddd;
-        --foregroundAccent: #ceccca;
-        --accent: #2020b9;
+/* --- responsiveness --- */
+@media only screen and (max-width: 890px) {
+    header button {
+        margin-right: 0px;
+    }
+    
+    #logo {
+        background-image: var(--logoSourceSmall);
+        height: 4em;
+        width: 4em;
+        margin-top: 0px;
     }
 }

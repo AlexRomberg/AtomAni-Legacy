@@ -26,6 +26,7 @@ export function init() {
     // scene
     const scene = new Three.Scene();
     scene.background = new Three.Color(0x404040);
+    // scene.background = new Three.Color(getBackgroundColor());
 
     // lighting
     const color = 0xFFFFFF;
@@ -143,4 +144,9 @@ function updateCharts(chartInfo, time) {
     Charts.forEach(chart => {
         Chart.addPoint(chart.object, chartInfo[chart.id], Math.round(time / 100) / 10);
     });
+}
+
+function getBackgroundColor() {
+    const color = $(".simulationWindow").css('backgroundColor');
+    return new Three.Color(color);
 }

@@ -55,17 +55,30 @@
     margin: 0px;
     margin-top: 10px;
     padding: 10px 20px;
-    background-color: var(--accent);
+    background-color: var(--contentBackgroundColor);
     border-radius: 8px;
     text-decoration: none;
-    color: var(--foregroundAccent);
     font-size: 2em;
     font-style: bold;
     display: block;
+    border: solid 3px transparent;
 }
 
-.foreground a:hover {
-    background-color: #00c;
+.foreground a:hover, .foreground a:focus {
+    border: solid 3px var(--accentColor);
+    outline: none;
+}
+
+.foreground a:active {
+    background-color: var(--accentColor);
+}
+
+svg path {
+   fill: var(--fontColor);
+}
+
+svg #oDots {
+    fill: var(--accentColor) !important;
 }
 
 
@@ -84,11 +97,5 @@ svg #O path {
     100% {
         transform: rotate(360deg);
         transform-origin: 33% center;
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #0000;
     }
 }

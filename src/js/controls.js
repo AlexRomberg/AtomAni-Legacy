@@ -55,18 +55,18 @@ function startBtn(simulation) {
         if ($('#btnStart img').attr('alt') == 'Start') {
             simulation.start();
             $('#btnStart img').attr('alt', 'Stop');
-            $('#btnStart img').attr('src', '/src/res/img/btnPause.png');
+            $('#btnStart img').toggleClass('btnPause');
         } else {
             simulation.stop();
             $('#btnStart img').attr('alt', 'Start');
-            $('#btnStart img').attr('src', '/src/res/img/btnPlay.png');
+            $('#btnStart img').toggleClass('btnPause');
         }
     });
 }
 
 export function loadFromScript(controlOptions) {
     controlOptions.forEach(controlOption => {
-        $('#' + controlOption.id).css('display', 'block');
+        $('#' + controlOption.id).css('display', 'flex');
         $('#' + controlOption.id + ' h4').text(controlOption.name);
     });
 }

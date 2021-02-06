@@ -1,4 +1,4 @@
-![AtomAni-Logo](../res/logo.svg) {#AtomAni .center}
+![AtomAni-Logo](./) {#AtomAni .center}
 AtomAni ist ein Programm, um die Atombewegung von Edelgasen zu simulieren.<br>
 Es ist im Rahmen einer Projektarbeit an der Informatikmittelschule Frauenfeld entstanden.<br>
 Der Name leitet sich aus den Wörtern Atom und Animation ab.<br>

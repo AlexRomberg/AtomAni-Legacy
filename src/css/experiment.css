@@ -3,35 +3,38 @@
 */
 
 .simulationWindow {
-    margin-top: 10px;
-    width: 100%;
-    background-color: #1002;
+    margin: 10px;
+    margin-bottom: calc(2em + 10px);
+    width: calc(100% - 20px);
+    min-height: calc(100vh - 7em - 20px);
+    background-color: var(--contentBackgroundColor);
     border-radius: 10px;
     display: flex;
-    flex-flow: row nowrap;
     justify-content: stretch;
     overflow: hidden;
+    box-shadow: var(--shadow);
 }
 
+/* --- simulation --- */
 .simulationWindow #sim {
     margin-bottom: -4px;
-    height: calc(100vh - 250px) !important;
+    height: calc(100vh - 7em - 20px) !important;
+    width: calc(100vw - 420px) !important;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
 
+/* --- controls --- */
 .controlPane {
-    width: 100%;
-    height: calc(100vh - 250px);
+    width: 400px;
+    height: calc(100vh - 7em - 20px);
     padding: 10px;
     display: flex;
-    flex-flow: column nowrap;
-    scrollbar-width: thin;
-    overflow-y: auto;
+    flex-flow: column;
 }
 
 .simulationWindow h3 {
-    margin: 10px
+    margin: 5px 0px;
 }
 
 @media only screen and (max-width: 890px) {
@@ -42,8 +45,10 @@
         border-bottom-left-radius: 0px;
         border-top-right-radius: 10px;
         height: 400px !important;
+        width: 100% !important;
     }
     .controlPane {
         height: unset;
+        width: 100%;
     }
 }

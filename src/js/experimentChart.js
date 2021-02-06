@@ -17,7 +17,13 @@ export function generateChart(canvasId, chartTitle, borderColor, backgroundColor
         scales: {
             yAxes: [{
                 ticks: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    fontColor: "#000"
+                }
+            }],
+            xAxes: [{
+                ticks: {
+                    fontColor: "#000"
                 }
             }]
         },
@@ -33,7 +39,11 @@ export function generateChart(canvasId, chartTitle, borderColor, backgroundColor
             enabled: false
         }
     };
-    let defaults = { global: { animation: { duration: 0 } } }
+    let defaults = {
+        global: {
+            animation: { duration: 0 }
+        }
+    };
 
     createChartBox(chartTitle, canvasId);
 
@@ -63,9 +73,9 @@ export function addPoint(chart, point, label) {
 }
 
 function createChartBox(chartTitle, canvasId) {
-    $('.diagramms').append('<div class="diagramm"><h4>' + chartTitle + '</h4 ><div class="chart-container" style="position: relative; width:100%; height: 150px;"><canvas id="' + canvasId + '"></canvas></div></div >');
+    $('.charts').append('<div class="chart"><h4>' + chartTitle + '</h4 ><div class="chart-container" style="position: relative; width:100%; height: 150px;"><canvas id="' + canvasId + '"></canvas></div></div >');
 }
 
 export function remove() {
-    $('.diagramms').text('');
+    $('.charts').text('');
 }

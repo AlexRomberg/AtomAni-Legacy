@@ -2,10 +2,14 @@
     Copyright (c) 2021 Alexander Romberg
 */
 
-html {
-    height: -webkit-fill-available;
+header #logo {
+    user-select: none;
+    opacity: 0;
 }
 
+#AtomAni {
+    content: var(--logoSource);
+}
 
 /* --- container --- */
 
@@ -13,8 +17,8 @@ html {
     display: flex;
     flex-flow: row nowrap;
     width: 100%;
-    height: calc(100vh - 4em);
-    height: calc(-webkit-fill-available - 4em);
+    height: calc(100vh - 7em);
+    height: calc(-webkit-fill-available - 7em);
 }
 
 
@@ -22,8 +26,8 @@ html {
 
 nav {
     height: 100%;
-    background-color: #0002;
     width: 200px;
+    background-color: var(--contentBackgroundColor);
 }
 
 nav a {
@@ -40,7 +44,7 @@ nav a:hover {
 nav h2 {
     padding: 10px;
     padding-bottom: 0px;
-    font-size: 1.7em
+    font-size: 2.25em;
 }
 
 
@@ -55,9 +59,8 @@ main {
 }
 
 .center {
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 400px;
+    margin: 40px auto;
     display: block;
 }
 
@@ -75,13 +78,14 @@ main h3 {
 }
 
 main code {
+    margin: 15px 0px;
     display: block;
     font-family: FiraCode;
     white-space: pre-wrap;
     padding: 5px;
     border-radius: 5px;
-    background-color: #0003;
-    border: solid #555 2px;
+    background-color: var(--contentBackgroundColor);
+    border: solid #7D7D7D 2px;
     font-size: 12pt;
     margin-top: 5px;
 }
@@ -92,14 +96,21 @@ main ul {
 
 main table {
     width: 100%;
+    margin: 15px 0px;
     border-collapse: collapse;
-    border-radius: 3px;
+    border-radius: 5px;
     overflow: hidden;
 }
-
+main table th,
 main table td {
+    padding: 5px 7px;
     vertical-align: top;
-    padding: 3px;
+    border-right: solid 2px var(--fontColor);
+}
+
+main table th:last-of-type,
+main table td:last-of-type {
+    border-right: none;
 }
 
 main tr *:nth-of-type(1) {
@@ -114,12 +125,16 @@ main tr *:nth-of-type(3) {
     width: 200px;
 }
 
+main table th {
+    background-color: var(--contentBackgroundColor);    
+}
+
 main table tr:nth-child(even) {
-    background-color: #dddde420
+    background-color: var(--contentBackgroundColor);
 }
 
 main table tr:nth-child(odd) {
-    background-color: #dddde440
+    background-color: var(--contentBackgroundColorDark);
 }
 
 main th {
