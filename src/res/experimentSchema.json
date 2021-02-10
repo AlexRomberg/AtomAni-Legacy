@@ -1,0 +1,245 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Experiment",
+    "type": "object",
+    "required": [
+        "charts",
+        "atoms",
+        "walls",
+        "controls"
+    ],
+    "properties": {
+        "charts": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "fillColor",
+                    "lineColor"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "chart ID",
+                        "type": "string",
+                        "enum": [
+                            "fps",
+                            "avgVel",
+                            "pres"
+                        ]
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "pattern": "^.+$"
+                    },
+                    "fillColor": {
+                        "title": "Fillcolor",
+                        "type": "string",
+                        "examples": [
+                            "rgba(170,0,0,0.4)"
+                        ],
+                        "pattern": "^rgba\\((1?[0-9]{1,2}|2[0-4][0-9]|25[0-5]), ?(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5]), ?(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5]), ?[0-1](\\.[0-9])?\\)$"
+                    },
+                    "lineColor": {
+                        "title": "Linecolor",
+                        "type": "string",
+                        "examples": [
+                            "rgba(200,0,0,1)"
+                        ],
+                        "pattern": "^rgba\\((1?[0-9]{1,2}|2[0-4][0-9]|25[0-5]), ?(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5]), ?(1?[0-9]{1,2}|2[0-4][0-9]|25[0-5]), ?[0-1](\\.[0-9])?\\)$"
+                    }
+                }
+            }
+        },
+        "atoms": {
+            "title": "Atoms",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "oneOf": [{
+                        "type": "object",
+                        "required": [
+                            "type",
+                            "x",
+                            "y",
+                            "z",
+                            "atomType"
+                        ],
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "single"
+                                ]
+                            },
+                            "x": {
+                                "title": "X-Position",
+                                "type": "integer"
+                            },
+                            "y": {
+                                "title": "Y-Position",
+                                "type": "integer"
+                            },
+                            "z": {
+                                "title": "Z-Position",
+                                "type": "integer"
+                            },
+                            "atomType": {
+                                "title": "Atomtype",
+                                "type": "string",
+                                "enum": [
+                                    "ne",
+                                    "ar",
+                                    "kr"
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "type",
+                            "x",
+                            "y",
+                            "z",
+                            "width",
+                            "height",
+                            "depth",
+                            "atomType"
+                        ],
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "grid"
+                                ]
+                            },
+                            "x": {
+                                "title": "X-Position",
+                                "type": "integer"
+                            },
+                            "y": {
+                                "title": "Y-Position",
+                                "type": "integer"
+                            },
+                            "z": {
+                                "title": "Z-Position",
+                                "type": "integer"
+                            },
+                            "width": {
+                                "title": "Width",
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 100
+                            },
+                            "height": {
+                                "title": "Height",
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 100
+                            },
+                            "depth": {
+                                "title": "Depth",
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 100
+                            },
+                            "atomType": {
+                                "title": "Atomtype",
+                                "type": "string",
+                                "enum": [
+                                    "ne",
+                                    "ar",
+                                    "kr"
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "walls": {
+            "title": "Walls",
+            "type": "array",
+            "items": {
+                "title": "Items",
+                "type": "object",
+                "required": [
+                    "x",
+                    "y",
+                    "z",
+                    "width",
+                    "height",
+                    "depth",
+                    "type"
+                ],
+                "properties": {
+                    "x": {
+                        "title": "X-Position",
+                        "type": "integer"
+                    },
+                    "y": {
+                        "title": "Y-Position",
+                        "type": "integer"
+                    },
+                    "z": {
+                        "title": "Z-Position",
+                        "type": "integer"
+                    },
+                    "width": {
+                        "title": "Width",
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "height": {
+                        "title": "Height",
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "depth": {
+                        "title": "Depth",
+                        "type": "integer",
+                        "minimum": 1
+                    },
+                    "type": {
+                        "title": "Type",
+                        "type": "string",
+                        "enum": [
+                            "rebound",
+                            "force-inside",
+                            "force-both"
+                        ]
+                    }
+                }
+            }
+        },
+        "controls": {
+            "title": "Controls",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "string",
+                        "enum": [
+                            "temp",
+                            "control"
+                        ]
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string",
+                        "pattern": "^.+$"
+                    }
+                }
+            }
+        }
+    }
+}

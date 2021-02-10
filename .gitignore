@@ -8,4 +8,5 @@
 *planing.md
 
 # experiments
-/src/res/experiments*
+/src/res/experiments/
+/src/res/experiments.json

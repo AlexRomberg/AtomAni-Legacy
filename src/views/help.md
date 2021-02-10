@@ -30,11 +30,12 @@ Es stehen zurzeit folgende Diagramme und Steuerelemente zur Verfügung:
 - Simulationsbedienung (Simulationsgeschwindigkeit, Starten/Stoppen, Zurücksetzen) [control]
 
 # Simulationsskript {#Script}
-Eine Simulation wird durch eine [JSON](https://www.json.org/json-de.html) Datei beschrieben. Diese muss aus mindestens vier Attributen bestehen.
+Eine Simulation wird durch eine [JSON](https://www.json.org/json-de.html) Datei beschrieben. Diese muss aus mindestens vier Attributen bestehen. Empfehlenswert ist es das JSON-Schema wie im nachfolgenden Beispiel hinzuzufügen. So werden Vorschläge und Autokorrektur automatisch geladen, sofern das Textverarbeitungsprogramm dies unterstützt.
 
 ### Beispiel
 ```
 {
+    "$schema": "https://raw.githubusercontent.com/AlexRomberg/AtomAni/master/src/res/experimentSchema.json",
     "charts": [],
     "atoms": [],
     "walls": [],
@@ -142,6 +143,9 @@ Ein Kontrollelement besteht aus folgenden Informationen:
 
 ## Wieso verschwinden manche Atome bei Kollisionen?
 Wenn sich ein Atom zu schnell in ein anderes Atom oder eine Wand bewegt kommt es vor, dass die exponentiell wirkende Kraft eine extreme Beschleunigung zufolge hat. So wird das Atom aus dem Sichtfeld geschleudert und scheint zu verschwinden. Dies kann teilweise auf eine Überlastung des Geräts zurückgeführt werden, welches nicht genügend Berechnungen pro Sekunde durchlaufen kann.
+
+## Was ist JSON-Schema und wie verwende ich es?
+JSON-Schema ist ein Bauplan für das Experimente JSON. Es werden Regeln deffiniert, mit welchen sich diese Experimentkonfiguration überprüfen lässt. Texteditoren wie VSCode laden diese Konfiguration automatisch und zeigen Vorschläge an.
 
 ## Ich habe einen Fehler gefunden, was soll ich tun?
 Das Projekt AtomAni wird auf [GitHub](https://github.com/AlexRomberg/AtomAni) verwaltet. Dort lässt sich unter dem Tab "issues" ein Fehler melden. Andernfalls bin ich auch persönlich erreichbar.
