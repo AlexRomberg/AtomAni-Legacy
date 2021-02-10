@@ -32,6 +32,7 @@ export function updatePositions(atomList, wallList, timeStep) {
     if (timeStep > 100) { timeStep = 100; } // prevent too long timessteps
 
     let forces = getForce(atomList, wallList);
+    addGravitation(forces);
     calculateWalls(wallList, atomList, forces);
     AverageIDs.forEach(id => {
         calculateAverage(id);
@@ -44,17 +45,17 @@ function getForce(atomList) {
     forces.fill(new THREE.Vector3());
 
     for (let atom = 0; atom < atomList.length; atom++) {
+        let atomPos = new THREE.Vector3().copy(atomList[atom].object.position);
         for (let target = atom + 1; target < atomList.length; target++) {
-            let atomPos = new THREE.Vector3().copy(atomList[atom].object.position);
             let targetPos = new THREE.Vector3().copy(atomList[target].object.position);
 
             let length2 = targetPos.distanceToSquared(atomPos);
             let distanceV = targetPos.sub(atomPos);
 
             if (length2 < MaxDistance) {
-
-                let forcePart = (sigma2 / length2) * (sigma2 / length2) * (sigma2 / length2);
-                let force = 24 * epsilon * (forcePart - 2 * forcePart * forcePart);
+                let forcePart = sigma2 / length2;
+                let forcePart6 = forcePart * forcePart * forcePart;
+                let force = 24 * epsilon * (forcePart6 - 2 * forcePart6 * forcePart6);
                 distanceV.multiplyScalar(force);
 
 
@@ -182,4 +183,12 @@ function logAverage(value, name) {
 function calculateAverage(type) {
     ChartValues[type] = Math.sqrt(chartTmp[type].x * chartTmp[type].x + chartTmp[type].y * chartTmp[type].y + chartTmp[type].z * chartTmp[type].z);
     chartTmp[type] = { x: 0, y: 0, z: 0, count: 0 };
+}
+
+// gravitation
+function addGravitation(forcesList) {
+    const gravityFactor = new THREE.Vector3(0, -9.81 / 4, 0);
+    forcesList.forEach(force => {
+        force.add(gravityFactor);
+    });
 }
