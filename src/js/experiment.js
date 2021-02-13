@@ -3,7 +3,7 @@ import * as Walls from './walls.js';
 import * as Simulation from './simulation.js';
 import * as Controls from './controls.js';
 
-let SimulationScript;
+let SimulationScript, RenderInfo;
 // simulationWindow resizing
 window.addEventListener("resize", handleResize);
 
@@ -20,23 +20,36 @@ function handleResize() {
 handleResize();
 
 // simulation
-export function initSimulation(simulationScript) {
+export function initSimulation(simulationScript, isEditor = false) {
     SimulationScript = simulationScript;
 
-    let renderInfo = Simulation.init();
+    RenderInfo = Simulation.init();
     let atomList = Atoms.loadFromScript(SimulationScript.atoms);
     let WallList = Walls.loadFromScript(SimulationScript.walls);
-    Controls.loadFromScript(SimulationScript.controls);
+    if (!isEditor) {
+        Controls.loadFromScript(SimulationScript.controls);
+    }
 
-    Simulation.addAtoms(atomList, renderInfo.scene);
-    Simulation.addWalls(WallList, renderInfo.scene);
-    Simulation.initCharts(SimulationScript.charts);
+    Simulation.addAtoms(atomList, RenderInfo.scene);
+    Simulation.addWalls(WallList, RenderInfo.scene);
 
-    Simulation.startRendering(renderInfo);
+    if (!isEditor) {
+        Simulation.initCharts(SimulationScript.charts);
+    }
+    Simulation.startRendering(RenderInfo);
 
-    Controls.handle(Simulation, renderInfo, SimulationScript);
+    if (!isEditor) {
+        Controls.handle(Simulation, RenderInfo, SimulationScript);
+        setTimeout(() => {
+            Simulation.start();
+        }, 1000);
+    }
+}
 
-    setTimeout(() => {
-        Simulation.start();
-    }, 1000);
+export function redraw(simulationScript) {
+    Simulation.reset(RenderInfo.scene, true);
+    let atomList = Atoms.loadFromScript(simulationScript.atoms);
+    let WallList = Walls.loadFromScript(simulationScript.walls);
+    Simulation.addAtoms(atomList, RenderInfo.scene);
+    Simulation.addWalls(WallList, RenderInfo.scene);
 }

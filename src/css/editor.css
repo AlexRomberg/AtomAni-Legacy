@@ -1,0 +1,145 @@
+.controlPane,
+.simulationWindow #sim,
+.simulationWindow {
+    height: calc(100vh - 16em) !important;
+    min-height: unset;
+    max-height: 500px;
+}
+
+.control input,
+.chart input {
+    margin-right: 5px;
+}
+
+.control span,
+.chart span {
+    margin-top: 5px;
+    display: block;
+}
+
+.control span input,
+.chart span input {
+    width: 100%;
+}
+
+#controlsBox,
+#chartsBox {
+    flex: unset;
+    overflow-y: unset;
+    max-height: unset;
+}
+
+.controlPane {
+    scrollbar-width: thin;
+    overflow-y: auto;
+}
+
+
+/* --- inputs --- */
+
+input,
+select,
+button {
+    border-radius: 5px;
+    border: solid transparent 3px;
+    background-color: var(--contentBackgroundColor);
+}
+
+select {
+    -webkit-appearance: none;
+}
+
+input:hover,
+input:focus,
+select:hover,
+select:focus,
+button:hover,
+button:focus {
+    border-radius: 5px;
+    border: solid var(--accentColor) 3px;
+}
+
+input:active,
+select:active,
+button:active {
+    background-color: var(--accentColor);
+}
+
+
+/* --- configuration --- */
+
+.configuration {
+    width: calc(100% - 20px);
+    background-color: var(--contentBackgroundColor);
+    margin: 10px;
+    box-shadow: var(--shadow);
+    border-radius: 10px;
+    margin-top: -2em;
+    margin-bottom: 3em;
+    padding: 10px;
+}
+
+.list {
+    background-color: var(--contentBackgroundColorDark);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    overflow-x: auto;
+}
+
+.small-grid {
+    display: grid;
+    grid-template-columns: [image] 100px [labels] 40px [inputs] 120px [end];
+    column-gap: 5px;
+}
+
+.large-grid {
+    display: grid;
+    grid-template-columns: [image] 100px [labels] 40px [inputs] 120px [labels] 75px [inputs] 120px [end];
+    column-gap: 5px;
+}
+
+.list .selectionBox,
+.settingsBox {
+    background-color: var(--contentBackgroundColorDarker);
+    border-radius: 3px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+
+/* ---  --- */
+
+.list .selectionBox img {
+    grid-row-start: 0;
+    grid-row-end: span 4;
+    margin-top: 10px;
+    margin-left: 5px;
+    height: 83px;
+}
+
+.add img {
+    width: 60px;
+    height: 100px;
+    margin: 0px;
+}
+
+.add {
+    display: block !important;
+    padding-right: 10px !important;
+}
+
+
+/* --- settings --- */
+
+.settingsBox {
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    margin-right: 0px;
+}
+
+.settingsBox input {
+    max-width: 300px;
+    margin-top: 5px;
+}

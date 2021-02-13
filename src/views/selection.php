@@ -19,14 +19,10 @@ error_reporting(4);
 
 $CardData = json_decode(file_get_contents("../res/experiments.json"), true);
 
-function drawCard($name, $imgName, $id, $referenceSelf)
+function drawCard($name, $imgName, $id, $reference)
 {
-    if ($referenceSelf) {
-        echo ('<a class="card" href="./selection.php?id=' . $id . '">');
-    } else {
-        echo ('<a class="card" href="./experiment.php?id=' . $id . '">');
-    }
-    echo ('<img src="../res/img/' . $imgName . '" alt="Cristal Imageexample"><div class="Text"><h2>' . $name . '</h2></div></a>');
+    echo ('<a class="card" href="./' . $reference . '.php?id=' . $id . '">');
+    echo ('<img src="../res/img/menuIcons/' . $imgName . '" alt="Missing Folder Icon"><div class="Text"><h2>' . $name . '</h2></div></a>');
 }
 
 function parseData($cardData, $path)
@@ -37,12 +33,9 @@ function parseData($cardData, $path)
         $returnJson = $cardData;
         $dir = explode('.', $path);
 
-        $nextId = null;      // used to reproduce id structure of json
         foreach ($dir as $key) {
-            $nextId .= $key;
-            if (isset($returnJson[$nextId])) {
-                $returnJson = $returnJson[$nextId]['subexperiments'];
-                $nextId .= '.';
+            if (isset($returnJson[$key])) {
+                $returnJson = $returnJson[$key]['subexperiments'];
             } else {
                 // path is wrong
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -55,8 +48,10 @@ function parseData($cardData, $path)
 
 function drawCardsOfLayer($data)
 {
-    foreach ($data as $key => $value) {
-        drawCard($value['name'], $value['imgName'], $key, array_key_exists('subexperiments', $value));
+    $key = 0;
+    foreach ($data as $value) {
+        drawCard($value['name'], $value['imgName'], (isset($_GET['id']) ? $_GET['id'] . "." : "") . $key, (array_key_exists('subexperiments', $value) ? "selection" : "experiment"));
+        $key++;
     }
 }
 ?>
@@ -76,6 +71,7 @@ function drawCardsOfLayer($data)
                     $currentData = $CardData;
                 }
                 drawCardsOfLayer($currentData);
+                drawCard("Editor", "add.svg", (isset($_GET['id']) ? $_GET['id'] : ""), "new");
                 ?>
             </div>
         </main>

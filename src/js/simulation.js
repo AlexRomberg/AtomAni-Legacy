@@ -133,10 +133,12 @@ export function start() {
     AnimationRunning = true;
 }
 
-export function reset(scene) {
+export function reset(scene, isEditor = false) {
     AnimationRunning = false;
     clearCanvas(scene);
-    Chart.remove();
+    if (!isEditor) {
+        Chart.remove();
+    }
 }
 
 // ChartInfo

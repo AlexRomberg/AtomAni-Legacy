@@ -187,8 +187,8 @@ function calculateAverage(type) {
 
 // gravitation
 function addGravitation(forcesList) {
-    const gravityFactor = new THREE.Vector3(0, -9.81 / 4, 0);
+    const gravityFactor = new THREE.Vector3(0, -9.81 / 2, 0);
     forcesList.forEach(force => {
-        force.add(gravityFactor);
+        // force.add(gravityFactor);
     });
 }
