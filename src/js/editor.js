@@ -13,6 +13,7 @@ function handleStaticInputs() {
     $('#pres').change(handleControlSelection);
     $('#temp').change(handleControlSelection);
     $('#control').change(handleControlSelection);
+    $('.controlPane input').on('input', handleControlPaneInputs);
 
     $('.add').click((e) => {
         let sender = e.target;
@@ -52,6 +53,17 @@ function handleDynamicInputs() {
     });
 }
 
+function handleControlPaneInputs(event) {
+    let controlInfo = getControlId(event.target);
+    if (event.target.id != controlInfo.id) {
+        if (controlInfo.type == "chart") {
+            updateChart(controlInfo.id);
+        } else {
+            updateControl(controlInfo.id);
+        }
+    }
+}
+
 function handleControlSelection(event) {
     const target = event.target;
     if (target.id == "fps" || target.id == "avgVel" || target.id == "pres") {
@@ -75,6 +87,21 @@ function getItemId(sender) {
     }
     return sender.id;
 }
+
+function getControlId(sender) {
+    while (!sender.classList.contains('chart') && !sender.classList.contains('control')) {
+        sender = sender.parentElement;
+    }
+    return { id: sender.children[0].id, type: sender.classList.contains('chart') ? "chart" : "control" };
+}
+
+function getColor(hex) {
+    var r = parseInt(hex.slice(1, 3), 16),
+        g = parseInt(hex.slice(3, 5), 16),
+        b = parseInt(hex.slice(5, 7), 16);
+    return { fill: "rgba(" + r + ", " + g + ", " + b + ", 0.4)", line: "rgba(" + r + ", " + g + ", " + b + ", 1)" };
+}
+
 
 
 // DOM manipulation
@@ -141,16 +168,28 @@ function updateDataField() {
 }
 
 function addChart(id) {
-    SimulationScript.charts.push({ id, name: id, fillColor: 'rgba(0,102,255,0.4)', lineColor: 'rgba(0,102,255,1)' });
+    SimulationScript.charts.push({ id, title: id, fillColor: 'rgba(0,102,255,0.4)', lineColor: 'rgba(0,102,255,1)' });
     updateDataField();
 }
 
 function removeChart(id) {
     var index = SimulationScript.charts.map(i => {
-        return i.Id;
+        return i.id;
     }).indexOf(id);
     SimulationScript.charts.splice(index, 1);
     updateDataField();
+}
+
+function updateChart(id) {
+    if ($('#' + id).is(':checked')) {
+        var index = SimulationScript.charts.map(i => {
+            return i.id;
+        }).indexOf(id);
+        const color = getColor($('#' + id + 'Color').val());
+        SimulationScript.charts[index].fillColor = color.fill;
+        SimulationScript.charts[index].lineColor = color.line;
+        SimulationScript.charts[index].title = $('#' + id + 'Name').val();
+    }
 }
 
 function addControl(id) {
@@ -160,10 +199,19 @@ function addControl(id) {
 
 function removeControl(id) {
     var index = SimulationScript.controls.map(i => {
-        return i.Id;
+        return i.id;
     }).indexOf(id);
     SimulationScript.controls.splice(index, 1);
     updateDataField();
+}
+
+function updateControl(id) {
+    if ($('#' + id).is(':checked')) {
+        var index = SimulationScript.controls.map(i => {
+            return i.id;
+        }).indexOf(id);
+        SimulationScript.controls[index].name = $('#' + id + 'Name').val();
+    }
 }
 
 function addAtom() {

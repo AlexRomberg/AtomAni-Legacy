@@ -116,7 +116,7 @@ Copyright (c) 2021 Alexander Romberg
                             </span>
                             <span>
                                 <label for="presColor">Diagramm Farbe</label>
-                                <input type="color" name="presColor" id="fpspresor" value="#0066FF">
+                                <input type="color" name="presColor" id="presColor" value="#0066FF">
                             </span>
                         </div>
                     </div>
