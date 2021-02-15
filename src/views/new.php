@@ -1,7 +1,7 @@
 <?php
 // handle redirects
 if (isset($_POST['createFolder'])) {
-    createFolder($_POST['id'], htmlentities($_POST['folderName']), "exampleGroup.png");
+    createFolder($_POST['id'], htmlentities($_POST['folderName']), "exampleGroup.svg");
 } elseif (isset($_POST['importExperiment'])) {
     createExperiment($_POST['experimentName'], $_POST['experimentCode'], $_POST['id']);
 } elseif (isset($_POST['newExperiment'])) {

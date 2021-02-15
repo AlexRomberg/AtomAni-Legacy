@@ -10,3 +10,7 @@
 # experiments
 /src/res/experiments/
 /src/res/experiments.json
+
+#.htaccess
+*.htaccess
+*.htpasswd

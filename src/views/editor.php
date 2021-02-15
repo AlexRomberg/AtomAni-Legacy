@@ -30,7 +30,7 @@ function createExperiment($id, $name, $image)
 }
 
 if (isset($_POST['save'])) {
-    $id = createExperiment($_POST['id'], $_POST['experimentName'], "devExperiment.png");
+    $id = createExperiment($_POST['id'], $_POST['experimentName'], "exampleExperiment.svg");
 
     file_put_contents("../res/experiments/" . $id . ".json", json_encode(json_decode($_POST['data']), JSON_PRETTY_PRINT));
 
