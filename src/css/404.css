@@ -1,0 +1,66 @@
+main h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2em;
+}
+
+main svg {
+    position: absolute;
+    top: 0px;
+    pointer-events: none;
+}
+
+
+/* --- Animation --- */
+
+main svg circle {
+    transition: transform 3s ease-in;
+}
+
+.animate #U circle {
+    transform: translateY(-300vh);
+}
+
+.animate #D circle {
+    transform: translateY(300vh);
+}
+
+.animate #L circle {
+    transform: translateX(-300vw);
+}
+
+.animate #R circle {
+    transform: translateX(300vw);
+}
+
+.animate #UL circle {
+    transform: translateX(-300vw) translateY(-300vh);
+}
+
+.animate #UR circle {
+    transform: translateX(300vw) translateY(-300vh);
+}
+
+.animate #DL circle {
+    transform: translateX(-300vw) translateY(300vh);
+}
+
+.animate #DR circle {
+    transform: translateX(300vw) translateY(300vh);
+}
+
+.animate #MUL circle {
+    transform: translateX(-200vw) translateY(-200vh);
+}
+
+.animate #MUR circle {
+    transform: translateX(200vw) translateY(-200vh);
+}
+
+.animate #MDL circle {
+    transform: translateX(-200vw) translateY(200vh);
+}
+
+.animate #MDR circle {
+    transform: translateX(200vw) translateY(200vh);
+}
