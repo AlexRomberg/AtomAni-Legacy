@@ -21,7 +21,7 @@ export function init() {
     const near = 1;
     const far = 100000;
     const camera = new Three.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 1500;
+    camera.position.z = 150;
 
     // scene
     const scene = new Three.Scene();

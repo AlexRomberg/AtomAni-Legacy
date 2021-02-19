@@ -4,16 +4,15 @@ const MaxDistance = 160000;
 const WALL_WIDTH = 30;
 const CONST_k = 1.380658e-23;
 
-/*
---- official values ---
+/* --- official values --- */
 let atomMass = 0.336e-25;
 let epsilon = 36.83 * CONST_k;
 let sigma = 2.79;
 
---- my values ---*/
-let atomMass = 336000;
-let epsilon = 0.005;
-let sigma = 31;
+/* --- my values ---*/
+// let atomMass = 336000;
+// let epsilon = 0.005;
+// let sigma = 31;
 let sigma2 = Math.pow(sigma, 2);
 
 const AverageIDs = ['avgVel', 'pres'];
@@ -30,6 +29,7 @@ export function updatePositions(atomList, wallList, timeStep) {
     timeStep *= Number($('#btnSpeed').attr('value')); // change simulation speed
 
     if (timeStep > 100) { timeStep = 100; } // prevent too long timessteps
+    timeStep *= 7e-6;
 
     let forces = getForce(atomList, wallList);
     addGravitation(forces);
@@ -53,9 +53,7 @@ function getForce(atomList) {
             let distanceV = targetPos.sub(atomPos);
 
             if (length2 < MaxDistance) {
-                let forcePart = sigma2 / length2;
-                let forcePart6 = forcePart * forcePart * forcePart;
-                let force = 24 * epsilon * (forcePart6 - 2 * forcePart6 * forcePart6);
+                let force = calcLJ(length2);
                 distanceV.multiplyScalar(force);
 
 
@@ -65,6 +63,13 @@ function getForce(atomList) {
         }
     }
     return forces;
+}
+
+function calcLJ(length2) {
+    let forcePart = sigma2 / length2;
+    let forcePart6 = forcePart * forcePart * forcePart;
+    let force = 24 * epsilon * (forcePart6 - 2 * forcePart6 * forcePart6);
+    return force;
 }
 
 function calculateWalls(wallList, atomList, forces) {
@@ -80,7 +85,7 @@ function calculateWalls(wallList, atomList, forces) {
             } else {
                 let wallDistances = getDistances(atomList[atomIndex], wall);
                 if (wallDistances) {
-                    let force = calculateWallForces(wallDistances);
+                    let force = calculateWallForcesLJ(wallDistances);
                     forces[atomIndex] = new THREE.Vector3().addVectors(forces[atomIndex], force);
                     logAverage(force, 'pres');
                 }
@@ -150,14 +155,11 @@ function getDistances(atom, wall) {
     return wallDistances;
 }
 
-function calculateWallForces(wallDistances) {
+function calculateWallForcesLJ(wallDistances) {
     let force = [0, 0, 0];
     for (let i = 0; i < force.length; i++) {
-        for (let direction = 0; direction < 2; direction++) {
-            let distance = wallDistances[2 * i + direction] / 20; // resize distance to get force-margin on boxes
-            let distance3 = distance * distance * distance;
-            force[i] -= 50 / distance3;
-        }
+        force[i] -= calcLJ(wallDistances[i * 2] * wallDistances[i * 2]);
+        force[i] += calcLJ(wallDistances[i * 2 + 1] * wallDistances[i * 2 + 1]);
     }
     return new THREE.Vector3(force[0], force[1], force[2]);
 }
