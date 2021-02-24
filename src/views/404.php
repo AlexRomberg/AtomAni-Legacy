@@ -24,7 +24,7 @@ Copyright (c) 2021 Alexander Romberg
         require('header.php')
         ?>
         <main>
-            <h1>Die Webseite ist nicht Erreichbar.</h1>
+            <h1>Die Webseite ist nicht erreichbar.</h1>
             <svg width="100%" height="100%" viewBox="0 0 1920 1080" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                 <g id="Artboard1" transform="matrix(0.96,0,0,0.54,0,0)">
                     <rect x="0" y="0" width="2000" height="2000" style="fill:none;" />
