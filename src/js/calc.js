@@ -3,15 +3,9 @@ import * as THREE from '../res/lib/three.module.js';
 const MaxDistance = 160000;
 const CONST_k = 1.380658e-23;
 
-/* --- official values --- */
 let atomMass = 0.336e-25;
 let epsilon = 36.83 * CONST_k;
 let sigma = 2.79;
-
-/* --- my values ---*/
-// let atomMass = 336000;
-// let epsilon = 0.005;
-// let sigma = 31;
 let sigma2 = Math.pow(sigma, 2);
 
 const AverageIDs = ['avgVel', 'pres'];
@@ -33,7 +27,7 @@ export function updatePositions(atomList, wallList, timeStep) {
     timeStep *= 7e-6;
 
     let forces = getForce(atomList, wallList);
-    addGravitation(forces);
+    // addGravitation(forces);
     calculateForceWalls(wallList, atomList, forces);
     AverageIDs.forEach(id => {
         calculateAverage(id);
@@ -190,31 +184,14 @@ function changeDirection(atom, wall) {
     }
 }
 
-// function isInWall(position, wallBeginning, boxScale, velocity) {
-//     if (velocity > 0) {
-//         return (position >= wallBeginning + boxScale); // right, top, front
-//     } else {
-//         return (position <= wallBeginning); // left, bottom, back
-//     }
-// }
-
 function getDistances(atom, wall) {
     let wallDistances = [0, 0, 0, 0, 0, 0]; // x,x,y,y,z,z  <- each direction
-    if (wall.type == "force-inside") {
-        if ((wallDistances[0] = wall.position.x - atom.object.position.x) >= 0) { return false; };
-        if ((wallDistances[2] = wall.position.y - atom.object.position.y) >= 0) { return false; };
-        if ((wallDistances[4] = wall.position.z - atom.object.position.z) >= 0) { return false; };
-        if ((wallDistances[1] = wall.position.x + wall.scale.x - atom.object.position.x) <= 0) { return false; };
-        if ((wallDistances[3] = wall.position.y + wall.scale.y - atom.object.position.y) <= 0) { return false; };
-        if ((wallDistances[5] = wall.position.z + wall.scale.z - atom.object.position.z) <= 0) { return false; };
-    } else {
-        wallDistances[0] = wall.position.x - atom.object.position.x;
-        wallDistances[2] = wall.position.y - atom.object.position.y;
-        wallDistances[4] = wall.position.z - atom.object.position.z;
-        wallDistances[1] = wall.position.x + wall.scale.x - atom.object.position.x;
-        wallDistances[3] = wall.position.y + wall.scale.y - atom.object.position.y;
-        wallDistances[5] = wall.position.z + wall.scale.z - atom.object.position.z;
-    }
+    wallDistances[0] = wall.position.x - atom.object.position.x;
+    wallDistances[2] = wall.position.y - atom.object.position.y;
+    wallDistances[4] = wall.position.z - atom.object.position.z;
+    wallDistances[1] = wall.position.x + wall.scale.x - atom.object.position.x;
+    wallDistances[3] = wall.position.y + wall.scale.y - atom.object.position.y;
+    wallDistances[5] = wall.position.z + wall.scale.z - atom.object.position.z;
     return wallDistances;
 }
 
@@ -225,12 +202,6 @@ function calculateWallForcesLJ(wallDistances) {
         force[i] += calcLJ(wallDistances[i * 2 + 1] * wallDistances[i * 2 + 1]);
     }
     return new THREE.Vector3(force[0], force[1], force[2]);
-}
-
-function switchDirections(sides, atom) {
-    if (sides.x) { atom.velocity.x *= -1; }
-    if (sides.y) { atom.velocity.y *= -1; }
-    if (sides.z) { atom.velocity.z *= -1; }
 }
 
 // Chart functions --------------------------------------
@@ -251,9 +222,9 @@ function calculateAverage(type) {
 }
 
 // gravitation
-function addGravitation(forcesList) {
-    const gravityFactor = new THREE.Vector3(0, -9.81 / 2, 0);
-    forcesList.forEach(force => {
-        // force.add(gravityFactor);
-    });
-}
+// function addGravitation(forcesList) {
+//     const gravityFactor = new THREE.Vector3(0, -9.81 / 2, 0);
+//     forcesList.forEach(force => {
+//        force.add(gravityFactor);
+//     });
+// }
