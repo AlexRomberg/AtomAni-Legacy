@@ -1,7 +1,6 @@
 import * as THREE from '../res/lib/three.module.js';
 
 const MaxDistance = 160000;
-const WALL_WIDTH = 30;
 const CONST_k = 1.380658e-23;
 
 /* --- official values --- */
@@ -25,6 +24,8 @@ let ChartValues = {
     pres: 0
 };
 
+let OldPositions = [];
+
 export function updatePositions(atomList, wallList, timeStep) {
     timeStep *= Number($('#btnSpeed').attr('value')); // change simulation speed
 
@@ -33,11 +34,12 @@ export function updatePositions(atomList, wallList, timeStep) {
 
     let forces = getForce(atomList, wallList);
     addGravitation(forces);
-    calculateWalls(wallList, atomList, forces);
+    calculateForceWalls(wallList, atomList, forces);
     AverageIDs.forEach(id => {
         calculateAverage(id);
     });
     setNewPositions(atomList, forces, timeStep);
+    calculateReboundWalls(wallList, atomList);
 }
 
 function getForce(atomList) {
@@ -46,6 +48,8 @@ function getForce(atomList) {
 
     for (let atom = 0; atom < atomList.length; atom++) {
         let atomPos = new THREE.Vector3().copy(atomList[atom].object.position);
+        OldPositions[atom] = atomPos;
+
         for (let target = atom + 1; target < atomList.length; target++) {
             let targetPos = new THREE.Vector3().copy(atomList[target].object.position);
 
@@ -72,28 +76,7 @@ function calcLJ(length2) {
     return force;
 }
 
-function calculateWalls(wallList, atomList, forces) {
-    for (let atomIndex = 0; atomIndex < atomList.length; atomIndex++) {
-        let switchableDirections = { x: false, y: false, z: false };
-        let rebound;
-        wallList.forEach(wall => {
-            rebound = wall.type == "rebound";
-            if (rebound) {
-                switchableDirections.x = switchableDirections.x || isInWall(atomList[atomIndex].object.position.x, wall.position.x, wall.scale.x, atomList[atomIndex].velocity.x);
-                switchableDirections.y = switchableDirections.y || isInWall(atomList[atomIndex].object.position.y, wall.position.y, wall.scale.y, atomList[atomIndex].velocity.y);
-                switchableDirections.z = switchableDirections.z || isInWall(atomList[atomIndex].object.position.z, wall.position.z, wall.scale.z, atomList[atomIndex].velocity.z);
-            } else {
-                let wallDistances = getDistances(atomList[atomIndex], wall);
-                if (wallDistances) {
-                    let force = calculateWallForcesLJ(wallDistances);
-                    forces[atomIndex] = new THREE.Vector3().addVectors(forces[atomIndex], force);
-                    logAverage(force, 'pres');
-                }
-            }
-        });
-        if (rebound) { switchDirections(switchableDirections, atomList[atomIndex]) };
-    }
-}
+
 
 // Atom functions --------------------------------------
 export function moveRandom(atomList) {
@@ -127,13 +110,93 @@ function setNewPositions(atomList, forces, timeStep) {
 }
 
 // Wall functions --------------------------------------
-function isInWall(position, wallBeginning, boxScale, velocity) {
-    if (velocity > 0) {
-        return (position >= wallBeginning + boxScale); // right, top, front
-    } else {
-        return (position <= wallBeginning); // left, bottom, back
+function calculateForceWalls(wallList, atomList, forces) {
+    for (let atomIndex = 0; atomIndex < atomList.length; atomIndex++) {
+        wallList.forEach(wall => {
+            if (wall.type == "force-LJ") {
+                handleLJWall(atomList, atomIndex, wall, forces);
+            }
+        });
     }
 }
+
+function calculateReboundWalls(wallList, atomList) {
+    for (let atomIndex = 0; atomIndex < atomList.length; atomIndex++) {
+        wallList.forEach(wall => {
+            if (wall.type == "rebound") {
+                handleReboundWall(atomList, atomIndex, wall);
+            }
+        });
+    }
+}
+
+
+function handleLJWall(atomList, atomIndex, wall, forces) {
+    let wallDistances = getDistances(atomList[atomIndex], wall);
+    if (wallDistances) {
+        let force = calculateWallForcesLJ(wallDistances);
+        forces[atomIndex] = new THREE.Vector3().addVectors(forces[atomIndex], force);
+        logAverage(force, 'pres');
+    }
+}
+
+function handleReboundWall(atomList, atomIndex, wall) {
+    let atomDirectionPosition = getAtomDirectionPositions(atomList, atomIndex, wall);
+    if ((atomDirectionPosition.old <= wall.position && atomDirectionPosition.new >= wall.position) ||
+        (atomDirectionPosition.old >= wall.position && atomDirectionPosition.new <= wall.position)) {
+        setAtomReboundPositions(atomList, atomIndex, wall);
+        changeDirection(atomList[atomIndex], wall);
+    }
+}
+
+function getAtomDirectionPositions(atomList, atomIndex, wall) {
+    switch (wall.direction) {
+        case "x":
+            return { old: OldPositions[atomIndex].x, new: atomList[atomIndex].object.position.x }
+        case "y":
+            return { old: OldPositions[atomIndex].y, new: atomList[atomIndex].object.position.y }
+        case "z":
+            return { old: OldPositions[atomIndex].z, new: atomList[atomIndex].object.position.z }
+        default:
+            return null;
+    }
+}
+
+function setAtomReboundPositions(atomList, atomIndex, wall) {
+    switch (wall.direction) {
+        case "x":
+            atomList[atomIndex].object.position.x = wall.position - (atomList[atomIndex].object.position.x - wall.position);
+            break;
+        case "y":
+            atomList[atomIndex].object.position.y = wall.position - (atomList[atomIndex].object.position.y - wall.position);
+            break;
+        case "z":
+            atomList[atomIndex].object.position.z = wall.position - (atomList[atomIndex].object.position.z - wall.position);
+            break;
+    }
+}
+
+function changeDirection(atom, wall) {
+    switch (wall.direction) {
+        case "x":
+            atom.velocity = new THREE.Vector3(-1 * atom.velocity.x, atom.velocity.y, atom.velocity.z);
+            break;
+        case "y":
+            atom.velocity = new THREE.Vector3(atom.velocity.x, -1 * atom.velocity.y, atom.velocity.z);
+            break;
+        case "z":
+            atom.velocity = new THREE.Vector3(atom.velocity.x, atom.velocity.y, -1 * atom.velocity.z);
+            break;
+    }
+}
+
+// function isInWall(position, wallBeginning, boxScale, velocity) {
+//     if (velocity > 0) {
+//         return (position >= wallBeginning + boxScale); // right, top, front
+//     } else {
+//         return (position <= wallBeginning); // left, bottom, back
+//     }
+// }
 
 function getDistances(atom, wall) {
     let wallDistances = [0, 0, 0, 0, 0, 0]; // x,x,y,y,z,z  <- each direction

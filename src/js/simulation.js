@@ -59,7 +59,9 @@ export function addAtoms(atoms, scene) {
 
 export function addWalls(walls, scene) {
     walls.forEach(wall => {
-        scene.add(wall.object);
+        if (typeof wall.object !== 'undefined') {
+            scene.add(wall.object);
+        }
         WallList.push(wall);
     });
 }
