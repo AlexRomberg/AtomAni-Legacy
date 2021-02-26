@@ -7,7 +7,10 @@ Copyright (c) 2021 Alexander Romberg
     <title>AtomAni</title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 
-    <?php require('favicon.php') ?>
+    <?php
+    error_reporting(0);
+    require('favicon.php');
+    ?>
 
     <!-- stylesheets -->
     <link rel="stylesheet" href="../css/general.css">

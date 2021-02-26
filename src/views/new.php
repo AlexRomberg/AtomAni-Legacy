@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 // handle redirects
 if (isset($_POST['createFolder'])) {
     createFolder($_POST['id'], htmlentities($_POST['folderName']), "exampleGroup.svg");

@@ -6,7 +6,9 @@ Copyright (c) 2021 Alexander Romberg
 <head>
     <title>AtomAni</title>
 
-    <?php require('favicon.php') ?>
+    <?php
+    error_reporting(0);
+    require('favicon.php') ?>
 
 </head>
 

@@ -1,3 +1,12 @@
+<?php
+error_reporting(0);
+if (isset($_GET['id'])) {
+    if (!file_exists('../res/experiments/' . $_GET['id'] . '.json')) {
+        header('Location: selection.php');
+    }
+}
+?>
+
 <!DOCTYPE html>
 <!--
 Copyright (c) 2021 Alexander Romberg

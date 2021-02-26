@@ -1,3 +1,13 @@
+<?php
+error_reporting(0);
+$CardData = json_decode(file_get_contents("../res/experiments.json"), true);
+if (isset($_GET['id'])) {
+    $currentData = parseData($CardData, $_GET['id']);
+} else {
+    $currentData = $CardData;
+}
+?>
+
 <!DOCTYPE html>
 <!--
 Copyright (c) 2021 Alexander Romberg
@@ -15,10 +25,6 @@ Copyright (c) 2021 Alexander Romberg
 </head>
 
 <?php
-error_reporting(4);
-
-$CardData = json_decode(file_get_contents("../res/experiments.json"), true);
-
 function drawCard($name, $imgName, $id, $reference)
 {
     echo ('<a class="card" href="./' . $reference . '.php?id=' . $id . '">');
@@ -38,7 +44,7 @@ function parseData($cardData, $path)
                 $returnJson = $returnJson[$key]['subexperiments'];
             } else {
                 // path is wrong
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
+                header('Location: selection.php');
                 die;
             }
         }
@@ -65,11 +71,6 @@ function drawCardsOfLayer($data)
         <main>
             <div class="selection">
                 <?php
-                if (isset($_GET['id'])) {
-                    $currentData = parseData($CardData, $_GET['id']);
-                } else {
-                    $currentData = $CardData;
-                }
                 drawCardsOfLayer($currentData);
                 drawCard("Editor", "add.svg", (isset($_GET['id']) ? $_GET['id'] : ""), "new");
                 ?>
