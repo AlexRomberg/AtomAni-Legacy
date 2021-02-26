@@ -166,7 +166,7 @@ Copyright (c) 2021 Alexander Romberg
                             <label for="experimentName">Experiment Name:</label>
                             <input type="text" pattern="^(?!\s*$).+" name="experimentName" id="experimentName" required>
                             <input type="hidden" name="id" value="<?php echo ((isset($_GET['id'])) ? $_GET['id'] : ""); ?>">
-                            <input type="hidden" id="data" name="data" value='{" charts": [],"atoms": [],"walls": [],"controls": []}'>
+                            <input type="hidden" id="data" name="data" value='{"$schema":"https://raw.githubusercontent.com/AlexRomberg/AtomAni/master/src/res/experimentSchema.json","charts": [],"atoms": [],"walls": [],"controls": []}'>
                             <input type="submit" name="save" value="Speichern">
                         </div>
                     </div>

@@ -1,5 +1,6 @@
 import * as Experiment from '../js/experiment.js';
 let SimulationScript = {
+    "$schema": "https://raw.githubusercontent.com/AlexRomberg/AtomAni/master/src/res/experimentSchema.json",
     "charts": [],
     "atoms": [],
     "walls": [],
@@ -149,15 +150,74 @@ function updateAtomBox(id, type) {
 }
 
 function getAtomBoxLarge(id, posX, posY, posZ, sizeX = 5, sizeY = 5, sizeZ = 5) {
-    return "<img src=\"../res/img/atomGrid.svg\" alt=\"Atom\"><label for=\"aType" + id + "\">Typ:</label><select id=\"aType" + id + "\"><option value=\"singleNe\">Einzel (ne)</option><option value=\"singleAr\">Einzel (ar)</option><option value=\"singleKr\">Einzel (kr)</option><option selected=\"selected\" value=\"grid\">Gitter</option></select><label for=\"atomType" + id + "\">Atomtyp:</label><select id=\"atomType" + id + "\"><option value=\"ne\">Neon</option><option value=\"ar\">Argon</option><option value=\"kr\">Krypton</option></select><label for=\"atomPosX" + id + "\">X:</label><input type=\"range\" id=\"atomPosX" + id + "\" min=\"-300\" max=\"300\" step=\"6\" value=\"" + posX + "\"><label for=\"atomGridSizeWidth" + id + "\">Breite:</label><input type=\"range\" id=\"atomGridSizeWidth" + id + "\" min=\"1\" max=\"10\" value=\"" + sizeX + "\"><label for=\"atomPosY" + id + "\">Y:</label><input type=\"range\" id=\"atomPosY" + id + "\" min=\"-300\" max=\"300\" step=\"6\" value=\"" + posY + "\"><label for=\"atomGridSizeHeight" + id + "\">Höhe:</label><input type=\"range\" id=\"atomGridSizeHeight" + id + "\" min=\"1\" max=\"10\" value=\"" + sizeY + "\"><label for=\"atomPosZ" + id + "\">Z:</label><input type=\"range\" id=\"atomPosZ" + id + "\" min=\"-300\" max=\"300\" step=\"6\" value=\"" + posZ + "\"><label for=\"atomGridSizeDepth" + id + "\">Tiefe:</label><input type=\"range\" id=\"atomGridSizeDepth" + id + "\" min=\"1\" max=\"10\" value=\"" + sizeZ + "\">";
+    return "<img src=\"../res/img/atomGrid.svg\" alt=\"Atom\">" +
+        "<label for=\"aType" + id + "\">Typ:</label>" +
+        "<select id=\"aType" + id + "\">" +
+        "  <option value=\"singleAr\">Einzel (ar)</option>" +
+        "  <option value=\"singleKr\">Einzel (kr)</option>" +
+        "  <option value=\"singleNe\">Einzel (ne)</option>" +
+        "  <option selected=\"selected\" value=\"grid\">Gitter</option>" +
+        "</select>" +
+        "<label for=\"atomType" + id + "\">Atomtyp:</label>" +
+        "<select id=\"atomType" + id + "\">" +
+        "  <option value=\"ne\">Neon</option>" +
+        "  <option value=\"ar\">Argon</option>" +
+        "  <option value=\"kr\">Krypton</option>" +
+        "</select>" +
+        "<label for=\"atomPosX" + id + "\">X:</label>" +
+        "<input type=\"range\" id=\"atomPosX" + id + "\" min=\"-100\" max=\"100\" step=\"5\" value=\"" + posX + "\">" +
+        "<label for=\"atomGridSizeWidth" + id + "\">Breite:</label>" +
+        "<input type=\"range\" id=\"atomGridSizeWidth" + id + "\" min=\"1\" max=\"9\" value=\"" + sizeX + "\">" +
+        "<label for=\"atomPosY" + id + "\">Y:</label>" +
+        "<input type=\"range\" id=\"atomPosY" + id + "\" min=\"-100\" max=\"100\" step=\"5\" value=\"" + posY + "\">" +
+        "<label for=\"atomGridSizeHeight" + id + "\">Höhe:</label>" +
+        "<input type=\"range\" id=\"atomGridSizeHeight" + id + "\" min=\"1\" max=\"9\" value=\"" + sizeY + "\">" +
+        "<label for=\"atomPosZ" + id + "\">Z:</label>" +
+        "<input type=\"range\" id=\"atomPosZ" + id + "\" min=\"-100\" max=\"100\" step=\"5\" value=\"" + posZ + "\">" +
+        "<label for=\"atomGridSizeDepth" + id + "\">Tiefe:</label>" +
+        "<input type=\"range\" id=\"atomGridSizeDepth" + id + "\" min=\"1\" max=\"9\" value=\"" + sizeZ + "\">";
 }
 
 function getAtomBoxSmall(id, posX, posY, posZ) {
-    return "<img src=\"../res/img/atom.svg\" alt=\"Atom\"><label for=\"aType" + id + "\">Typ:</label><select id=\"aType" + id + "\"><option value=\"singleNe\">Einzel (ne)</option><option value=\"singleAr\">Einzel (ar)</option><option value=\"singleKr\">Einzel (kr)</option><option value=\"grid\">Gitter</option></select><label for=\"atomPosX" + id + "\">X:</label><input type=\"range\" id=\"atomPosX" + id + "\" min=\"-300\" max=\"300\" step=\"6\" value=\"" + posX + "\"><label for=\"atomPosY" + id + "\">Y:</label><input type=\"range\" id=\"atomPosY" + id + "\" min=\"-300\" max=\"300\" step=\"6\" value=\"" + posY + "\"><label for=\"atomPosZ" + id + "\">Z:</label><input type=\"range\" id=\"atomPosZ" + id + "\" min=\"-300\" max=\"300\" step=\"6\" value=\"" + posZ + "\">"
+    return "<img src=\"../res/img/atom.svg\" alt=\"Atom\">" +
+        "<label for=\"aType" + id + "\">Typ:</label>" +
+        "<select id=\"aType" + id + "\">" +
+        "  <option value=\"singleNe\">Einzel (ne)</option>" +
+        "  <option value=\"singleAr\">Einzel (ar)</option>" +
+        "  <option value=\"singleKr\">Einzel (kr)</option>" +
+        "  <option value=\"grid\">Gitter</option>" +
+        "</select>" +
+        "<label for=\"atomPosX" + id + "\">X:</label>" +
+        "<input type=\"range\" id=\"atomPosX" + id + "\" min=\"-100\" max=\"100\" step=\"5\" value=\"" + posX + "\">" +
+        "<label for=\"atomPosY" + id + "\">Y:</label>" +
+        "<input type=\"range\" id=\"atomPosY" + id + "\" min=\"-100\" max=\"100\" step=\"5\" value=\"" + posY + "\">" +
+        "<label for=\"atomPosZ" + id + "\">Z:</label>" +
+        "<input type=\"range\" id=\"atomPosZ" + id + "\" min=\"-100\" max=\"100\" step=\"5\" value=\"" + posZ + "\">";
 }
 
 function getWallBox(id) {
-    return "<img src=\"../res/img/box.svg\" alt=\"Atom\"><label for=\"wType" + id + "\">Typ:</label><select id=\"wType" + id + "\"><option value=\"singleNe\">Würfel</option></select><label for=\"wallType" + id + "\">Wandtyp:</label><select id=\"wallType" + id + "\"><option value=\"rebounce\">Abprallen</option><option value=\"force-inside\">Kraft (innen)</option><option value=\"force-both\">Kraft (beidseitig)</option></select><label for=\"wallPosX" + id + "\">X:</label><input type=\"range\" id=\"wallPosX" + id + "\" min=\"-300\" max=\"300\" value=\"0\"><label for=\"wallSizeWidth" + id + "\">Breite:</label><input type=\"range\" id=\"wallSizeWidth" + id + "\" min=\"1\" max=\"300\" value=\"250\"><label for=\"wallPosY" + id + "\">Y:</label><input type=\"range\" id=\"wallPosY" + id + "\" min=\"-300\" max=\"300\" value=\"0\"><label for=\"wallSizeHeight" + id + "\">Höhe:</label><input type=\"range\" id=\"wallSizeHeight" + id + "\" min=\"1\" max=\"300\" value=\"250\"><label for=\"wallPosZ" + id + "\">Z:</label><input type=\"range\" id=\"wallPosZ" + id + "\" min=\"-300\" max=\"300\" value=\"0\"><label for=\"wallSizeDepth" + id + "\">Tiefe:</label><input type=\"range\" id=\"wallSizeDepth" + id + "\" min=\"1\" max=\"300\" value=\"250\">";
+    return "<img src=\"../res/img/box.svg\" alt=\"Atom\">" +
+        "<label for=\"wType" + id + "\">Typ:</label>" +
+        "<select id=\"wType" + id + "\">" +
+        "  <option value=\"singleNe\">Würfel</option>" +
+        "</select>" +
+        "<label for=\"wallType" + id + "\">Wandtyp:</label>" +
+        "<select id=\"wallType" + id + "\">" +
+        "  <option value=\"force-LJ\">Kraft</option>" +
+        // "  <option value=\"rebound\">Abprallen</option>" +
+        "</select>" +
+        "<label for=\"wallPosX" + id + "\">X:</label>" +
+        "<input type=\"range\" id=\"wallPosX" + id + "\" min=\"-100\" max=\"100\" step=\"5\" value=\"0\">" +
+        "<label for=\"wallSizeWidth" + id + "\">Breite:</label>" +
+        "<input type=\"range\" id=\"wallSizeWidth" + id + "\" min=\"1\" max=\"200\" step=\"5\" value=\"100\">" +
+        "<label for=\"wallPosY" + id + "\">Y:</label>" +
+        "<input type=\"range\" id=\"wallPosY" + id + "\" min=\"-100\" max=\"100\" step=\"5\" value=\"0\">" +
+        "<label for=\"wallSizeHeight" + id + "\">Höhe:</label>" +
+        "<input type=\"range\" id=\"wallSizeHeight" + id + "\" min=\"1\" max=\"200\" step=\"5\" value=\"100\">" +
+        "<label for=\"wallPosZ" + id + "\">Z:</label>" +
+        "<input type=\"range\" id=\"wallPosZ" + id + "\" min=\"-100\" max=\"100\" step=\"5\" value=\"0\">" +
+        "<label for=\"wallSizeDepth" + id + "\">Tiefe:</label>" +
+        "<input type=\"range\" id=\"wallSizeDepth" + id + "\" min=\"1\" max=\"200\" step=\"5\" value=\"100\">";
 }
 
 
@@ -239,6 +299,10 @@ function updateAtom(id) {
             atom.width = Number($('#atomGridSizeWidth' + id).val());
             atom.height = Number($('#atomGridSizeHeight' + id).val());
             atom.depth = Number($('#atomGridSizeDepth' + id).val());
+
+            atom.x -= ((atom.width - 1) / 2) * 5
+            atom.y -= ((atom.height - 1) / 2) * 5
+            atom.z -= ((atom.depth - 1) / 2) * 5
             break;
         case "singleNe":
             convertAtomToSingle(atom);
@@ -281,13 +345,13 @@ function removeAtom(id) {
 function addWall() {
     const id = SimulationScript.walls.length;
     SimulationScript.walls.push({
-        type: "rebound",
-        x: 0,
-        y: 0,
-        z: 0,
-        width: 250,
-        height: 250,
-        depth: 250
+        type: "force-LJ",
+        x: -50,
+        y: -50,
+        z: -50,
+        width: 100,
+        height: 100,
+        depth: 100
     });
     updateDataField();
     return id;
@@ -296,12 +360,12 @@ function addWall() {
 function updateWall(id) {
     const wall = SimulationScript.walls[id];
     wall.type = $('#wallType' + id).val();
-    wall.x = Number($('#wallPosX' + id).val());
-    wall.y = Number($('#wallPosY' + id).val());
-    wall.z = Number($('#wallPosZ' + id).val());
     wall.width = Number($('#wallSizeWidth' + id).val());
     wall.height = Number($('#wallSizeHeight' + id).val());
     wall.depth = Number($('#wallSizeDepth' + id).val());
+    wall.x = Number($('#wallPosX' + id).val()) - wall.width / 2;
+    wall.y = Number($('#wallPosY' + id).val()) - wall.height / 2;
+    wall.z = Number($('#wallPosZ' + id).val()) - wall.depth / 2;
     updateDataField();
 }
 

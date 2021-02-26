@@ -136,10 +136,12 @@ function handleLJWall(atomList, atomIndex, wall, forces) {
 
 function handleReboundWall(atomList, atomIndex, wall) {
     let atomDirectionPosition = getAtomDirectionPositions(atomList, atomIndex, wall);
-    if ((atomDirectionPosition.old <= wall.position && atomDirectionPosition.new >= wall.position) ||
-        (atomDirectionPosition.old >= wall.position && atomDirectionPosition.new <= wall.position)) {
-        setAtomReboundPositions(atomList, atomIndex, wall);
-        changeDirection(atomList[atomIndex], wall);
+    if (atomDirectionPosition != null) {
+        if ((atomDirectionPosition.old <= wall.position && atomDirectionPosition.new >= wall.position) ||
+            (atomDirectionPosition.old >= wall.position && atomDirectionPosition.new <= wall.position)) {
+            setAtomReboundPositions(atomList, atomIndex, wall);
+            changeDirection(atomList[atomIndex], wall);
+        }
     }
 }
 

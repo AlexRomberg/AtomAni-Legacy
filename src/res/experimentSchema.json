@@ -55,8 +55,7 @@
             "type": "array",
             "items": {
                 "type": "object",
-                "oneOf": [
-                    {
+                "oneOf": [{
                         "type": "object",
                         "additionalProperties": false,
                         "required": [
@@ -153,8 +152,7 @@
             "type": "array",
             "items": {
                 "type": "object",
-                "oneOf": [
-                    {
+                "oneOf": [{
                         "type": "object",
                         "additionalProperties": false,
                         "required": [

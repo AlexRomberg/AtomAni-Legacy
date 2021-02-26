@@ -37,31 +37,31 @@
 
 /* --- inputs --- */
 
-input,
-select,
-button {
+main input,
+main select,
+main button {
     border-radius: 5px;
     border: solid transparent 3px;
     background-color: var(--contentBackgroundColor);
 }
 
-select {
+main select {
     -webkit-appearance: none;
 }
 
-input:hover,
-input:focus,
-select:hover,
-select:focus,
-button:hover,
-button:focus {
+main input:hover,
+main input:focus,
+main select:hover,
+main select:focus,
+main button:hover,
+main button:focus {
     border-radius: 5px;
     border: solid var(--accentColor) 3px;
 }
 
-input:active,
-select:active,
-button:active {
+main input:active,
+main select:active,
+main button:active {
     background-color: var(--accentColor);
 }
 
@@ -142,4 +142,32 @@ button:active {
 .settingsBox input {
     max-width: 300px;
     margin-top: 5px;
+}
+
+
+/* --- prevent changes from experiment.css --- */
+
+@media only screen and (max-width: 890px) {
+    .simulationWindow {
+        flex-flow: row nowrap;
+        min-height: 400px;
+    }
+    .simulationWindow #sim {
+        border-bottom-left-radius: 10px;
+        border-top-right-radius: 0px;
+        height: calc(100vh - 7em - 20px) !important;
+        width: calc(100vw - 420px) !important;
+    }
+    .controlPane {
+        width: 400px;
+        height: calc(100vh - 7em - 20px);
+    }
+    .charts,
+    .controls {
+        display: block;
+    }
+    .chart,
+    .control {
+        margin-right: 0px;
+    }
 }
