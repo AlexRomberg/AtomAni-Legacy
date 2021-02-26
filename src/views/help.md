@@ -33,7 +33,7 @@ Es stehen zurzeit folgende Diagramme und Steuerelemente zur Verfügung:
 Eine Simulation wird durch eine [JSON](https://www.json.org/json-de.html) Datei beschrieben. Diese muss aus mindestens vier Attributen bestehen. Empfehlenswert ist es das JSON-Schema wie im nachfolgenden Beispiel hinzuzufügen. So werden Vorschläge und Autokorrektur automatisch geladen, sofern das Textverarbeitungsprogramm dies unterstützt.
 
 ### Beispiel
-```
+```json
 {
     "$schema": "https://raw.githubusercontent.com/AlexRomberg/AtomAni/master/src/res/experimentSchema.json",
     "charts": [],
@@ -55,7 +55,7 @@ Ein Diagramm besteht aus folgenden Informationen:
 | fillColor | Füllfarbe des Bereichs unter der Linie     | "rgba(0,0,170,0.4)" |
 
 ### Beispiel
-```
+```json
 "charts": [{
     "id": "avgVel",
     "title": "Geschwindigkeit",
@@ -77,7 +77,7 @@ Ein Atom oder eine Atom-Struktur (Gitter) besteht aus folgenden Informationen:
 
 
 ### Beispiel
-```
+```json
 "atoms": [{
     "type": "grid",
     "x": -60,
@@ -101,23 +101,33 @@ Ein Atom oder eine Atom-Struktur (Gitter) besteht aus folgenden Informationen:
 Wände können in Form von Boxen erstellt werden.<br>
 Eine Box besteht aus folgenden Informationen:
 
-| Name                 | Erklärung                                                                                                                           | Beispiel       |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| x, y, z              | Raumkoordinate zur Positionierung im Raum                                                                                           | -300           |
-| width, height, depth | Grösse in Pixeln in der jeweiligen Richtung                                                                                         | 600            |
-| type                 | Art der Wand.(<br>"rebound": abprallen<br>"force-inside": abstossende Kraft innen<br>"force-both": abstossende Kraft beidseitig<br> | "force-inside" |
+| Name                 | Erklärung                                                                                                            | Beispiel   |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------- |
+| style                | Art der Wand. (<br>"wall": unendlich grosse Wand<br>"visual": Box die nur Visuel sichtbar ist<br>"box": ein Würfel   | "box"      |
+| x, y, z              | Raumkoordinate zur Positionierung im Raum (nicht bei style "wall")                                                   | -300       |
+| width, height, depth | Grösse in Pixeln in der jeweiligen Richtung (nicht bei style "wall")                                                 | 600        |
+| direction            | Achsenrichtung auf der die Wand liegt (nur bei style "wall")                                                         | "x"        |
+| position             | Achsenabschnitt bei dem die Wand liegt (nur bei style "wall")                                                        | 50         |
+| type                 | Verhalten der Wand. (<br>"rebound": Abprallen<br>"force-LJ": Kraftauswirkung beidseitig<br>nicht bei style "visual") | "force-LJ" |
 
 
 ### Beispiel
-```
+```json
 "walls": [{
+    "style": "box",
     "x": -300,
     "y": -300,
     "z": -300,
     "width": 600,
     "height": 600,
     "depth": 600,
-    "type": "force-inside"
+    "type": "force-LJ"
+},
+{
+    "style": "wall",
+    "direction": "x",
+    "position": 50,
+    "type": "rebound"
 }]
 ```
 
@@ -132,7 +142,7 @@ Ein Kontrollelement besteht aus folgenden Informationen:
 
 
 ### Beispiel
-```
+```json
 "controls": [{
     "id": "temp",
     "name": "Kühlen/Heizen"
