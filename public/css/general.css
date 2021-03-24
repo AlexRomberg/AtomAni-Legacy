@@ -10,7 +10,7 @@
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: url(../res/font/muli.woff2) format('woff2');
+    src: url(/res/font/muli.woff2) format('woff2');
 }
 
 @font-face {
@@ -18,7 +18,7 @@
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: url(../res/font/FiraCode.woff2) format('woff2');
+    src: url(/res/font/FiraCode.woff2) format('woff2');
 }
 
 
@@ -47,12 +47,12 @@
     --buttonBackground: #A1A1A1;
     --button: #444444;
     --fontColor: #000000;
-    --logoSource: url("../res/img/logo-dark.svg");
-    --logoSourceSmall: url("../res/img/logo-small-dark.svg");
+    --logoSource: url("/res/img/logo-dark.svg");
+    --logoSourceSmall: url("/res/img/logo-small-dark.svg");
     --shadow: 1px 2px 5px 0 #0005;
-    --btnPlay: url("../res/img/btnPlay-dark.svg");
-    --btnPause: url("../res/img/btnPause-dark.svg");
-    --btnReload: url("../res/img/btnReload-dark.svg");
+    --btnPlay: url("/res/img/btnPlay-dark.svg");
+    --btnPause: url("/res/img/btnPause-dark.svg");
+    --btnReload: url("/res/img/btnReload-dark.svg");
 }
 
 @media screen and (prefers-color-scheme: dark) {
@@ -68,11 +68,11 @@
         --buttonBackground: #393939;
         --button: #B4B4B4;
         --fontColor: #B4B4B4;
-        --logoSource: url("../res/img/logo-light.svg");
-        --logoSourceSmall: url("../res/img/logo-small-light.svg");
-        --btnPlay: url("../res/img/btnPlay-light.svg");
-        --btnPause: url("../res/img/btnPause-light.svg");
-        --btnReload: url("../res/img/btnReload-light.svg");
+        --logoSource: url("/res/img/logo-light.svg");
+        --logoSourceSmall: url("/res/img/logo-small-light.svg");
+        --btnPlay: url("/res/img/btnPlay-light.svg");
+        --btnPause: url("/res/img/btnPause-light.svg");
+        --btnReload: url("/res/img/btnReload-light.svg");
     }
 }
 
@@ -116,7 +116,8 @@ header button svg {
     fill: var(--buttonBackground) !important;
 }
 
-header button:hover svg, header button:focus svg {
+header button:hover svg,
+header button:focus svg {
     border: solid 3px var(--accentColor);
 }
 
@@ -127,7 +128,6 @@ header button:focus {
 header button svg:active .svg-circle {
     fill: var(--accentColor);
 }
-
 
 .svg-arrow {
     fill: var(--button) !important;
@@ -163,12 +163,13 @@ footer {
     background-color: var(--headerFooterColor);
 }
 
+
 /* --- responsiveness --- */
+
 @media only screen and (max-width: 890px) {
     header button {
         margin-right: 0px;
     }
-    
     #logo {
         background-image: var(--logoSourceSmall);
         height: 4em;

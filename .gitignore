@@ -1,5 +1,10 @@
-# folders
+# node.js
 /node_modules/
+package-lock.json
+
+# js
+/src/*.js
+/src/modules/*.js
 
 # afdesign-files
 *.afdesign
@@ -8,8 +13,9 @@
 *planing.md
 
 # experiments
-/src/res/experiments/
-/src/res/experiments.json
+/src/data/experiments/
+/src/data/experiments.json
+/src/data/AtomAniData.json
 
 #.htaccess
 *.htaccess

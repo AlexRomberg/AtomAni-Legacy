@@ -8,29 +8,29 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
     <title>AtomAni</title>
 
     <!-- stylesheets -->
-    <link rel="stylesheet" href="src/css/general.css">
-    <link rel="stylesheet" href="src/css/index.css">
+    <link rel="stylesheet" href="css/general.css">
+    <link rel="stylesheet" href="css/index.css">
 
     <!-- favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="src/res/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="src/res/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="src/res/favicon/favicon-16x16.png">
-    <link rel="manifest" href="src/res/favicon/site.webmanifest">
-    <link rel="mask-icon" href="src/res/favicon/safari-pinned-tab.svg" color="#0002ff">
-    <link rel="shortcut icon" href="src/res/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="res/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="res/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="res/favicon/favicon-16x16.png">
+    <link rel="manifest" href="res/favicon/site.webmanifest">
+    <link rel="mask-icon" href="res/favicon/safari-pinned-tab.svg" color="#0002ff">
+    <link rel="shortcut icon" href="res/favicon/favicon.ico">
     <meta name="apple-mobile-web-app-title" content="AtomAni">
     <meta name="application-name" content="AtomAni">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-config" content="src/res/favicon/browserconfig.xml">
+    <meta name="msapplication-config" content="res/favicon/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
 </head>
 
 <body>
     <script>
         window.onunload = () => {
-            document.activeElement.blur();
-        }
-        // prevents css loading errors by running a normal js
+                document.activeElement.blur();
+            }
+            // prevents css loading errors by running a normal js
     </script>
     <main>
         <div class="background">
@@ -63,11 +63,11 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 
 
                 <ul>
-                    <li><a href="src/views/selection.php">Experimente</a></li>
-                    <li><a href="src/views/help.php">Hilfe</a></li>
+                    <li><a href="selection">Experimente</a></li>
+                    <li><a href="help">Hilfe</a></li>
                 </ul>
             </div>
         </div>
-        <?php require("src/views/footer.php") ?>
+        <% include('footer.ejs', { version }) %>
     </main>
 </body>
