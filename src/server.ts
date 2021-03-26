@@ -13,8 +13,7 @@ console.clear();
 // Imports
 import express from 'express';
 import cm from './modules/consoleModule';
-import help from './modules/helpMarkdown';
-import experiments from './modules/experiments';
+import pages from './modules/pages';
 
 cm.log("green", `Starting Server...`);
 cm.log("cyan", `Version: ${VERSION}`);
@@ -26,34 +25,19 @@ const app = express();
 app.listen(PORT);
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+pages.init(VERSION);
 cm.log("green", "Server started");
 cm.log("blue", `running at: http://localhost:${PORT}`);
 
-app.get('/', (req, res) => {
-    res.render('index', {
-        version: VERSION
-    });
-});
+// Request handles
+app.get('/', pages.sendIndex);
 
-app.get('/help', (req, res) => {
-    let html;
-    try {
-        html = help.getHTML();
-    } catch {
-        html = 'Hilfe konnte nicht geladen werden.';
-    }
-    res.render('help', {
-        version: VERSION,
-        html
-    });
-});
+app.get('/selection', pages.sendSelection);
+app.get('/selection/*', pages.sendSelection);
 
-app.use((req, res) => {
-    if (req.path == '/favicon.ico') {
-        res.redirect('/res/favicon/favicon.ico');
-    } else {
-        cm.log("red", "unknown request: " + req.path);
-        res.redirect('/');
-        cm.log("yellow", "redirected to /");
-    }
-});
+app.get('/help', pages.sendHelp);
+
+app.use(pages.handle404);
+
+// experiments.clear();
+// experiments.createSchool("ARO-Studios");
