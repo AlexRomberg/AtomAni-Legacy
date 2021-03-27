@@ -13,6 +13,7 @@ import cm from './consoleModule';
 import help from './helpMarkdown';
 import storage from './storage';
 import selection from './selection';
+import experiments from './experiments';
 
 function init(version: string) {
     Version = version;
@@ -51,19 +52,26 @@ function sendSelection(req: express.Request, res: express.Response) {
 function sendExperiment(req: express.Request, res: express.Response) {
     if ('id' in req.query) {
         const query = req.query.id?.toString()!;
-        const cleanQuery = query.match(/^[0-9a-f]{16}$/);
-        if (cleanQuery !== null) {
-            res.send(`Hello World;<br>`);
+        if (query.match(/^[0-9a-f]{16}$/) !== null) {
+            try {
+                const scriptParams = experiments.loadExperimentParams(query);
+                res.render('experiment',{
+                    version: Version,
+                    scriptParams
+                });
+            } catch {
+                sendExperimentNotFound(req, res, "experiment file not found.");
+            }
         } else {
-            sendExperimentNotFound(req, res);
+            sendExperimentNotFound(req, res, "ID does not match format. (16 hexadecimal digits)");
         }
     } else {
-        sendExperimentNotFound(req, res);
+        sendExperimentNotFound(req, res, "No ID parameter given.");
     }
 }
 
-function sendExperimentNotFound(req: express.Request, res: express.Response) {
-    res.send("Experiment nicht gefunden!");
+function sendExperimentNotFound(req: express.Request, res: express.Response, reason: string) {
+    res.send(`Experiment not found! ${reason}`);
 }
 
 function sendHelp(req: express.Request, res: express.Response) {

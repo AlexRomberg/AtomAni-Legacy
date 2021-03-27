@@ -9,31 +9,31 @@ Copyright (c) 2021 Alexander Romberg
 
     <%- include('favicon'); %>
 
-        <!-- stylesheets -->
-        <link rel="stylesheet" href="/css/general.css">
-        <link rel="stylesheet" href="/css/menu.css">
-        <link rel="stylesheet" href="/css/help.css">
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/menu.css">
+    <link rel="stylesheet" href="/css/help.css">
 </head>
 
 <body>
-    <%- include('header',{ origin: "/", title: "Hilfe" }) %>
-        <div class="help-container">
-            <nav>
-                <h2>Hilfe</h2>
-                <ul>
-                    <li><a href="help#AtomAni">AtomAni</a></li>
-                    <li><a href="help#Selection">Experimentwahl</a></li>
-                    <li><a href="help#Simulation">Simulation</a></li>
-                    <li><a href="help#Script">Simulationsskript</a></li>
-                    <li><a href="help#FAQ">Häufige Fragen</a></li>
-                    <li><a href="help#Licenses">Bi­b­lio­theken</a></li>
-                    <li><a href="help#Credits">Mitwirkende</a></li>
-                </ul>
-            </nav>
-            <main>
-                <%- html %>
-                    <p style="height: 40px"></p>
-            </main>
-        </div>
-        <%- include('footer.ejs', { version }) %>
+    <%- include('header',{ origin: "/" , title: "Hilfe" }) %>
+    <div class="help-container">
+        <nav>
+            <h2>Hilfe</h2>
+            <ul>
+                <li><a href="help#AtomAni">AtomAni</a></li>
+                <li><a href="help#Selection">Experimentwahl</a></li>
+                <li><a href="help#Simulation">Simulation</a></li>
+                <li><a href="help#Script">Simulationsskript</a></li>
+                <li><a href="help#FAQ">Häufige Fragen</a></li>
+                <li><a href="help#Licenses">Bi­b­lio­theken</a></li>
+                <li><a href="help#Credits">Mitwirkende</a></li>
+            </ul>
+        </nav>
+        <main>
+            <%- html %>
+            <p style="height: 40px"></p>
+        </main>
+    </div>
+    <%- include('footer.ejs', { version }) %>
 </body>
