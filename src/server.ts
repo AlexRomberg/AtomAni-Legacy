@@ -7,8 +7,13 @@
 
 // Config
 const VERSION = 'v2.0 [Beta] <i>(Nodejs-Version)</i>';
-const PORT = 80;
+let PORT = 80;
 console.clear();
+
+// handle process arguments
+if (process.argv.length > 2) {
+    PORT = (Number)(process.argv[2]);
+}
 
 // Imports
 import express from 'express';
