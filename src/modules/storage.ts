@@ -40,7 +40,7 @@ function createExperiment(name: string, imagename: string, path: string, school:
         const id: number = (Number)(DB.getData(`/experiments/${school}${path}lastID`));
         DB.push(`/experiments/${school}${path}lastID`, id + 1)
 
-        DB.push(`/experiments/${school}${path}${id}`, { name, imagename, type: "experiment" });
+        DB.push(`/experiments/${school}${path}${id}`, { name, imagename, type: "experiment", experimentId: getUniqueID() });
     } else {
         throw new Error("Can't create experiment. Path not found!");
     }
@@ -86,7 +86,8 @@ function convertToObjectList(folderContent: any, path: string): object[] {
                 name: folderContent[`${item}`].name,
                 imagename: folderContent[`${item}`].imagename,
                 type: folderContent[`${item}`].type,
-                path: `selection${path}${item}/`
+                path: `selection${path}${item}/`,
+                experimentId: folderContent[`${item}`].experimentId
             });
         } else {
             objectList.push({ type: "none" });
@@ -94,6 +95,14 @@ function convertToObjectList(folderContent: any, path: string): object[] {
     }
 
     return objectList;
+}
+
+function getUniqueID() {
+    let id = '';
+    for (let digit = 0; digit < 16; digit++) {
+        id += (Math.random() * 16 | 0).toString(16);
+    }
+    return id;
 }
 
 function clear() {

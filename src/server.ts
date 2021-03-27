@@ -35,6 +35,8 @@ app.get('/', pages.sendIndex);
 app.get('/selection', pages.sendSelection);
 app.get('/selection/*', pages.sendSelection);
 
+app.get('/experiment', pages.sendExperiment);
+
 app.get('/help', pages.sendHelp);
 
 app.use(pages.handle404);

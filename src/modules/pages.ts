@@ -11,7 +11,7 @@ let Version = "[Version]";
 import express from 'express';
 import cm from './consoleModule';
 import help from './helpMarkdown';
-import experiments from './experiments';
+import storage from './storage';
 import selection from './selection';
 
 function init(version: string) {
@@ -26,12 +26,12 @@ function sendIndex(req: express.Request, res: express.Response) {
 
 function sendSelection(req: express.Request, res: express.Response) {
     const origPath = req.path.slice(10);
-    let path = experiments.cleanPath(origPath);
+    let path = storage.cleanPath(origPath);
 
 
     if (origPath === path || origPath === '') {
         try {
-            const experimentList = experiments.getExperiments(path, 'ARO-Studios');
+            const experimentList = storage.getExperiments(path, 'ARO-Studios');
             const cardString = selection.getCardsOfLayer(experimentList);
             res.render('selection', {
                 version: Version,
@@ -46,6 +46,24 @@ function sendSelection(req: express.Request, res: express.Response) {
         res.redirect(`/selection${path}`);
     }
 
+}
+
+function sendExperiment(req: express.Request, res: express.Response) {
+    if ('id' in req.query) {
+        const query = req.query.id?.toString()!;
+        const cleanQuery = query.match(/^[0-9a-f]{16}$/);
+        if (cleanQuery !== null) {
+            res.send(`Hello World;<br>`);
+        } else {
+            sendExperimentNotFound(req, res);
+        }
+    } else {
+        sendExperimentNotFound(req, res);
+    }
+}
+
+function sendExperimentNotFound(req: express.Request, res: express.Response) {
+    res.send("Experiment nicht gefunden!");
 }
 
 function sendHelp(req: express.Request, res: express.Response) {
@@ -80,4 +98,4 @@ function handle404(req: express.Request, res: express.Response) {
 // experiments.createExperiment("Beispiel1.2", "exampleExperiment.svg", "/1", "general");
 // experiments.createExperiment("Beispiel1.3", "exampleExperiment.svg", "/1", "general");
 
-export default { init, sendIndex, sendSelection, sendHelp, handle404 };
+export default { init, sendIndex, sendSelection, sendExperiment, sendHelp, handle404 };

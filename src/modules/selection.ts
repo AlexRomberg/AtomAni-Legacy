@@ -4,6 +4,7 @@ interface cardObject {
     imagename: string;
     path: string;
     type: "experiment" | "folder" | "none";
+    experimentId?: string;
 };
 
 interface currentFolderItem {
@@ -16,7 +17,7 @@ function getCard(card: cardObject, id: number) {
     if (card.type === "folder") {
         redirect = card.path;
     } else if (card.type === "experiment") {
-        redirect = `/experiment?id=${id}`
+        redirect = `/experiment?id=${card.experimentId}`
     } else {
         return '';
     }
