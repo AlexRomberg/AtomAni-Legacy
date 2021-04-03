@@ -50,23 +50,19 @@ function sendSelection(req: express.Request, res: express.Response) {
 }
 
 function sendExperiment(req: express.Request, res: express.Response) {
-    if ('id' in req.query) {
-        const query = req.query.id?.toString()!;
-        if (query.match(/^[0-9a-f]{16}$/) !== null) {
-            try {
-                const scriptParams = experiments.loadExperimentParams(query);
-                res.render('experiment',{
-                    version: Version,
-                    scriptParams
-                });
-            } catch {
-                sendExperimentNotFound(req, res, "experiment file not found.");
-            }
-        } else {
-            sendExperimentNotFound(req, res, "ID does not match format. (16 hexadecimal digits)");
+    const query = req.params.id?.toString()!;
+    if (query.match(/^[0-9a-f]{16}$/) !== null) {
+        try {
+            const scriptParams = experiments.loadExperimentParams(query);
+            res.render('experiment', {
+                version: Version,
+                scriptParams
+            });
+        } catch {
+            sendExperimentNotFound(req, res, "experiment file not found.");
         }
     } else {
-        sendExperimentNotFound(req, res, "No ID parameter given.");
+        sendExperimentNotFound(req, res, "ID does not match format. (16 hexadecimal digits)");
     }
 }
 

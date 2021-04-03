@@ -23,12 +23,13 @@
     box-shadow: var(--shadow);
 }
 
-.card:hover, .card:focus {
+.selectable:hover,
+.selectable:focus {
     outline: none;
     border: solid 3px var(--accentColor);
 }
 
-.card:active {
+.selectable:active {
     background-color: var(--accentColor);
 }
 
@@ -43,6 +44,34 @@
     height: 50px;
     width: 100%;
     background-color: var(--contentBackgroundColorDark);
+}
+
+#editor-card .Text,
+#editor-card-img {
+    transition: height 0.2s ease-in-out, margin-top 0.2s ease-in-out;
+}
+
+.options {
+    width: 100%;
+    padding: 0px 5px;
+    height: calc(100% - 20px);
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.options button {
+    padding: 5px;
+    margin-top: 5px;
+    border: solid 3px transparent;
+    background-color: var(--contentBackgroundColorDark);
+    border-radius: 2.5px;
+    font-size: 1.25em;
+}
+
+.options button:hover,
+.options button:focus {
+    outline: none;
+    border: solid 3px var(--accentColor);
 }
 
 main a {
