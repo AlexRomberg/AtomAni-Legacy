@@ -93,6 +93,14 @@ function handle404(req: express.Request, res: express.Response) {
     }
 }
 
+function send404(req: express.Request, res: express.Response, error: string, reason: string) {
+    res.render('404', {
+        version: Version,
+        error,
+        reason
+    });
+}
+
 // experiments.createFolder("example", "exampleGroup.svg", "/", "general");
 // experiments.createFolder("example2", "exampleGroup.svg", "/", "general");
 // experiments.createExperiment("Beispiel0.1", "exampleExperiment.svg", "/0", "general");
