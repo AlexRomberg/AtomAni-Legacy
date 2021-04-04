@@ -30,6 +30,9 @@ const app = express();
 app.listen(PORT);
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
 pages.init(VERSION);
 cm.log("green", "Server started");
 cm.log("blue", `running at: http://localhost:${PORT}`);
@@ -41,6 +44,11 @@ app.get('/selection', pages.sendSelection);
 app.get('/selection/*', pages.sendSelection);
 
 app.get('/experiment/:id', pages.sendExperiment);
+
+app.get('/new/experiment', pages.sendNewExperiment);
+app.post('/new/experiment', pages.handleNewExperiment);
+app.get('/new/folder', pages.sendNewFolder);
+app.post('/new/folder', pages.handleNewFolder);
 
 app.get('/help', pages.sendHelp);
 

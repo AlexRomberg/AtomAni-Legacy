@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2021 Alexander Romberg
+-->
+
+<head>
+    <title>AtomAni</title>
+
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/new.css">
+
+    <%- include('favicon'); %>
+</head>
+
+<body>
+    <%- include('header',{ origin: `script.back` , title: "Experiment Importieren" }) %>
+    <main>
+        <form action="/new/experiment" method="POST">
+            <input type="hidden" name="id" value="<%-origId%>">
+            <label for="experimentName">Experiment Name</label>
+            <input type="text" pattern="^(?!\s*$).+" name="experimentName" id="experimentName" autofocus required>
+            <label for="experimentCode">Experiment Code</label>
+            <textarea type="text" pattern="^(?!\s*$).+" name="experimentCode" id="experimentCode" rows="20" required></textarea>
+            <button type="submit" name="importExperiment">Experiment erstellen</button>
+        </form>
+    </main>
+    <%- include('footer.ejs', { version }) %>
+</body>

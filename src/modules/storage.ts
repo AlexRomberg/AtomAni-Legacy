@@ -32,7 +32,7 @@ function createSchool(name: string): void {
     DB.push(`/experiments/${name}/`, { lastID: 0 });
 }
 
-function createExperiment(name: string, imagename: string, path: string, school: string): void {
+function createExperiment(name: string, imagename: string, path: string, school: string): string {
     path = cleanPath(path);
     school = cleanSchoolname(school);
 
@@ -40,7 +40,10 @@ function createExperiment(name: string, imagename: string, path: string, school:
         const id: number = (Number)(DB.getData(`/experiments/${school}${path}lastID`));
         DB.push(`/experiments/${school}${path}lastID`, id + 1)
 
-        DB.push(`/experiments/${school}${path}${id}`, { name, imagename, type: "experiment", experimentId: getUniqueID() });
+        const experimentId = getUniqueID();
+        DB.push(`/experiments/${school}${path}${id}`, { name, imagename, type: "experiment", experimentId });
+
+        return experimentId;
     } else {
         throw new Error("Can't create experiment. Path not found!");
     }
@@ -105,9 +108,16 @@ function getUniqueID() {
     return id;
 }
 
+function checkFolderExists(path: string, school: string): boolean {
+    path = cleanPath(path);
+    school = cleanSchoolname(school);
+
+    return DB.exists(`/experiments/${school}${path}lastID`);
+}
+
 function clear() {
     DB.delete('/');
     createSchool('general');
 }
 
-export default { getExperiments, createSchool, createExperiment, createFolder, cleanPath };
+export default { getExperiments, createSchool, createExperiment, createFolder, cleanPath, checkFolderExists };

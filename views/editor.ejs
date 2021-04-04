@@ -1,44 +1,3 @@
-<?php
-error_reporting(0);
-
-function addToFolderstructure($content, $cardData, $pathinfo, $id)
-{
-    $itemId = 0;
-    if (isset($pathinfo[$id]) && $pathinfo[$id] != "") {
-        $data = addToFolderstructure($content, $cardData[$pathinfo[$id]]['subexperiments'], $pathinfo, $id + 1);
-        $cardData[$pathinfo[$id]]['subexperiments'] = $data['data'];
-        $itemId = $data['itemId'];
-    } else {
-        $itemId = $id . "." . count($cardData);
-        $cardData[] = $content;
-    }
-    return ["data" => $cardData, "itemId" => $itemId];
-}
-
-function createExperiment($id, $name, $image)
-{
-    $cardData = json_decode(file_get_contents("../res/experiments.json"), true);
-
-    $content['name'] = $name;
-    $content['imgName'] = $image;
-
-    $data = addToFolderstructure($content, $cardData, explode('.', $id), 0);
-    $cardData = $data['data'];
-
-    file_put_contents("../res/experiments.json", json_encode($cardData, JSON_PRETTY_PRINT));
-
-    return $data['itemId'];
-}
-
-if (isset($_POST['save'])) {
-    $id = createExperiment($_POST['id'], $_POST['experimentName'], "exampleExperiment.svg");
-
-    file_put_contents("../res/experiments/" . $id . ".json", json_encode(json_decode($_POST['data']), JSON_PRETTY_PRINT));
-
-    header("Location: selection.php" . ($_POST['id'] == "" ? "" : "?id=" . $_POST['id']));
-}
-
-?>
 <!DOCTYPE html>
 <!--
 Copyright (c) 2021 Alexander Romberg
@@ -53,7 +12,7 @@ Copyright (c) 2021 Alexander Romberg
     <link rel="stylesheet" href="../css/controls.css">
     <link rel="stylesheet" href="../css/editor.css">
 
-    <?php require('favicon.php') ?>
+    <%- include('favicon'); %>
 
     <!-- scripts -->
     <script src="../res/lib/jquery.min.js"></script>
@@ -62,10 +21,7 @@ Copyright (c) 2021 Alexander Romberg
 </head>
 
 <body>
-    <?php
-    $title = "Simulation";
-    require('header.php');
-    ?>
+    <%- include('header',{ origin: `script.back` , title: "Editor" }) %>
     <main class="no-js">
         <div class="js-missing-message">
             <script>
@@ -161,12 +117,12 @@ Copyright (c) 2021 Alexander Romberg
             </div>
             <div class="collumn">
                 <h3>Einstellungen</h3>
-                <form action="editor.php" method="post">
+                <form action="/new/experiment" method="post">
                     <div class="list settings">
                         <div class="settingsBox">
                             <label for="experimentName">Experiment Name:</label>
                             <input type="text" pattern="^(?!\s*$).+" name="experimentName" id="experimentName" required>
-                            <input type="hidden" name="id" value="<?php echo ((isset($_GET['id'])) ? $_GET['id'] : ""); ?>">
+                            <input type="hidden" name="id" value="<%-origId%>">
                             <input type="hidden" id="data" name="data" value='{"$schema":"https://raw.githubusercontent.com/AlexRomberg/AtomAni/master/src/res/experimentSchema.json","charts": [],"atoms": [],"walls": [],"controls": []}'>
                             <input type="submit" name="save" value="Speichern">
                         </div>
@@ -175,5 +131,5 @@ Copyright (c) 2021 Alexander Romberg
             </div>
         </div>
     </main>
-    <?php require("footer.php") ?>
+    <%- include('footer.ejs', { version }) %>
 </body>

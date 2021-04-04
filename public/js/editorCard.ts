@@ -26,10 +26,24 @@ optionCancel.on('click', () => {
     }
 });
 
-optionNewExperiment.on('click', ()=>{
-    window.location.href = '/new/experiment'
+optionNewExperiment.on('click', () => {
+    window.location.href = `/new/experiment?id=${getId()}`;
 });
 
-optionNewFolder.on('click', ()=>{
-    window.location.href = '/new/folder'
+optionNewFolder.on('click', () => {
+    window.location.href = `/new/folder?id=${getId()}`;
 });
+
+function getId(): string {
+    const url = window.location.href;
+    let idFragments = url.split('/');
+    idFragments.shift(); // http | https
+    idFragments.shift(); // empty string between //
+    idFragments.shift(); // domain
+    idFragments.shift(); // selection
+
+    let id = idFragments.join('/');
+    id = id.replace(/[^0-9\/]/g,'');
+
+    return id;
+}

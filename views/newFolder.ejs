@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2021 Alexander Romberg
+-->
+
+<head>
+    <title>AtomAni</title>
+
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/new.css">
+
+    <%- include('favicon'); %>
+</head>
+
+<body>
+    <%- include('header',{ origin: `/selection${origId}` , title: "Neuer Ordner" }) %>
+    <main>
+        <form action="/new/folder" method="POST">
+            <input type="hidden" name="id" value="<%-origId%>">
+            <label for="folderName">Ordner Name</label>
+            <input type="text" pattern="^(?!\s*$).+" name="folderName" id="folderName" autofocus required>
+            <button type="submit" name="createFolder">Ordner erstellen</button>
+        </form>
+    </main>
+    <%- include('footer.ejs', { version }) %>
+</body>

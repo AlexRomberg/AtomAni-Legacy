@@ -15,7 +15,10 @@ interface currentFolderItem {
 function getCard(card: cardObject, id: number) {
     let redirect;
     if (card.type === "folder") {
-        redirect = card.path;
+        redirect = id;
+        if (card.path.split('/').length < 4) {
+            redirect = `/selection/${id}`;
+        }
     } else if (card.type === "experiment") {
         redirect = `/experiment/${card.experimentId}`
     } else {
