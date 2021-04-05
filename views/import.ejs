@@ -18,11 +18,11 @@ Copyright (c) 2021 Alexander Romberg
     <main>
         <form action="/new/experiment" method="POST">
             <input type="hidden" name="id" value="<%-origId%>">
-            <label for="experimentName">Experiment Name</label>
-            <input type="text" pattern="^(?!\s*$).+" name="experimentName" id="experimentName" autofocus required>
-            <label for="experimentCode">Experiment Code</label>
-            <textarea type="text" pattern="^(?!\s*$).+" name="experimentCode" id="experimentCode" rows="20" required></textarea>
-            <button type="submit" name="importExperiment">Experiment erstellen</button>
+            <label for="name">Experiment Name</label>
+            <input type="text" pattern="^(?!\s*$).+" name="name" id="name" autofocus required>
+            <label for="data">Experiment Code</label>
+            <textarea type="text" pattern="^(?!\s*$).+" name="data" id="data" rows="20" required></textarea>
+            <button type="submit" name="save">Experiment erstellen</button>
         </form>
     </main>
     <%- include('footer.ejs', { version }) %>

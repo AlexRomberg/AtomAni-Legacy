@@ -6,8 +6,7 @@
         "charts",
         "atoms",
         "walls",
-        "controls",
-        "$schema"
+        "controls"
     ],
     "properties": {
         "charts": {
@@ -308,11 +307,7 @@
             }
         },
         "$schema": {
-            "type": "string",
-            "enum": [
-                "https://raw.githubusercontent.com/AlexRomberg/AtomAni/master/src/res/experimentSchema.json",
-                "../experimentSchema.json"
-            ]
+            "type": "string"
         }
     }
 }

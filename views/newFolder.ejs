@@ -18,9 +18,9 @@ Copyright (c) 2021 Alexander Romberg
     <main>
         <form action="/new/folder" method="POST">
             <input type="hidden" name="id" value="<%-origId%>">
-            <label for="folderName">Ordner Name</label>
-            <input type="text" pattern="^(?!\s*$).+" name="folderName" id="folderName" autofocus required>
-            <button type="submit" name="createFolder">Ordner erstellen</button>
+            <label for="name">Ordner Name</label>
+            <input type="text" pattern="^(?!\s*$).+" name="name" maxlength="22" id="name" autofocus required>
+            <button type="submit" name="save">Ordner erstellen</button>
         </form>
     </main>
     <%- include('footer.ejs', { version }) %>

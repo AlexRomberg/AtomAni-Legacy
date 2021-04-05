@@ -15,6 +15,7 @@ import files from './files';
 import storage from './storage';
 import selection from './selection';
 import experiments from './experiments';
+import escape from 'escape-html';
 
 function init(version: string) {
     Version = version;
@@ -82,37 +83,11 @@ function sendNewExperiment(req: express.Request, res: express.Response) {
 
 function handleNewExperiment(req: express.Request, res: express.Response) {
     if ('import' in req.body) {
-        let id = req.body.id;
-        id = cleanID(id);
-        if (storage.checkFolderExists(id, 'ARO-Studios')) {
-            res.render('import', {
-                version: Version,
-                origId: id
-            });
-        } else {
-            send404(req, res, "Path problem!", "Folder not found");
-        }
+        handleImport(req, res);
     } else if ('editor' in req.body) {
-        let id = req.body.id;
-        id = cleanID(id);
-        if (storage.checkFolderExists(id, 'ARO-Studios')) {
-            res.render('editor', {
-                version: Version,
-                origId: id
-            });
-        } else {
-            send404(req, res, "Path problem!", "Folder not found");
-        }
-    } else if ('importExperiment' in req.body) {
-        const id = cleanID(req.body.id);
-        const experimentId = storage.createExperiment(req.body.experimentName, 'cristal2DExperiment.svg', id, 'ARO-Studios');
-        files.createExperiment(req.body.experimentCode, experimentId);
-        res.redirect(`/selection${id}`);
+        handleEditor(req, res);
     } else if ('save' in req.body) {
-        const id = cleanID(req.body.id);
-        const experimentId = storage.createExperiment(req.body.experimentName, 'cristal2DExperiment.svg', id, 'ARO-Studios');
-        files.createExperiment(req.body.data, experimentId);
-        res.redirect(`/selection${id}`);
+        handleSave(req, res);
     } else {
         send404(req, res, 'Action not found!', JSON.stringify(req.body));
     }
@@ -136,22 +111,71 @@ function sendNewFolder(req: express.Request, res: express.Response) {
 }
 
 function handleNewFolder(req: express.Request, res: express.Response) {
-    const id = cleanID(req.body.id);
-    storage.createFolder(req.body.folderName, 'exampleGroup.svg', id, 'ARO-Studios');
-    res.redirect(`/selection${id}`);
-}
-
-function sendImport(req: express.Request, res: express.Response) {
-    send404(req, res, 'get Import', JSON.stringify(req.body));
+    if ('id' in req.body && 'name' in req.body) {
+        const id = cleanID(req.body.id);
+        const name = escape(req.body.name);
+        if (storage.checkFolderExists(id, 'ARO-Studios')) {
+            storage.createFolder(name, 'exampleGroup.svg', id, 'ARO-Studios');
+            res.redirect(`/selection${id}`);
+        } else {
+            send404(req, res, "Path problem!", "Folder not found");
+        }
+    } else {
+        send404(req, res, "Path problem!", "ID parameter not set");
+    }
 }
 
 function handleImport(req: express.Request, res: express.Response) {
-    send404(req, res, 'post Import', JSON.stringify(req.body));
+    if ('id' in req.body) {
+        let id = req.body.id;
+        id = cleanID(id);
+        if (storage.checkFolderExists(id, 'ARO-Studios')) {
+            res.render('import', {
+                version: Version,
+                origId: id
+            });
+        } else {
+            send404(req, res, "Path problem!", "Folder not found");
+        }
+    } else {
+        send404(req, res, "Path problem!", "ID parameter not set");
+    }
 }
 
-function sendEditor(req: express.Request, res: express.Response) { }
+function handleSave(req: express.Request, res: express.Response) {
+    if ('id' in req.body && 'name' in req.body && 'data' in req.body) {
+        const id = cleanID(req.body.id);
+        const name = escape(req.body.name);
+        const data = req.body.data;
+        // const errors = files.checkFile(data)
+        // if (errors === null || errors === undefined) {
+        const experimentId = storage.createExperiment(name, 'cristal2DExperiment.svg', id, 'ARO-Studios');
+        files.createExperiment(data, experimentId);
+        res.redirect(`/selection${id}`);
+        // } else {
+        //     let err = '';
+        //     errors.forEach(error => { err += `${error.dataPath}: ${error.message}<br>`; });
+        //     send404(req, res, "Script has errors!", err);
+        // }
+    }
+}
 
-function handleEditor(req: express.Request, res: express.Response) { }
+function handleEditor(req: express.Request, res: express.Response) {
+    if ('id' in req.body) {
+        let id = req.body.id;
+        id = cleanID(id);
+        if (storage.checkFolderExists(id, 'ARO-Studios')) {
+            res.render('editor', {
+                version: Version,
+                origId: id
+            });
+        } else {
+            send404(req, res, "Path problem!", "Folder not found");
+        }
+    } else {
+        send404(req, res, "Path problem!", "ID parameter not set");
+    }
+}
 
 function sendHelp(req: express.Request, res: express.Response) {
     let html;
@@ -204,4 +228,4 @@ function cleanID(id: string): string {
 // experiments.createExperiment("Beispiel1.2", "exampleExperiment.svg", "/1", "general");
 // experiments.createExperiment("Beispiel1.3", "exampleExperiment.svg", "/1", "general");
 
-export default { init, sendIndex, sendSelection, sendExperiment, sendHelp, handle404, sendNewFolder, sendNewExperiment, handleNewExperiment, handleNewFolder, sendImport, handleImport, sendEditor, handleEditor };
+export default { init, sendIndex, sendSelection, sendExperiment, sendHelp, handle404, sendNewFolder, sendNewExperiment, handleNewExperiment, handleNewFolder, handleImport, handleEditor };
