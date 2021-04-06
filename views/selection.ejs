@@ -21,6 +21,9 @@ Copyright (c) 2021 Alexander Romberg
     <div class="container">
         <%- include('header',{ origin: "../" , title: "Experimente" }) %>
         <main>
+            <% if (canEdit) { %>
+                <div class="edit"><img id="pen" class="selectable" alt="Bearbeiten"></div>
+            <% } %>
             <div class="selection">
                 <%- cardString %>
             </div>

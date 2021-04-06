@@ -39,7 +39,8 @@ function sendSelection(req: express.Request, res: express.Response) {
             res.render('selection', {
                 version: Version,
                 path,
-                cardString
+                cardString,
+                canEdit: true
             });
         } catch {
             res.redirect(`/selection`);

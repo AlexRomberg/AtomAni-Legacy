@@ -2,14 +2,38 @@
     Copyright (c) 2021 Alexander Romberg
 */
 
+
+/*--- edit ---*/
+
+.edit {
+    padding: 20px;
+    padding-bottom: 0px;
+    width: 100%;
+    text-align: right;
+}
+
+#pen {
+    content: var(--pen);
+    background-color: var(--buttonBackground);
+    width: 60px;
+    border-radius: 50px;
+    padding: 2px;
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5);
+    border: solid 3px transparent;
+}
+
+
+/*--- cards ---*/
+
 .selection {
     width: 100%;
-    height: 100%;
+    max-height: calc(100vh - 196px);
     padding: 10px;
     display: flex;
     flex-flow: row wrap;
     justify-content: space-evenly;
     list-style: none;
+    overflow-y: scroll;
 }
 
 .card {
@@ -26,11 +50,11 @@
 .selectable:hover,
 .selectable:focus {
     outline: none;
-    border: solid 3px var(--accentColor);
+    border: solid 3px var(--accentColor) !important;
 }
 
 .selectable:active {
-    background-color: var(--accentColor);
+    background-color: var(--accentColor) !important;
 }
 
 .card img {

@@ -53,6 +53,7 @@
     --btnPlay: url("/res/img/btnPlay-dark.svg");
     --btnPause: url("/res/img/btnPause-dark.svg");
     --btnReload: url("/res/img/btnReload-dark.svg");
+    --pen: url(/res/img/pen-dark.svg);
 }
 
 @media screen and (prefers-color-scheme: dark) {
@@ -73,6 +74,7 @@
         --btnPlay: url("/res/img/btnPlay-light.svg");
         --btnPause: url("/res/img/btnPause-light.svg");
         --btnReload: url("/res/img/btnReload-light.svg");
+        --pen: url(/res/img/pen-light.svg);
     }
 }
 
