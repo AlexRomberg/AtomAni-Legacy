@@ -33,7 +33,7 @@
     flex-flow: row wrap;
     justify-content: space-evenly;
     list-style: none;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .card {

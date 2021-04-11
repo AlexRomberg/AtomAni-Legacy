@@ -16,7 +16,6 @@ import storage from './storage';
 import selection from './selection';
 import experiments from './experiments';
 import escape from 'escape-html';
-import users from './users';
 
 function init(version: string) {
     Version = version;
