@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2021 Alexander Romberg
+-->
+
+<head>
+  <title>AtomAni</title>
+
+  <!-- stylesheets -->
+  <link rel="stylesheet" href="../css/general.css">
+  <link rel="stylesheet" href="../css/new.css">
+
+  <%- include('favicon'); %>
+</head>
+
+<body>
+  <%- include('header',{ origin: `script.back` , title: "Benutzer Registrieren" }) %>
+  <main>
+    <form action="/register" method="POST">
+      <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div>
+        <label for="loginName">loginName</label>
+        <input type="text" id="loginName" name="loginName" required>
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div>
+        <label for="canEdit">canEdit</label>
+        <input type="checkbox" id="canEdit" name="canEdit">
+      </div>
+      <div>
+        <label for="isAdmin">Admin</label>
+        <input type="checkbox" id="isAdmin" name="isAdmin">
+      </div>
+      <div>
+        <label for="organisation">Org.name</label>
+        <input type="text" id="organisation" name="organisation" required>
+      </div>
+      <button type="submit">Register</button>
+    </form>
+  </main>
+  <%- include('footer.ejs', { version }) %>
+</body>

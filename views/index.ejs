@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Copyright (c) 2020 Alexander Romberg, Dario Romandini
+Copyright (c) 2021 Alexander Romberg
 
 -->
 
@@ -28,15 +28,22 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
 <body>
     <script>
         window.onunload = () => {
-                document.activeElement.blur();
-            }
-            // prevents css loading errors by running a normal js
+            document.activeElement.blur();
+        }
+        // prevents css loading errors by running a normal js
     </script>
     <main>
         <div class="background">
             <!-- space for animation -->
         </div>
         <div class="foreground">
+            <span id="loginInformation">
+                <img src="/res/img/logo-small-light.svg">
+                <p><%- user.name %></p>
+            </span>
+            <div id="loginDropdown">
+                <a href="/logout">Ausloggen</a>
+            </div>
             <div class="controls">
                 <svg width="100%" height="100%" viewBox="0 0 500 116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                     <g transform="matrix(1,0,0,1.15924,0,0)">
@@ -60,14 +67,26 @@ Copyright (c) 2020 Alexander Romberg, Dario Romandini
                         </g>
                     </g>
                 </svg>
-
-
                 <ul>
                     <li><a href="selection">Experimente</a></li>
                     <li><a href="help">Hilfe</a></li>
                 </ul>
             </div>
         </div>
+        <script>
+            const dropDown = document.getElementById('loginInformation');
+            const dropDownBox = document.getElementById('loginDropdown');
+
+            let isVisible = false;
+            dropDown.addEventListener('click', () => {
+                if (isVisible) {
+                    dropDownBox.style.maxHeight = "0px";
+                } else {
+                    dropDownBox.style.maxHeight = "100px";
+                }
+                isVisible = !isVisible;
+            });
+        </script>
         <% include('footer.ejs', { version }) %>
     </main>
 </body>

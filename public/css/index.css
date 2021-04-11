@@ -2,26 +2,53 @@
  Copyright (c) 2021 Alexander Romberg
 */
 
-
-/*--- Background ---*/
-
-.background {
+/*--- Login ---*/
+#loginInformation {
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    padding-right: 15px;
+    border-radius: 25px;
+    border: solid 3px transparent;
+    background-color: var(--contentBackgroundColor);
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    background-color: var(--backgroundLight);
-    filter: blur(20px);
+    top: 20px;
+    left: 20px;
+    overflow: hidden;
+    cursor: pointer;
 }
 
-.background img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 40%;
+#loginInformation:hover {
+    border: solid 3px var(--accentColor);
+    outline: none;
+}
+
+#loginInformation:after {
+    content: '▼';
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+#loginInformation img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    background-color: var(--contentBackgroundColorDark);
+    border-radius: 50%;
+}
+
+#loginDropdown {
+    position: fixed;
+    top: 70px;
+    left: 20px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: 0.3s
+}
+
+#loginDropdown a {
+    font-size: 1.1em;
+    border-radius: 25px;
 }
 
 

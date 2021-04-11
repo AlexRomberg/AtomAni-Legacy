@@ -16,6 +16,7 @@ import storage from './storage';
 import selection from './selection';
 import experiments from './experiments';
 import escape from 'escape-html';
+import users from './users';
 
 function init(version: string) {
     Version = version;
@@ -23,7 +24,8 @@ function init(version: string) {
 
 function sendIndex(req: express.Request, res: express.Response) {
     res.render('index', {
-        version: Version
+        version: Version,
+        user: req.user
     });
 }
 
@@ -35,11 +37,12 @@ function sendSelection(req: express.Request, res: express.Response) {
     if (origPath === path || origPath === '') {
         try {
             const experimentList = storage.getExperiments(path, 'ARO-Studios');
-            const cardString = selection.getCardsOfLayer(experimentList);
+            const cardString = selection.getCardsOfLayer(experimentList, req.user);
             res.render('selection', {
                 version: Version,
                 path,
-                cardString
+                cardString,
+                user: req.user
             });
         } catch {
             res.redirect(`/selection`);
@@ -200,6 +203,28 @@ function handle404(req: express.Request, res: express.Response) {
     }
 }
 
+function handleLogout(req: express.Request, res: express.Response) {
+    req.logOut();
+    res.redirect('/login');
+}
+
+function sendRegister(req: express.Request, res: express.Response) {
+    const user: any = req.user;
+    if (user.isAdmin) {
+        res.render('register.ejs', {
+            version: Version
+        });
+    } else {
+        res.redirect('/')
+    }
+}
+
+function sendLogin(req: express.Request, res: express.Response) {
+    res.render('login.ejs', {
+        version: Version
+    });
+}
+
 function send404(req: express.Request, res: express.Response, error: string, reason: string) {
     res.render('404', {
         version: Version,
@@ -219,13 +244,4 @@ function cleanID(id: string): string {
     return id;
 }
 
-// experiments.createFolder("example", "exampleGroup.svg", "/", "general");
-// experiments.createFolder("example2", "exampleGroup.svg", "/", "general");
-// experiments.createExperiment("Beispiel0.1", "exampleExperiment.svg", "/0", "general");
-// experiments.createExperiment("Beispiel0.2", "exampleExperiment.svg", "/0", "general");
-// experiments.createExperiment("Beispiel0.3", "exampleExperiment.svg", "/0", "general");
-// experiments.createExperiment("Beispiel1.1", "exampleExperiment.svg", "/1", "general");
-// experiments.createExperiment("Beispiel1.2", "exampleExperiment.svg", "/1", "general");
-// experiments.createExperiment("Beispiel1.3", "exampleExperiment.svg", "/1", "general");
-
-export default { init, sendIndex, sendSelection, sendExperiment, sendHelp, handle404, sendNewFolder, sendNewExperiment, handleNewExperiment, handleNewFolder, handleImport, handleEditor };
+export default { init, sendIndex, sendSelection, sendExperiment, sendHelp, handle404, sendNewFolder, sendNewExperiment, handleNewExperiment, handleNewFolder, handleImport, handleEditor, handleLogout, sendRegister, sendLogin };

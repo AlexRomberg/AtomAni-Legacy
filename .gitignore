@@ -16,6 +16,7 @@ package-lock.json
 /src/data/experiments/
 /src/data/experiments.json
 /src/data/AtomAniData.json
+/src/data/AtomAniUsers.json
 
 #.htaccess
 *.htaccess
