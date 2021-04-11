@@ -162,11 +162,22 @@ Das Projekt AtomAni wird auf [GitHub](https://github.com/AlexRomberg/AtomAni) ve
 
 # Bibliotheken {#Licenses}
 Dieses Programm verwendet:
-- **[three.js](https://threejs.org/)** unter der **MIT** Lizenz
-- **[parsedown](https://parsedown.org/)** unter der **MIT** Lizenz
-- **[jquery](https://jquery.com/)** unter der **MIT** Lizenz
-
-**[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[three.js](https://threejs.org/)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[jquery](https://jquery.com/)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[node.js](https://nodejs.org/)** unter **[folgender Lizenz](https://github.com/nodejs/node/blob/master/LICENSE)**
+- **[ajv](https://ajv.js.org/)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[bcrypt](https://github.com/kelektiv/node.bcrypt.js)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[cookie-parser](https://github.com/expressjs/cookie-parser)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[ejs](https://ejs.co/)** unter der **[Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html)**
+- **[escape-html](https://github.com/component/escape-html)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[express](https://expressjs.com/)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[express-flash](https://github.com/RGBboy/express-flash)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[express-session](https://github.com/expressjs/session)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[node-json-db](https://github.com/Belphemur/node-json-db)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[passport](http://www.passportjs.org/)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[passport-local](http://www.passportjs.org/packages/passport-local/)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[showdown](http://showdownjs.com/)** unter der **[MIT Lizenz](https://opensource.org/licenses/MIT)**
+- **[typescript](https://www.typescriptlang.org/)** unter der **[Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html)**
 
 # Mitwirkende {#Credits}
 
