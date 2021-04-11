@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2021 Alexander Romberg
+-->
+
+<head>
+  <title>AtomAni</title>
+
+  <!-- stylesheets -->
+  <link rel="stylesheet" href="../css/general.css">
+  <link rel="stylesheet" href="../css/new.css">
+  <link rel="stylesheet" href="../css/login.css">
+
+  <%- include('favicon'); %>
+</head>
+
+<body>
+  <%- include('header',{ origin: `script.back` , title: "Anmelden" }) %>
+  <main>
+    <% if (messages.error) { %>
+    <div id="errorMessage"><%= messages.error %></div>
+    <% } %>
+    <form id="loginForm" action="/login" method="POST">
+      <div>
+        <label for="name">Benutzername</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div>
+        <label for="organisation">Org.name</label>
+        <input type="text" id="organisation" name="organisation" required>
+      </div>
+      <input type="hidden" id="username" name="username" required>
+      <button type="submit">Login</button>
+    </form>
+    <script>
+      const nameField = document.getElementById('name');
+      const organisationField = document.getElementById('organisation');
+      const usernameField = document.getElementById('username');
+      const loginForm = document.getElementById('loginForm');
+
+      nameField.addEventListener('input', updateUsername);
+      organisationField.addEventListener('input', updateUsername);
+      organisationField.addEventListener('input', updateUsername);
+
+      function updateUsername() {
+        usernameField.value = `${organisationField.value}|${nameField.value}`;
+      }
+    </script>
+  </main>
+  <%- include('footer.ejs', { version }) %>
+</body>

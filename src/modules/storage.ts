@@ -10,38 +10,38 @@ import { Config } from 'node-json-db/dist/lib/JsonDBConfig';
 
 const DB = new JsonDB(new Config("src/data/AtomAniData", true, true, '/'));
 
-function getExperiments(path: string, school: string): object[] {
+function getExperiments(path: string, organisation: string): object[] {
     let failedRequests = 0;
-    let experimentlistSchool: object[] = [];
+    let experimentlistOrganisation: object[] = [];
 
     path = cleanPath(path);
-    school = cleanSchoolname(school);
+    organisation = cleanOrganisationname(organisation);
 
-    experimentlistSchool = convertToObjectList(DB.getData(`/experiments/${school}${path}`), path);
+    experimentlistOrganisation = convertToObjectList(DB.getData(`/experiments/${organisation}${path}`), path);
 
     if (failedRequests > 1) {
         throw new Error("No experiments found!");
     }
 
-    return experimentlistSchool;
+    return experimentlistOrganisation;
 }
 
-function createSchool(name: string): void {
-    name = cleanSchoolname(name);
+function createOrganisation(name: string): void {
+    name = cleanOrganisationname(name);
 
     DB.push(`/experiments/${name}/`, { lastID: 0 });
 }
 
-function createExperiment(name: string, imagename: string, path: string, school: string): string {
+function createExperiment(name: string, imagename: string, path: string, organisation: string): string {
     path = cleanPath(path);
-    school = cleanSchoolname(school);
+    organisation = cleanOrganisationname(organisation);
 
-    if (DB.exists(`/experiments/${school}${path}lastID`)) {
-        const id: number = (Number)(DB.getData(`/experiments/${school}${path}lastID`));
-        DB.push(`/experiments/${school}${path}lastID`, id + 1)
+    if (DB.exists(`/experiments/${organisation}${path}lastID`)) {
+        const id: number = (Number)(DB.getData(`/experiments/${organisation}${path}lastID`));
+        DB.push(`/experiments/${organisation}${path}lastID`, id + 1)
 
         const experimentId = getUniqueID();
-        DB.push(`/experiments/${school}${path}${id}`, { name, imagename, type: "experiment", experimentId });
+        DB.push(`/experiments/${organisation}${path}${id}`, { name, imagename, type: "experiment", experimentId });
 
         return experimentId;
     } else {
@@ -49,15 +49,15 @@ function createExperiment(name: string, imagename: string, path: string, school:
     }
 }
 
-function createFolder(name: string, imagename: string, path: string, school: string): void {
+function createFolder(name: string, imagename: string, path: string, organisation: string): void {
     path = cleanPath(path);
-    school = cleanSchoolname(school);
+    organisation = cleanOrganisationname(organisation);
 
-    if (DB.exists(`/experiments/${school}${path}lastID`)) {
-        const id: number = (Number)(DB.getData(`/experiments/${school}${path}lastID`));
-        DB.push(`/experiments/${school}${path}lastID`, id + 1)
+    if (DB.exists(`/experiments/${organisation}${path}lastID`)) {
+        const id: number = (Number)(DB.getData(`/experiments/${organisation}${path}lastID`));
+        DB.push(`/experiments/${organisation}${path}lastID`, id + 1)
 
-        DB.push(`/experiments/${school}${path}${id}`, { lastID: 0, name, imagename, type: "folder" });
+        DB.push(`/experiments/${organisation}${path}${id}`, { lastID: 0, name, imagename, type: "folder" });
     } else {
         throw new Error("Can't create folder. Path not found!");
     }
@@ -74,8 +74,8 @@ function cleanPath(path: string): string {
     return path;
 }
 
-function cleanSchoolname(name: string): string {
-    name.replace(/[^a-zA-Z-_]/gm, ''); // clean school string
+function cleanOrganisationname(name: string): string {
+    name.replace(/[^a-zA-Z-_]/gm, ''); // clean organisation string
     return name;
 }
 
@@ -108,16 +108,16 @@ function getUniqueID() {
     return id;
 }
 
-function checkFolderExists(path: string, school: string): boolean {
+function checkFolderExists(path: string, organisation: string): boolean {
     path = cleanPath(path);
-    school = cleanSchoolname(school);
+    organisation = cleanOrganisationname(organisation);
 
-    return DB.exists(`/experiments/${school}${path}lastID`);
+    return DB.exists(`/experiments/${organisation}${path}lastID`);
 }
 
 function clear() {
     DB.delete('/');
-    createSchool('general');
+    createOrganisation('general');
 }
 
-export default { getExperiments, createSchool, createExperiment, createFolder, cleanPath, checkFolderExists };
+export default { getExperiments, createOrganisation, createExperiment, createFolder, cleanPath, checkFolderExists };

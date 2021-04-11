@@ -9,4 +9,5 @@ In diesem Projekt wird dem alten Atomarium ein neuer Anstrich verpasst.
 Wenn Fehler auftreten würde ich mich über ein detalliertes issue freuen.
 
 ## Bemerkungen
-- Schulnamen können aus Buchstaben, - und _ bestehen.
+- Schulnamen: [a-zA-Z-_]
+- Loginnamen: [a-zA-Z@_-.,]
