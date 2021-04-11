@@ -24,7 +24,7 @@ function init(version: string) {
 
 function sendIndex(req: express.Request, res: express.Response) {
     res.render('index', {
-        version: Version,
+        Version,
         user: req.user
     });
 }
@@ -39,7 +39,7 @@ function sendSelection(req: express.Request, res: express.Response) {
             const experimentList = storage.getExperiments(path, 'ARO-Studios');
             const cardString = selection.getCardsOfLayer(experimentList, req.user);
             res.render('selection', {
-                version: Version,
+                Version,
                 path,
                 cardString,
                 user: req.user
@@ -60,7 +60,7 @@ function sendExperiment(req: express.Request, res: express.Response) {
         try {
             const scriptParams = experiments.loadExperimentParams(query);
             res.render('experiment', {
-                version: Version,
+                Version,
                 scriptParams
             });
         } catch {
@@ -78,7 +78,7 @@ function sendNewExperiment(req: express.Request, res: express.Response) {
             let id = req.query.id?.toString()!;
             id = cleanID(id);
             res.render('newExperiment', {
-                version: Version,
+                Version,
                 origId: id
             });
         } else {
@@ -114,7 +114,7 @@ function sendNewFolder(req: express.Request, res: express.Response) {
             id = cleanID(id);
             if (storage.checkFolderExists(id, 'ARO-Studios')) {
                 res.render('newFolder', {
-                    version: Version,
+                    Version,
                     origId: id
                 });
             } else {
@@ -156,7 +156,7 @@ function handleImport(req: express.Request, res: express.Response) {
             id = cleanID(id);
             if (storage.checkFolderExists(id, 'ARO-Studios')) {
                 res.render('import', {
-                    version: Version,
+                    Version,
                     origId: id
                 });
             } else {
@@ -201,7 +201,7 @@ function handleEditor(req: express.Request, res: express.Response) {
             id = cleanID(id);
             if (storage.checkFolderExists(id, 'ARO-Studios')) {
                 res.render('editor', {
-                    version: Version,
+                    Version,
                     origId: id
                 });
             } else {
@@ -223,7 +223,7 @@ function sendHelp(req: express.Request, res: express.Response) {
         html = 'Hilfe konnte nicht geladen werden.';
     }
     res.render('help', {
-        version: Version,
+        Version,
         html
     });
 }
@@ -247,7 +247,7 @@ function sendRegister(req: express.Request, res: express.Response) {
     const user: any = req.user;
     if (user.isAdmin) {
         res.render('register.ejs', {
-            version: Version
+            Version
         });
     } else {
         res.redirect('/')
@@ -256,13 +256,13 @@ function sendRegister(req: express.Request, res: express.Response) {
 
 function sendLogin(req: express.Request, res: express.Response) {
     res.render('login.ejs', {
-        version: Version
+        Version
     });
 }
 
 function send404(req: express.Request, res: express.Response, error: string, reason: string) {
     res.render('404', {
-        version: Version,
+        Version,
         error,
         reason
     });
