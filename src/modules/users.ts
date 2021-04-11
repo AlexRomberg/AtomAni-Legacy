@@ -67,17 +67,25 @@ function deleteUser(username: string, organisation: string): void {
     }
 }
 
-function getUserByName(username: string, organisation: string): user {
-    const userId = DB.getIndex(`/${organisation}`, `${organisation}|${username}`);
-    return DB.getObject(`/${organisation}[${userId}]`);
+function getUserByName(username: string, organisation: string): user | null {
+    if (organisationExists(organisation)) {
+        const userId = DB.getIndex(`/${organisation}`, `${organisation}|${username}`);
+        return DB.getObject(`/${organisation}[${userId}]`);
+    } else {
+        return null;
+    }
 }
 
-function getUserById(id: string): user {
+function getUserById(id: string): user | null {
     const idParams = id.split('|');
     const organisation = idParams.shift();
 
-    const userId = DB.getIndex(`/${organisation}`, id);
-    return DB.getObject(`/${organisation}[${userId}]`);
+    if (organisationExists(organisation!)) {
+        const userId = DB.getIndex(`/${organisation}`, id);
+        return DB.getObject(`/${organisation}[${userId}]`);
+    } else {
+        return null;
+    }
 }
 
 function cleanOrganisationname(name: string): string {
@@ -90,7 +98,7 @@ function organisationExists(name: string): boolean {
 }
 
 function userExists(username: string, organisation: string): boolean {
-    const id = DB.getIndex(`/${organisation}`, username);
+    const id = DB.getIndex(`/${organisation}`, `${organisation}|${username}`);
     return id > -1;
 }
 

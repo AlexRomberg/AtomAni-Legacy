@@ -86,12 +86,12 @@ app.post('/register', userStorage.checkAuthenticated, async (req: express.Reques
             (req.body.isAdmin === "on"),
             req.body.organisation
         );
-
-        res.redirect('/login');
-    } catch {
+        res.redirect('/register');
+    } catch (e) {
+        req.flash('error', e.message);
         res.redirect('/register');
     }
- });
+});
 app.post('/login', userStorage.checkNotAuthenticated, passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',

@@ -10,14 +10,14 @@ function initialize(passport: any, getUserByLoginName: Function, getUserById: Fu
         const user = getUserByLoginName(username, organisation);
 
         if (user == null) {
-            return done(null, false, { message: 'No user with that email' });
+            return done(null, false, { message: 'username, password or organisation incorrect' });
         }
 
         try {
             if (await bcrypt.compare(password, user.password)) {
                 return done(null, user);
             } else {
-                return done(null, false, { message: 'Password incorrect' });
+                return done(null, false, { message: 'username, password or organisation incorrect' });
             }
         } catch (e) {
             return done(e);

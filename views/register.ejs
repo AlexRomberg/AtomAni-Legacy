@@ -9,6 +9,7 @@ Copyright (c) 2021 Alexander Romberg
   <!-- stylesheets -->
   <link rel="stylesheet" href="../css/general.css">
   <link rel="stylesheet" href="../css/new.css">
+  <link rel="stylesheet" href="../css/login.css">
 
   <%- include('favicon'); %>
 </head>
@@ -16,6 +17,9 @@ Copyright (c) 2021 Alexander Romberg
 <body>
   <%- include('header',{ origin: `script.back` , title: "Benutzer Registrieren" }) %>
   <main>
+    <% if (messages.error) { %>
+    <div id="errorMessage"><%= messages.error %></div>
+    <% } %>
     <form action="/register" method="POST">
       <div>
         <label for="name">Name</label>
