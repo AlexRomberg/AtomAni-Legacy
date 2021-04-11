@@ -23,6 +23,7 @@ import passport from 'passport';
 import cm from './modules/consoleModule';
 import pages from './modules/pages';
 import userStorage from './modules/users';
+import cookieParser from 'cookie-parser';
 const passportConfig = require('./modules/passportConfig');
 
 cm.log("green", `Starting Server...`);
@@ -43,6 +44,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(flash());
 app.use(session({
     secret: 'Secret',

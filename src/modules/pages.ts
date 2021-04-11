@@ -22,9 +22,18 @@ function init(version: string) {
 }
 
 function sendIndex(req: express.Request, res: express.Response) {
+    const user: any = req.user;
+    if (req.cookies.orgname === undefined) {
+        const orgname = user.id.split('|')[0];
+        res.cookie('orgname', orgname, { maxAge: 900000, httpOnly: true });
+    }
+    if (req.cookies.username === undefined) {
+        res.cookie('username', user.username, { maxAge: 900000, httpOnly: true });
+    }
+
     res.render('index', {
         Version,
-        user: req.user
+        user
     });
 }
 
@@ -255,7 +264,8 @@ function sendRegister(req: express.Request, res: express.Response) {
 
 function sendLogin(req: express.Request, res: express.Response) {
     res.render('login.ejs', {
-        Version
+        Version,
+        cookies: req.cookies
     });
 }
 

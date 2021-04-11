@@ -23,17 +23,17 @@ Copyright (c) 2021 Alexander Romberg
     <form id="loginForm" action="/login" method="POST">
       <div>
         <label for="name">Benutzername</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="name" name="name" required <% if (cookies.username !== undefined) {%>value="<%- cookies.username %>" <%} else {%> autofocus<% } %>>
       </div>
       <div>
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
+        <input type="password" id="password" name="password" required<%if (cookies.username !== undefined) {%> autofocus<%}%>>
       </div>
       <div>
         <label for="organisation">Org.name</label>
-        <input type="text" id="organisation" name="organisation" required>
+        <input type="text" id="organisation" name="organisation" <% if (cookies.orgname !== undefined) {%>value="<%- cookies.orgname %>" <%} %>required>
       </div>
-      <input type="hidden" id="username" name="username" required>
+      <input type="hidden" id="username" name="username" value="<% if (cookies.orgname !== undefined) {%><%- cookies.orgname %><%}%>|<% if (cookies.username !== undefined) {%><%- cookies.username %><%}%>" required>
       <button type="submit">Login</button>
     </form>
     <script>
