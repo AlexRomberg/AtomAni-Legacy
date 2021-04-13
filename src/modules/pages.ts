@@ -23,18 +23,24 @@ function init(version: string) {
 
 function sendIndex(req: express.Request, res: express.Response) {
     const user: any = req.user;
+    let maxAge = 30; // Days of cookie to live
+    maxAge *= 24 * 60 * 60 * 1000;
     if (req.cookies.orgname === undefined) {
         const orgname = user.id.split('|')[0];
-        res.cookie('orgname', orgname, { maxAge: 900000, httpOnly: true });
+        res.cookie('orgname', orgname, { maxAge: maxAge, httpOnly: true });
     }
     if (req.cookies.username === undefined) {
-        res.cookie('username', user.username, { maxAge: 900000, httpOnly: true });
+        res.cookie('username', user.username, { maxAge: maxAge, httpOnly: true });
     }
 
     res.render('index', {
         Version,
         user
     });
+}
+
+function sendWelcome(req: express.Request, res: express.Response) {
+    res.render('welcome');
 }
 
 function sendSelection(req: express.Request, res: express.Response) {
@@ -297,4 +303,4 @@ function checkCanEdit(req: express.Request, res: express.Response, handle: Funct
     }
 }
 
-export default { init, sendIndex, sendSelection, sendExperiment, sendHelp, handle404, sendNewFolder, sendNewExperiment, handleNewExperiment, handleNewFolder, handleImport, handleEditor, handleLogout, sendRegister, sendLogin };
+export default { init, sendIndex, sendWelcome, sendSelection, sendExperiment, sendHelp, handle404, sendNewFolder, sendNewExperiment, handleNewExperiment, handleNewFolder, handleImport, handleEditor, handleLogout, sendRegister, sendLogin };

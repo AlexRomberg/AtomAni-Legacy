@@ -2,7 +2,9 @@
  Copyright (c) 2021 Alexander Romberg
 */
 
+
 /*--- Login ---*/
+
 #loginInformation {
     display: flex;
     align-items: center;
@@ -92,7 +94,8 @@
     border: solid 3px transparent;
 }
 
-.foreground a:hover, .foreground a:focus {
+.foreground a:hover,
+.foreground a:focus {
     border: solid 3px var(--accentColor);
     outline: none;
 }
@@ -102,7 +105,7 @@
 }
 
 svg path {
-   fill: var(--fontColor);
+    fill: var(--fontColor);
 }
 
 svg #oDots {
@@ -125,5 +128,23 @@ svg #O path {
     100% {
         transform: rotate(360deg);
         transform-origin: 33% center;
+    }
+}
+
+
+/* --- responsiveness */
+
+@media only screen and (max-width: 600px) {
+    .foreground .controls {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        min-width: 25px;
+        width: 80%;
+    }
+    .foreground a {
+        font-size: 1.25em;
     }
 }

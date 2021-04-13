@@ -21,3 +21,7 @@ package-lock.json
 #.htaccess
 *.htaccess
 *.htpasswd
+
+# SEO-files
+public/robots.txt
+public/sitemap.xml

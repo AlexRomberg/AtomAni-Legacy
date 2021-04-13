@@ -106,7 +106,11 @@ function checkAuthenticated(req: express.Request, res: express.Response, next: F
     if (req.isAuthenticated()) {
         next();
     } else {
-        res.redirect('/login');
+        if (req.baseUrl === "") {
+            res.render('welcome');
+        } else {
+            res.redirect('/welcome');
+        }
     }
 }
 

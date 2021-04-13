@@ -62,6 +62,7 @@ cm.log("blue", `running at: http://localhost:${PORT}`);
 
 // Request handles
 app.get('/', userStorage.checkAuthenticated, pages.sendIndex);
+app.get('/welcome', userStorage.checkNotAuthenticated, pages.sendWelcome);
 
 app.get('/selection', userStorage.checkAuthenticated, pages.sendSelection);
 app.get('/selection/*', userStorage.checkAuthenticated, pages.sendSelection);

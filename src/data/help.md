@@ -35,7 +35,7 @@ Eine Simulation wird durch eine [JSON](https://www.json.org/json-de.html) Datei 
 ### Beispiel
 ```json
 {
-    "$schema": "https://raw.githubusercontent.com/AlexRomberg/AtomAni/master/src/res/experimentSchema.json",
+    "$schema": "https://bit.ly/3siqP3r",
     "charts": [],
     "atoms": [],
     "walls": [],
