@@ -6,7 +6,7 @@
 // ----------------------------------
 
 // Config
-const VERSION = 'v2.0 [Beta] <i>(Nodejs-Version)</i>';
+const VERSION = 'v2.0';
 let PORT = 80;
 console.clear();
 
