@@ -1,3 +1,2 @@
 # correct language detection for github repos
-*.php linguist-language=PHP
-src/res/lib/* linguist-vendored
+public/res/lib/* linguist-vendored
