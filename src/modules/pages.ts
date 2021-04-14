@@ -27,10 +27,10 @@ function sendIndex(req: express.Request, res: express.Response) {
     maxAge *= 24 * 60 * 60 * 1000;
     if (req.cookies.orgname === undefined) {
         const orgname = user.id.split('|')[0];
-        res.cookie('orgname', orgname, { maxAge: maxAge, httpOnly: true });
+        res.cookie('orgname', orgname, { maxAge, httpOnly: true });
     }
     if (req.cookies.username === undefined) {
-        res.cookie('username', user.username, { maxAge: maxAge, httpOnly: true });
+        res.cookie('username', user.username, { maxAge, httpOnly: true });
     }
 
     res.render('index', {
@@ -46,11 +46,11 @@ function sendWelcome(req: express.Request, res: express.Response) {
 function sendSelection(req: express.Request, res: express.Response) {
     const origPath = req.path.slice(10);
     let path = storage.cleanPath(origPath);
-
+    const user: any = req.user;
 
     if (origPath === path || origPath === '') {
         try {
-            const experimentList = storage.getExperiments(path, 'ARO-Studios');
+            const experimentList = storage.getExperiments(path, user.organisation);
             const cardString = selection.getCardsOfLayer(experimentList, req.user);
             res.render('selection', {
                 Version,
@@ -126,7 +126,7 @@ function sendNewFolder(req: express.Request, res: express.Response) {
         if ('id' in req.query) {
             let id = req.query.id?.toString()!;
             id = cleanID(id);
-            if (storage.checkFolderExists(id, 'ARO-Studios')) {
+            if (storage.checkFolderExists(id, user.organisation)) {
                 res.render('newFolder', {
                     Version,
                     origId: id
@@ -148,8 +148,8 @@ function handleNewFolder(req: express.Request, res: express.Response) {
         if ('id' in req.body && 'name' in req.body) {
             const id = cleanID(req.body.id);
             const name = escape(req.body.name);
-            if (storage.checkFolderExists(id, 'ARO-Studios')) {
-                storage.createFolder(name, 'exampleGroup.svg', id, 'ARO-Studios');
+            if (storage.checkFolderExists(id, user.organisation)) {
+                storage.createFolder(name, 'exampleGroup.svg', id, user.organisation);
                 res.redirect(`/selection${id}`);
             } else {
                 send404(req, res, "Path problem!", "Folder not found");
@@ -168,7 +168,7 @@ function handleImport(req: express.Request, res: express.Response) {
         if ('id' in req.body) {
             let id = req.body.id;
             id = cleanID(id);
-            if (storage.checkFolderExists(id, 'ARO-Studios')) {
+            if (storage.checkFolderExists(id, user.organisation)) {
                 res.render('import', {
                     Version,
                     origId: id
@@ -193,7 +193,7 @@ function handleSave(req: express.Request, res: express.Response) {
             const data = req.body.data;
             // const errors = files.checkFile(data)
             // if (errors === null || errors === undefined) {
-            const experimentId = storage.createExperiment(name, 'cristal2DExperiment.svg', id, 'ARO-Studios');
+            const experimentId = storage.createExperiment(name, 'exampleExperiment.svg', id, user.organisation);
             files.createExperiment(data, experimentId);
             res.redirect(`/selection${id}`);
             // } else {
@@ -213,7 +213,7 @@ function handleEditor(req: express.Request, res: express.Response) {
         if ('id' in req.body) {
             let id = req.body.id;
             id = cleanID(id);
-            if (storage.checkFolderExists(id, 'ARO-Studios')) {
+            if (storage.checkFolderExists(id, user.organisation)) {
                 res.render('editor', {
                     Version,
                     origId: id

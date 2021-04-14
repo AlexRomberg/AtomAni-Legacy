@@ -70,7 +70,9 @@ function deleteUser(username: string, organisation: string): void {
 function getUserByName(username: string, organisation: string): user | null {
     if (organisationExists(organisation)) {
         const userId = DB.getIndex(`/${organisation}`, `${organisation}|${username}`);
-        return DB.getObject(`/${organisation}[${userId}]`);
+        let user: any = DB.getObject(`/${organisation}[${userId}]`);
+        user.organisation = organisation;
+        return user;
     } else {
         return null;
     }
@@ -82,7 +84,9 @@ function getUserById(id: string): user | null {
 
     if (organisationExists(organisation!)) {
         const userId = DB.getIndex(`/${organisation}`, id);
-        return DB.getObject(`/${organisation}[${userId}]`);
+        let user: any = DB.getObject(`/${organisation}[${userId}]`);
+        user.organisation = organisation;
+        return user;
     } else {
         return null;
     }
