@@ -1,6 +1,5 @@
 import * as Experiment from '../js/experiment.js';
 let SimulationScript = {
-    "$schema": "https://raw.githubusercontent.com/AlexRomberg/AtomAni/master/src/res/experimentSchema.json",
     "charts": [],
     "atoms": [],
     "walls": [],
@@ -9,14 +8,14 @@ let SimulationScript = {
 
 
 function handleStaticInputs() {
-    $('#fps').change(handleControlSelection);
-    $('#avgVel').change(handleControlSelection);
-    $('#pres').change(handleControlSelection);
-    $('#temp').change(handleControlSelection);
-    $('#control').change(handleControlSelection);
+    $('#fps').on('change', handleControlSelection);
+    $('#avgVel').on('change', handleControlSelection);
+    $('#pres').on('change', handleControlSelection);
+    $('#temp').on('change', handleControlSelection);
+    $('#control').on('change', handleControlSelection);
     $('.controlPane input').on('input', handleControlPaneInputs);
 
-    $('.add').click((e) => {
+    $('.add').on('click', (e) => {
         let sender = e.target;
         while (sender.tagName != "BUTTON") {
             sender = sender.parentElement;
@@ -55,7 +54,9 @@ function handleDynamicInputs() {
 }
 
 function handleControlPaneInputs(event) {
+    console.log(event);
     let controlInfo = getControlId(event.target);
+    console.log(controlInfo);
     if (event.target.id != controlInfo.id) {
         if (controlInfo.type == "chart") {
             updateChart(controlInfo.id);
@@ -225,6 +226,8 @@ function getWallBox(id) {
 // SimulationScript manipulation
 function updateDataField() {
     $('#data').val(JSON.stringify(SimulationScript));
+
+    console.log(SimulationScript);
 }
 
 function addChart(id) {
@@ -249,6 +252,7 @@ function updateChart(id) {
         SimulationScript.charts[index].fillColor = color.fill;
         SimulationScript.charts[index].lineColor = color.line;
         SimulationScript.charts[index].title = $('#' + id + 'Name').val();
+        updateDataField();
     }
 }
 
@@ -271,6 +275,7 @@ function updateControl(id) {
             return i.id;
         }).indexOf(id);
         SimulationScript.controls[index].name = $('#' + id + 'Name').val();
+        updateDataField();
     }
 }
 
