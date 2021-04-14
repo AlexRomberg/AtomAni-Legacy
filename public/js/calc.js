@@ -1,7 +1,10 @@
-import * as THREE from '../res/lib/three.module.js';
+import * as THREE from '/res/lib/three.module.js';
 
 const MaxDistance = 160000;
 const CONST_k = 1.380658e-23;
+const MaxTimestep = 25; //ms
+const Timefactor = 7e-6;
+const MaxSpeed = 10000 * 10000;
 
 let atomMass = 0.336e-25;
 let epsilon = 36.83 * CONST_k;
@@ -23,8 +26,8 @@ let OldPositions = [];
 export function updatePositions(atomList, wallList, timeStep) {
     timeStep *= Number($('#btnSpeed').attr('value')); // change simulation speed
 
-    if (timeStep > 100) { timeStep = 100; } // prevent too long timessteps
-    timeStep *= 7e-6;
+    if (timeStep > MaxTimestep) { timeStep = MaxTimestep; } // prevent too long timessteps
+    timeStep *= Timefactor; // slow down simulation
 
     let forces = getForce(atomList, wallList);
     // addGravitation(forces);
@@ -93,7 +96,7 @@ function setNewPositions(atomList, forces, timeStep) {
         // temperature
         let vel = new THREE.Vector3().copy(atomList[atom].velocity.multiplyScalar($('#inpTemp').val()));
 
-        if (atomList[atom].velocity.lengthSq() < 100000) {
+        if (atomList[atom].velocity.lengthSq() < MaxSpeed) {
             logAverage(atomList[atom].velocity, 'avgVel');
         }
 
