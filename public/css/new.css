@@ -1,4 +1,4 @@
-form {
+/* form {
     position: absolute;
     top: calc(50% + 1.5rem);
     left: 50%;
@@ -6,13 +6,14 @@ form {
     text-align: center;
     min-width: 500px;
     max-height: calc(100vh - 9em);
-}
+} */
 
-form button {
+
+/* form button {
     margin: 0px;
     margin-top: 10px;
     padding: 10px 20px;
-    background-color: var(--contentBackgroundColor);
+    background-color: var(--content-bg-col);
     border-radius: 8px;
     text-decoration: none;
     font-size: 2em;
@@ -20,25 +21,27 @@ form button {
     display: block;
     border: solid 3px transparent;
     width: 100%;
-}
+} */
 
-form button:hover,
+
+/* form button:hover,
 form button:focus,
 form input:hover,
 form input:focus,
 form textarea:hover,
 form textarea:focus {
-    border: solid 3px var(--accentColor);
+    border: solid 3px var(--accent-col);
     outline: none;
 }
 
 form button:active,
 form input:active,
 form textarea:active {
-    background-color: var(--accentColor);
-}
+    background-color: var(--accent-col);
+} */
 
-form label {
+
+/* form label {
     display: block;
     text-align: left;
     font-size: 1.4em
@@ -48,14 +51,14 @@ form input,
 form textarea {
     width: 100%;
     padding: 10px;
-    background-color: var(--contentBackgroundColor);
+    background-color: var(--content-bg-col);
     border: solid transparent 3px;
     border-radius: 5px;
 }
 
 form textarea {
     resize: vertical;
-}
+} */
 
 
 /* --- responsiveness --- */

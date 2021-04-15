@@ -4,13 +4,13 @@
     }
     // prevents css loading errors by running a normal js
 </script>
-<header>
+<header class="shadow-small">
     <% if (origin ==="script.back" ) { %>
     <button onclick="history.back(-1);" />
-    <% }else { %>
+    <% } else { %>
     <button onclick='window.location.replace("<%= origin %>");' />
     <% } %>
-    <svg viewBox="0 0 200 200" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <svg class="selectable" viewBox="0 0 200 200" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
         <use xlink:href="#_Image1" x="4.353" y="6.842" width="191.324px" height="191.826px" transform="matrix(0.996481,0,0,0.999095,0,0)" />
         <g serif:id="Back" transform="matrix(1.69706,0,0,1.69706,-97.0396,-2304.97)">
             <circle class="svg-circle" cx="116.106" cy="1417.14" r="56.075" style="fill:rgb(58,58,58);" />

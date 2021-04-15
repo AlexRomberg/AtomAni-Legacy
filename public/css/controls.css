@@ -21,7 +21,7 @@
     border-radius: 5px;
     width: 100%;
     min-width: 200px;
-    background-color: var(--contentBackgroundColorDark);
+    background-color: var(--content-bg-col-dark);
     padding: 5px;
     flex-flow: column;
 }
@@ -37,7 +37,7 @@
     flex-flow: row nowrap;
     padding: 5px;
     margin-bottom: 5px;
-    background-color: var(--contentBackgroundColorDarker);
+    background-color: var(--content-bg-col-darker);
     border-radius: 50px;
 }
 
@@ -49,7 +49,9 @@
     justify-self: center;
 }
 
+
 /*--- slider ---*/
+
 .slider {
     width: calc(100% - 10px);
     height: 10px;
@@ -78,18 +80,20 @@
     cursor: pointer;
 }
 
+
 /*--- button ---*/
+
 .btnRound {
     display: block;
     border-radius: 30px;
-    background-color: var(--buttonBackground);
+    background-color: var(--btn-bg);
     width: 60px;
     height: 60px;
     padding: 10px;
     line-height: 40px;
     font-size: 15px;
     font-weight: bold;
-    color: var(--button);
+    color: var(--btn-txt);
     user-select: none;
 }
 
@@ -104,25 +108,27 @@
     background-color: #0004;
 }
 
-.btnRound img{
+.btnRound img {
     width: 40px;
     height: 40px;
 }
 
+
 /* --- images --- */
+
 #btnReset img {
-    content: var(--btnReload);
+    content: var(--btn-reload);
 }
 
 #btnStart img {
-    content: var(--btnPlay);
+    content: var(--btn-play);
 }
 
-#btnStart .btnPause {
-    content: var(--btnPause);
+#btnStart .btn-pause {
+    content: var(--btn-pause);
 }
 
-@media only screen and (max-width: 890px) {    
+@media only screen and (max-width: 890px) {
     .charts,
     .controls {
         display: flex;

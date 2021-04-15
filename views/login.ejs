@@ -8,8 +8,8 @@ Copyright (c) 2021 Alexander Romberg
 
   <!-- stylesheets -->
   <link rel="stylesheet" href="/css/general.css">
-  <link rel="stylesheet" href="/css/new.css">
-  <link rel="stylesheet" href="/css/login.css">
+  <!-- <link rel="stylesheet" href="/css/new.css"> -->
+  <link rel="stylesheet" href="/css/messages.css">
 
   <%- include('favicon'); %>
 </head>
@@ -20,21 +20,21 @@ Copyright (c) 2021 Alexander Romberg
     <% if (messages.error) { %>
     <div id="errorMessage"><%= messages.error %></div>
     <% } %>
-    <form id="loginForm" action="/login" method="POST">
+    <form id="loginForm" class="centered-div full-width-form" action="/login" method="POST">
       <div>
         <label for="name">Benutzername</label>
-        <input type="text" id="name" name="name" required <% if (cookies.username !== undefined) {%>value="<%- cookies.username %>" <%} else {%> autofocus<% } %>>
+        <input class="selectable" type="text" id="name" name="name" required <% if (cookies.username !== undefined) {%>value="<%- cookies.username %>" <%} else {%> autofocus<% } %>>
       </div>
       <div>
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" required<%if (cookies.username !== undefined) {%> autofocus<%}%>>
+        <input class="selectable" type="password" id="password" name="password" required<%if (cookies.username !== undefined) {%> autofocus<%}%>>
       </div>
       <div>
-        <label for="organisation">Org.name</label>
-        <input type="text" id="organisation" name="organisation" <% if (cookies.orgname !== undefined) {%>value="<%- cookies.orgname %>" <%} %>required>
+        <label for="organisation">Organisationsname</label>
+        <input class="selectable" type="text" id="organisation" name="organisation" <% if (cookies.orgname !== undefined) {%>value="<%- cookies.orgname %>" <%} %>required>
       </div>
       <input type="hidden" id="username" name="username" value="<% if (cookies.orgname !== undefined) {%><%- cookies.orgname %><%}%>|<% if (cookies.username !== undefined) {%><%- cookies.username %><%}%>" required>
-      <button type="submit">Login</button>
+      <button class="btn selectable" type="submit">Login</button>
     </form>
     <script>
       const nameField = document.getElementById('name');

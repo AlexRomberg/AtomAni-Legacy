@@ -6,23 +6,23 @@
 /*--- Login ---*/
 
 #loginInformation {
-    display: flex;
-    align-items: center;
-    padding: 2px;
-    padding-right: 15px;
-    border-radius: 25px;
-    border: solid 3px transparent;
-    background-color: var(--contentBackgroundColor);
     position: fixed;
     top: 20px;
     left: 20px;
-    overflow: hidden;
+    padding: 2px;
+    padding-right: 15px;
+    border-radius: 25px;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
     cursor: pointer;
+    z-index: 10;
+    background-color: var(--content-bg-col);
 }
 
-#loginInformation:hover {
-    border: solid 3px var(--accentColor);
-    outline: none;
+#loginInformation p {
+    width: 100%;
+    user-select: none;
 }
 
 #loginInformation:after {
@@ -35,85 +35,47 @@
     width: 40px;
     height: 40px;
     margin-right: 10px;
-    background-color: var(--contentBackgroundColorDark);
     border-radius: 50%;
+    background-color: var(--content-bg-col-dark);
 }
 
 #loginDropdown {
     position: fixed;
-    top: 70px;
+    top: 45px;
     left: 20px;
+    width: 243.7px;
     max-height: 0px;
+    padding-top: 25px;
+    display: flex;
+    flex-flow: column;
     overflow: hidden;
-    transition: 0.3s
+    transition: 0.3s;
+    background-color: var(--content-bg-col-dark);
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
 }
 
 #loginDropdown a {
     font-size: 1.1em;
-    border-radius: 25px;
-}
-
-
-/*--- Foreground ---*/
-
-.foreground {
-    width: 100vw;
-    height: 100vh;
-}
-
-.foreground .controls {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    min-width: 500px;
-    width: 50%;
-}
-
-.foreground img {
-    width: 300px;
-}
-
-.foreground ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.foreground a {
-    margin: 0px;
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: var(--contentBackgroundColor);
-    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
     text-decoration: none;
-    font-size: 2em;
-    font-style: bold;
-    display: block;
-    border: solid 3px transparent;
 }
 
-.foreground a:hover,
-.foreground a:focus {
-    border: solid 3px var(--accentColor);
-    outline: none;
+#loginDropdown a:hover {
+    background-color: #0002;
 }
 
-.foreground a:active {
-    background-color: var(--accentColor);
-}
+
+/* --- Logo Animation --- */
 
 svg path {
-    fill: var(--fontColor);
+    fill: var(--font-col);
 }
 
 svg #oDots {
-    fill: var(--accentColor) !important;
+    fill: var(--accent-col) !important;
 }
-
-
-/* --- Animation --- */
 
 svg #O path {
     transform-origin: 165px;
@@ -134,7 +96,8 @@ svg #O path {
 
 /* --- responsiveness */
 
-@media only screen and (max-width: 600px) {
+
+/* @media only screen and (max-width: 600px) {
     .foreground .controls {
         position: absolute;
         top: 50%;
@@ -147,4 +110,4 @@ svg #O path {
     .foreground a {
         font-size: 1.25em;
     }
-}
+} */

@@ -42,7 +42,7 @@ main select,
 main button {
     border-radius: 5px;
     border: solid transparent 3px;
-    background-color: var(--contentBackgroundColor);
+    background-color: var(--content-bg-col);
 }
 
 main select {
@@ -56,13 +56,13 @@ main select:focus,
 main button:hover,
 main button:focus {
     border-radius: 5px;
-    border: solid var(--accentColor) 3px;
+    border: solid var(--accent-col) 3px;
 }
 
 main input:active,
 main select:active,
 main button:active {
-    background-color: var(--accentColor);
+    background-color: var(--accent-col);
 }
 
 
@@ -70,7 +70,7 @@ main button:active {
 
 .configuration {
     width: calc(100% - 20px);
-    background-color: var(--contentBackgroundColor);
+    background-color: var(--content-bg-col);
     margin: 10px;
     box-shadow: var(--shadow);
     border-radius: 10px;
@@ -80,7 +80,7 @@ main button:active {
 }
 
 .list {
-    background-color: var(--contentBackgroundColorDark);
+    background-color: var(--content-bg-col-dark);
     padding: 10px;
     border-radius: 5px;
     display: flex;
@@ -101,7 +101,7 @@ main button:active {
 
 .list .selectionBox,
 .settingsBox {
-    background-color: var(--contentBackgroundColorDarker);
+    background-color: var(--content-bg-col-darker);
     border-radius: 3px;
     padding: 5px;
     margin-right: 10px;

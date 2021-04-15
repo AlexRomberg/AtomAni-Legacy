@@ -1,17 +1,13 @@
-.foreground {
-    width: 100%;
-}
-
-.info {
+#info {
+    height: unset;
     min-height: 100vh;
     padding: 30px;
-    text-align: center;
-    background-color: var(--contentBackgroundColor);
+    background-color: var(--content-bg-col);
 }
 
-.info #sim {
+#sim {
     margin-top: 20px;
     width: 100%;
     height: calc(100vh - 200px) !important;
-    border-radius: 10px;
+    border-radius: 8px;
 }

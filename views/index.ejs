@@ -12,6 +12,9 @@ Copyright (c) 2021 Alexander Romberg
     <link rel="stylesheet" href="/css/index.css">
 
     <%- include('favicon'); %>
+
+    <!-- scripts -->
+    <script src="/js/loginDropdown.js" defer></script>
 </head>
 
 <body>
@@ -22,18 +25,15 @@ Copyright (c) 2021 Alexander Romberg
         // prevents css loading errors by running a normal js
     </script>
     <main>
-        <div class="background">
-            <!-- space for animation -->
-        </div>
-        <div class="foreground">
-            <span id="loginInformation">
+        <div class="fullscreen-div">
+            <span id="loginInformation" class="shadow selectable">
                 <img src="/res/img/logo-small-light.svg">
                 <p><%- user.name %></p>
             </span>
             <div id="loginDropdown">
                 <a href="/logout">Ausloggen</a>
             </div>
-            <div class="controls">
+            <div class="centered-div centered-content">
                 <svg width="100%" height="100%" viewBox="0 0 500 116" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                     <g transform="matrix(1,0,0,1.15924,0,0)">
                         <rect x="0" y="0" width="500" height="100.066" style="fill:none;" />
@@ -56,26 +56,10 @@ Copyright (c) 2021 Alexander Romberg
                         </g>
                     </g>
                 </svg>
-                <ul>
-                    <li><a href="selection">Experimente</a></li>
-                    <li><a href="help">Hilfe</a></li>
-                </ul>
+                <a class="btn selectable shadow" href="/selection">Experimente</a>
+                <a class="btn selectable shadow" href="/help">Hilfe</a>
             </div>
         </div>
-        <script>
-            const dropDown = document.getElementById('loginInformation');
-            const dropDownBox = document.getElementById('loginDropdown');
-
-            let isVisible = false;
-            dropDown.addEventListener('click', () => {
-                if (isVisible) {
-                    dropDownBox.style.maxHeight = "0px";
-                } else {
-                    dropDownBox.style.maxHeight = "100px";
-                }
-                isVisible = !isVisible;
-            });
-        </script>
         <% include('footer.ejs', { Version }) %>
     </main>
 </body>
