@@ -49,7 +49,7 @@
     display: flex;
     flex-flow: column;
     overflow: hidden;
-    transition: 0.3s;
+    transition: max-height 0.3s;
     background-color: var(--content-bg-col-dark);
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;

@@ -124,7 +124,7 @@
     content: var(--btn-play);
 }
 
-#btnStart .btn-pause {
+#btnStart .btnPause {
     content: var(--btn-pause);
 }
 
