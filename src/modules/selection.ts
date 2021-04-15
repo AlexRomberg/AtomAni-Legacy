@@ -24,17 +24,19 @@ function getCard(card: cardObject, id: number) {
     } else {
         return '';
     }
-    const cardString = `<a class="card selectable" href="${redirect}">` +
+    const cardString = `<div class="card-container selectable-no-border shadow"><a class="card shadow" href="${redirect}">` +
         `<img src="/res/img/menuIcons/${card.imagename}" alt="Missing Folder Icon">` +
         `<div class="Text">` +
         `<h2>${card.name}</h2>` +
         `</div>` +
-        `</a>`;
+        `</a>`+
+        `<div class="card-controls"><button class="selectable">Löschen</button><button class="selectable">Umbenennen</button><button class="selectable">Bearbeiten</button></div>`+
+        `</div>`;
     return cardString;
 }
 
 function getEditorCard() {
-    return `<div id="editor-card" class="card selectable"><img id="editor-card-img" src="/res/img/menuIcons/add.svg" alt="Missing Folder Icon"><div class="Text"><h2>Editor</h2></div><div class="options"><button id="option-new-experiment">Neues Experiment</button><button id="option-new-folder">Neuer Ordner</button><button id="option-cancel">Abbrechen</button></div></div>`;
+    return `<div id="editor-card" class="card selectable-no-border shadow"><img id="editor-card-img" src="/res/img/menuIcons/add.svg" alt="Missing Folder Icon"><div class="Text"><h2>Editor</h2></div><div class="options"><button id="option-new-experiment">Neues Experiment</button><button id="option-new-folder">Neuer Ordner</button><button id="option-cancel">Abbrechen</button></div></div>`;
 }
 
 function getCardsOfLayer(cards: currentFolderItem | any, user: any) {

@@ -14,12 +14,11 @@
 
 #pen {
     content: var(--pen);
-    background-color: var(--buttonBackground);
+    background-color: var(--btn-bg);
     width: 60px;
+    height: 60px;
     border-radius: 50px;
     padding: 2px;
-    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5);
-    border: solid 3px transparent;
 }
 
 
@@ -36,25 +35,24 @@
     overflow-y: auto;
 }
 
+.card-container {
+    width: 300px;
+    max-height: 200px;
+    margin: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+    background-color: var(--content-bg-col);
+}
+
 .card {
-    background-color: var(--contentBackgroundColor);
+    background-color: var(--content-bg-col);
     width: 300px;
     height: 200px;
-    margin: 20px;
-    border-radius: 7px;
+    border-radius: 8px;
     overflow: hidden;
     text-align: center;
-    box-shadow: var(--shadow);
-}
-
-.selectable:hover,
-.selectable:focus {
-    outline: none;
-    border: solid 3px var(--accentColor) !important;
-}
-
-.selectable:active {
-    background-color: var(--accentColor) !important;
+    display: block;
 }
 
 .card img {
@@ -67,7 +65,22 @@
     padding: 7px;
     height: 50px;
     width: 100%;
-    background-color: var(--contentBackgroundColorDark);
+    background-color: var(--content-bg-col-dark);
+}
+
+.card-controls button {
+    width: 33.3%;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+}
+
+
+/* --- editor --- */
+
+#editor-card {
+    margin: 20px;
+    display: none;
 }
 
 #editor-card .Text,
@@ -87,7 +100,7 @@
     padding: 5px;
     margin-top: 5px;
     border: solid 3px transparent;
-    background-color: var(--contentBackgroundColorDark);
+    background-color: var(--content-bg-col-dark);
     border-radius: 2.5px;
     font-size: 1.25em;
 }
@@ -95,7 +108,7 @@
 .options button:hover,
 .options button:focus {
     outline: none;
-    border: solid 3px var(--accentColor);
+    border: solid 3px var(--accent-col);
 }
 
 main a {
