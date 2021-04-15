@@ -1,4 +1,4 @@
-import * as THREE from '../res/lib/three.module.js';
+import * as THREE from '/res/lib/three.module.js';
 
 let Radius = 1
 let SegmentWidth = 30;

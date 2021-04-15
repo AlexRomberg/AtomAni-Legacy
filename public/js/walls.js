@@ -1,4 +1,4 @@
-import * as THREE from '../res/lib/three.module.js';
+import * as THREE from '/res/lib/three.module.js';
 
 export function createBox(id, style, x = 0, y = 0, z = 0, width = 10, height = 10, depth = 10, type = "force-LJ") {
     let boxGeo = new THREE.BoxGeometry(width, height, depth);

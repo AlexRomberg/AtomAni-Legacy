@@ -1,4 +1,4 @@
-import * as Experiment from '../js/experiment.js';
+import * as Experiment from '/js/experiment.js';
 let SimulationScript = {
     "charts": [],
     "atoms": [],

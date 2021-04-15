@@ -1,0 +1,17 @@
+.foreground {
+    width: 100%;
+}
+
+.info {
+    min-height: 100vh;
+    padding: 30px;
+    text-align: center;
+    background-color: var(--contentBackgroundColor);
+}
+
+.info #sim {
+    margin-top: 20px;
+    width: 100%;
+    height: calc(100vh - 200px) !important;
+    border-radius: 10px;
+}

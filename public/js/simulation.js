@@ -1,5 +1,5 @@
-import * as Three from '../res/lib/three.module.js';
-import { OrbitControls } from '../res/lib/OrbitControls.js';
+import * as Three from '/res/lib/three.module.js';
+import { OrbitControls } from '/res/lib/OrbitControls.js';
 import * as Chart from './experimentChart.js';
 import * as Calc from './calc.js';
 
