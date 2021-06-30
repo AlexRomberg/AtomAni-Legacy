@@ -68,6 +68,8 @@ app.get('/selection', userStorage.checkAuthenticated, pages.sendSelection);
 app.get('/selection/*', userStorage.checkAuthenticated, pages.sendSelection);
 
 app.get('/experiment/:id', userStorage.checkAuthenticated, pages.sendExperiment);
+app.post('/delete/:id', userStorage.checkAuthenticated, pages.handelDelete);
+app.post('/edit/:id', userStorage.checkAuthenticated, pages.handelDelete);
 
 app.get('/new/experiment', userStorage.checkAuthenticated, pages.sendNewExperiment);
 app.post('/new/experiment', userStorage.checkAuthenticated, pages.handleNewExperiment);
@@ -75,7 +77,7 @@ app.get('/new/folder', userStorage.checkAuthenticated, pages.sendNewFolder);
 app.post('/new/folder', userStorage.checkAuthenticated, pages.handleNewFolder);
 
 // accounts
-app.get('/logout', pages.handleLogout);
+eapp.get('/logout', pages.handleLogout);
 app.get('/register', userStorage.checkAuthenticated, pages.sendRegister);
 app.get('/login', userStorage.checkNotAuthenticated, pages.sendLogin);
 

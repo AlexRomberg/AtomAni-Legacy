@@ -23,10 +23,40 @@ Copyright (c) 2021 Alexander Romberg
         <%- include('header',{ origin: "../" , title: "Experimente" }) %>
         <main>
             <% if (user.canEdit) { %>
-                <div class="edit"><img id="pen" class="shadow selectable" alt="Bearbeiten"></div>
+            <div class="edit"><img id="pen" class="shadow selectable" alt="Bearbeiten"></div>
             <% } %>
             <div class="selection">
-                <%- cardString %>
+                <% cards.forEach(card=>{ %>
+                <div class="card-container selectable-no-border shadow"><a class="card shadow" href="<%- card.redirect %>">
+                        <img src="/res/img/menuIcons/<%- card.imagename %>" alt="Missing Folder Icon">
+                        <div class="Text">
+                            <h2><%- card.name %></h2>
+                        </div>
+                    </a>
+                    <% if (user.canEdit) { %>
+                    <div class="card-controls">
+                        <form action="/delete<%-card.redirect /*card.experimentId === undefined ? id : card.experimentId*/ %>" method="post">
+                            <button type="submit" class="selectable">Löschen</button>
+                        </form>
+                        <form action="/edit<%-card.redirect /*card.experimentId === undefined ? id : card.experimentId*/ %>" method="post">
+                            <button type="submit" class="selectable">Bearbeiten</button>
+                        </form>
+                    </div>
+                    <% } %>
+                </div>
+                <% }); if (user.canEdit) { %>
+                <div id="editor-card" class="card selectable-no-border shadow">
+                    <img id="editor-card-img" src="/res/img/menuIcons/add.svg" alt="Missing Folder Icon">
+                    <div class="Text">
+                        <h2>Editor</h2>
+                    </div>
+                    <div class="options">
+                        <button id="option-new-experiment">Neues Experiment</button>
+                        <button id="option-new-folder">Neuer Ordner</button>
+                        <button id="option-cancel">Abbrechen</button>
+                    </div>
+                </div>
+                <% } %>
             </div>
         </main>
         <%- include('footer.ejs', { Version }) %>

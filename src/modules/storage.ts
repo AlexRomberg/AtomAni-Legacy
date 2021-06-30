@@ -63,6 +63,10 @@ function createFolder(name: string, imagename: string, path: string, organisatio
     }
 }
 
+// function helloWorld(params:type) {
+
+// }
+
 function cleanPath(path: string): string {
     if (!path.startsWith('/')) { path = '/' + path; }
     if (!path.endsWith('/')) { path = path + '/'; }

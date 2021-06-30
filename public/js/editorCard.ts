@@ -12,8 +12,6 @@ const optionCancel = $('#option-cancel');
 
 pen.on('click', toggleCardMenu);
 
-
-
 editorCard.on('click', openMenu);
 optionCancel.on('click', closeMenu);
 

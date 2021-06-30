@@ -68,11 +68,21 @@
     background-color: var(--content-bg-col-dark);
 }
 
-.card-controls button {
-    width: 33.3%;
+.card-controls {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-controls form {
+    width: calc(50% - 1px);
     height: 50px;
+}
+
+.card-controls button {
+    width: 100%;
+    height: 100%;
     background-color: transparent;
-    border: none;
+    border-radius: 8px;
 }
 
 

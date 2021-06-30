@@ -51,17 +51,16 @@ function sendSelection(req: express.Request, res: express.Response) {
     if (origPath === path || origPath === '') {
         try {
             const experimentList = storage.getExperiments(path, user.organisation);
-            const cardString = selection.getCardsOfLayer(experimentList, req.user);
+            const cards = selection.addRedirects(experimentList);
             res.render('selection', {
                 Version,
                 path,
-                cardString,
+                cards,
                 user: req.user
             });
         } catch {
             res.redirect(`/selection`);
         }
-
     } else {
         res.redirect(`/selection${path}`);
     }
@@ -229,6 +228,15 @@ function handleEditor(req: express.Request, res: express.Response) {
     }
 }
 
+function handelDelete(req: express.Request, res: express.Response) {
+    const user: any = req.user;
+    if (user.canEdit) {
+        console.log("Delete command", req.params.id?.toString()!);
+
+        // storage.delete(req.params.id?.toString()!)
+    }
+}
+
 function sendHelp(req: express.Request, res: express.Response) {
     let html;
     try {
@@ -303,4 +311,4 @@ function checkCanEdit(req: express.Request, res: express.Response, handle: Funct
     }
 }
 
-export default { init, sendIndex, sendWelcome, sendSelection, sendExperiment, sendHelp, handle404, sendNewFolder, sendNewExperiment, handleNewExperiment, handleNewFolder, handleImport, handleEditor, handleLogout, sendRegister, sendLogin };
+export default { init, sendIndex, sendWelcome, sendSelection, sendExperiment, sendHelp, handle404, sendNewFolder, sendNewExperiment, handleNewExperiment, handleNewFolder, handleImport, handleEditor, handelDelete, handleLogout, sendRegister, sendLogin };
