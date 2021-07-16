@@ -73,11 +73,12 @@ class CDatabase {
 
             CM.log('green', 'Created Database');
         } catch (err) {
-            throw err;
-        } finally {
             if (connection) {
                 connection.end();
             }
+
+            CM.log("red", "Can't connect to or create DB. Please make sure the DB is accessable and the credentials match those of the SQL-Server.");
+            process.exit(10);
         }
     }
 
