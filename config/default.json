@@ -1,0 +1,15 @@
+{
+    "version": "V0.1 [Beta]",
+    "db": {
+        "host": "127.0.0.1",
+        "user": "atomani-admin",
+        "password": "AtomAniDBPassword",
+        "database": "atomani"
+    },
+    "server": {
+        "port": 80
+    },
+    "settings": {
+        "themecolor": "#0033ff"
+    }
+}
