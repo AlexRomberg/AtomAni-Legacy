@@ -4,10 +4,10 @@
     "description": "An atom simulation",
     "main": "src/server.js",
     "scripts": {
-        "start": "set NODE_ENV=stable&&tsc && node ./src/server.js",
-        "start-new": "set NODE_ENV=stable&&tsc && node ./src/new-server.js",
+        "start": "set NODE_ENV=stable&&tsc&&node ./src/server.js",
+        "start-old": "set NODE_ENV=stable&&tsc&&node ./src/old-server.js",
         "dev": "set NODE_ENV=stable&&nodemon ./src/server.js --ignore ./src/data/",
-        "new-dev": "set NODE_ENV=stable&&nodemon ./src/new-server.js --ignore ./src/data/",
+        "dev-old": "set NODE_ENV=stable&&nodemon ./src/old-server.js --ignore ./src/data/",
         "test": "set NODE_ENV=test&&tsc&&node ./src/test.js"
     },
     "repository": {
