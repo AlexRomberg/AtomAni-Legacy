@@ -1,0 +1,16 @@
+{
+    "version": "Basic Test",
+    "db": {
+        "host": "127.0.0.1",
+        "user": "atomani-admin",
+        "password": "AtomAniDBPassword",
+        "database": "atomanitest"
+    },
+    "server": {
+        "port": 8080
+    },
+    "settings": {
+        "themecolor": "#0033ff",
+        "loglevel": 0
+    }
+}
