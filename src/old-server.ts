@@ -77,7 +77,7 @@ app.get('/new/folder', userStorage.checkAuthenticated, pages.sendNewFolder);
 app.post('/new/folder', userStorage.checkAuthenticated, pages.handleNewFolder);
 
 // accounts
-eapp.get('/logout', pages.handleLogout);
+app.get('/logout', pages.handleLogout);
 app.get('/register', userStorage.checkAuthenticated, pages.sendRegister);
 app.get('/login', userStorage.checkNotAuthenticated, pages.sendLogin);
 
