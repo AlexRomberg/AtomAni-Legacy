@@ -7,7 +7,7 @@ import CM from './modules/consoleModule';
 export class CConfig {
     public version: string;
     public db: { host: string; user: string; password: string; database: string; };
-    public server: { port: number; };
+    public server: { port: number; sessionSecret: string };
 
     constructor() {
         this.version = this.getVersion();
@@ -33,12 +33,12 @@ export class CConfig {
         }
     }
 
-    private getServer(): { port: number; } {
+    private getServer(): { port: number; sessionSecret: string } {
         if (ConfigFile.has('server')) {
             return ConfigFile.get('server');
         } else {
             CM.error('No server settings defined in config!');
-            return { port: 80 };
+            return { port: 80, sessionSecret: "secret" };
         }
     }
 }

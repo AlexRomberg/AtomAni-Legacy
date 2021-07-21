@@ -1,4 +1,5 @@
 import MariaDB from 'mariadb';
+import { StructuredType } from 'typescript';
 import CM from './modules/consoleModule';
 
 // --------------------------------------------------------------------------------------
@@ -6,6 +7,8 @@ import CM from './modules/consoleModule';
 // --------------------------------------------------------------------------------------
 export class CDatabase {
     private DBPool: MariaDB.Pool;
+    private DBName: string;
+    private DBUser: string;
     private ValidationRegex = {
         organisation: {
             id: /[^a-zA-Z0-9]/g,
@@ -29,8 +32,6 @@ export class CDatabase {
             icon: /[^0-9a-f]/ig
         }
     };
-    private DBName: string;
-    private DBUser: string;
 
     constructor(DBConfig: { host: string; user: string; password: string; database: string; }) {
         this.DBPool = MariaDB.createPool({
@@ -105,17 +106,22 @@ export class CDatabase {
         CM.info(`Created database: ${this.DBName}`);
     }
 
-    public async drop(): Promise<void> {
-        setTimeout(() => {
+    public async drop(force: boolean = false): Promise<void> {
+        if (force) {
             this.runSQL(`DROP SCHEMA IF EXISTS ${this.DBName};`);
-            CM.error('droped Database');
-        }, 10000);
+        } else {
+            setTimeout(() => {
+                this.runSQL(`DROP SCHEMA IF EXISTS ${this.DBName};`);
+                CM.error('droped Database');
+            }, 10000);
 
-        CM.log('red', 'Database will be droped in 10 Seconds. Press [ctrl]+c to prevent this action.');
+            CM.log('red', 'Database will be droped in 10 Seconds. Press [ctrl]+c to prevent this action.');
+        }
     }
 
     private cleanInput(input: string, regex: RegExp) {
-        return input.replace(regex, '');
+        input = input.toString();
+        return input.replace(regex, '');;
     }
 
     private async runSQL(SQL: string) {
@@ -259,10 +265,18 @@ export class CDatabase {
         }
     }
 
-    public async getUser(id: string): Promise<{ UserId: number; UserIdentification: string; UserName: string; UserPW: string; UserImage: string; UserCanEdit: boolean; UserIsAdmin: boolean; OrgId: string }> {
+    public async getUserById(id: string): Promise<{ UserId: number; UserIdentification: string; UserName: string; UserPW: string; UserImage: string; UserCanEdit: boolean; UserIsAdmin: boolean; OrgId: string }> {
         id = this.cleanInput(id, this.ValidationRegex.user.id);
 
         const user = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TUsers WHERE UserId = '${id}'`);
+        return user[0];
+    }
+
+    public async getUserByName(identification: string, orgId: string): Promise<{ UserId: number; UserIdentification: string; UserName: string; UserPW: string; UserImage: string; UserCanEdit: boolean; UserIsAdmin: boolean; OrgId: string }> {
+        identification = this.cleanInput(identification, this.ValidationRegex.user.identification);
+        orgId = this.cleanInput(orgId, this.ValidationRegex.organisation.id);
+
+        const user = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TUsers WHERE UserIdentification = '${identification}' AND OrgId = '${orgId}'`);
         return user[0];
     }
 
@@ -285,7 +299,7 @@ export class CDatabase {
         isAdmin = isAdmin === true;
 
         if (await this.getOrganisation(orgId) !== null) {
-            if (await this.getUser(id) !== null) {
+            if (await this.getUserById(id) !== null) {
                 this.runSQL(`UPDATE ${this.DBName}.TUsers SET UserIdentification = '${identification}', UserName = '${name}', UserPW = '${pw}', UserImage = '${imageName}', UserCanEdit = ${canEdit}, UserIsAdmin = ${isAdmin}, OrgId = '${orgId}' WHERE UserId = ${id}`)
             } else {
                 throw new Error(`User with ID '${id}' does not exist in this organisation`);
@@ -299,7 +313,7 @@ export class CDatabase {
         id = this.cleanInput(id, this.ValidationRegex.user.id);
         imageName = this.cleanInput(imageName, this.ValidationRegex.user.imagename);
 
-        if (await this.getUser(id) !== null) {
+        if (await this.getUserById(id) !== null) {
             this.runSQL(`UPDATE ${this.DBName}.TUsers SET UserImage = '${imageName}' WHERE UserId = ${id}`)
         } else {
             throw new Error(`User with ID '${id}' does not exist in this organisation`);
