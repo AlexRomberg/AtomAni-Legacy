@@ -8,11 +8,13 @@ export class CConfig {
     public version: string;
     public db: { host: string; user: string; password: string; database: string; };
     public server: { port: number; sessionSecret: string };
+    public settings: { themecolor: string; loglevel: number };
 
     constructor() {
         this.version = this.getVersion();
         this.db = this.getDBConfig();
         this.server = this.getServer();
+        this.settings = this.getSettings();
     }
 
     private getVersion(): string | 'Version unknown' {
@@ -39,6 +41,15 @@ export class CConfig {
         } else {
             CM.error('No server settings defined in config!');
             return { port: 80, sessionSecret: "secret" };
+        }
+    }
+
+    private getSettings(): { themecolor: string; loglevel: number } {
+        if (ConfigFile.has('settings')) {
+            return ConfigFile.get('settings');
+        } else {
+            CM.error('No server settings defined in config!');
+            return { themecolor: "#00aaff", loglevel: 1 };
         }
     }
 }

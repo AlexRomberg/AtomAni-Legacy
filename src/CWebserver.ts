@@ -7,8 +7,9 @@ import flash from 'express-flash';
 import session from 'express-session';
 import passport from 'passport';
 import { CPassportConfig } from './CPassportConfig';
+import morgan from 'morgan';
 
-export class CServer {
+export class CWebserver {
     private App: express.Express;
     private Database: CDatabase;
     private Pages: CPages;
@@ -28,6 +29,9 @@ export class CServer {
 
 
         this.App.set('view engine', 'ejs');
+        if (this.Config.settings.loglevel >= 4) {
+            this.App.use(morgan('dev'));
+        }
         this.App.use(express.static('public'));
         this.App.use(express.urlencoded({ extended: false, limit: '1kb' }));
         this.App.use(express.json({ limit: '1kb' }));

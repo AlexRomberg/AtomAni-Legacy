@@ -5,9 +5,9 @@
     "main": "src/server.js",
     "scripts": {
         "start": "set NODE_ENV=stable&&tsc&&node ./src/server.js",
-        "start-old": "set NODE_ENV=stable&&tsc&&node ./src/old-server.js",
-        "dev": "set NODE_ENV=stable&&nodemon ./src/server.js --ignore ./src/data/",
-        "dev-old": "set NODE_ENV=stable&&nodemon ./src/old-server.js --ignore ./src/data/",
+        "start-old": "tsc&&node ./src/old-server.js",
+        "dev": "set NODE_ENV=dev&&nodemon ./src/server.js --ignore ./src/data/",
+        "dev-old": "nodemon ./src/old-server.js --ignore ./src/data/",
         "test": "set NODE_ENV=test&&tsc&&node ./src/test.js"
     },
     "repository": {
@@ -31,6 +31,7 @@
         "@types/express-flash": "^0.0.2",
         "@types/express-session": "^1.17.3",
         "@types/jquery": "^3.5.5",
+        "@types/morgan": "^1.9.3",
         "@types/passport": "^1.0.6",
         "@types/passport-local": "^1.0.33",
         "@types/showdown": "^1.9.3",
@@ -47,6 +48,7 @@
         "express-flash": "^0.0.2",
         "express-session": "^1.17.2",
         "mariadb": "^2.5.4",
+        "morgan": "^1.10.0",
         "node-json-db": "^1.3.0",
         "passport": "^0.4.1",
         "passport-local": "^1.0.0",

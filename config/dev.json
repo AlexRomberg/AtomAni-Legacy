@@ -1,5 +1,5 @@
 {
-    "version": "V0.1 [Beta]",            // default: Version unknown
+    "version": "V0.1 [Beta-dev]",        // default: Version unknown
     "db": {
         "host": "127.0.0.1",             // default: 127.0.0.1
         "user": "atomani-admin",         // default: root
@@ -12,6 +12,6 @@
     },
     "settings": {
         "themecolor": "#0033ff",
-        "loglevel": 3                    // default: 1 | 0: no logging | 1: error-messages | 2: warnings | 3: information | 4: webserver access
+        "loglevel": 4                    // default: 1 | 0: no logging | 1: error-messages | 2: warnings | 3: information | 4: webserver access
     }
 }

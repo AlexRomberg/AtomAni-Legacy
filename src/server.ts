@@ -2,7 +2,7 @@
 import CM from './modules/consoleModule'
 import { CConfig } from './CConfig';
 import { CDatabase } from './CDatabase';
-import { CServer } from './CServer';
+import { CWebserver } from './CWebserver';
 
 // Console output
 console.clear();
@@ -20,6 +20,6 @@ function runServer() {
     CM.log('cyan', `Version: ${Config.version}`);
     CM.log('blue', `running at: http://localhost:${Config.server.port}`);
 
-    const Server = new CServer(DB, Config);
-    Server.initPagelisteners();
+    const Webserver = new CWebserver(DB, Config);
+    Webserver.initPagelisteners();
 }
