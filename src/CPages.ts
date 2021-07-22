@@ -1,12 +1,18 @@
 import CM from './modules/consoleModule';
 import help from './modules/helpMarkdown';
+import { CValidation } from './CValidation';
 import express from 'express';
+import { CDatabase } from './CDatabase';
 
 export class CPages {
     private Version: string;
+    private Validation: CValidation;
+    private Database: CDatabase;
 
-    constructor(version: string) {
+    constructor(version: string, database: CDatabase) {
         this.Version = version;
+        this.Validation = new CValidation();
+        this.Database = database;
     }
 
     public async sendIndex(req: express.Request, res: express.Response) {
@@ -32,25 +38,41 @@ export class CPages {
     }
 
     public async sendSelection(req: express.Request, res: express.Response) {
-        const origPath = req.path.slice(10);
-        // let path = storage.cleanPath(origPath);
-        // const user: any = req.user;
-        // if (origPath === path || origPath === '') {
-        //     try {
-        //         const experimentList = storage.getExperiments(path, user.organisation);
-        //         const cards = selection.addRedirects(experimentList);
-        //         res.render('selection', {
-        //             Version: this.Version,
-        //             path,
-        //             cards,
-        //             user: req.user
-        //         });
-        //     } catch {
-        //         res.redirect(`/selection`);
-        //     }
-        // } else {
-        //     res.redirect(`/selection${path}`);
-        // }
+        let folderItems, cards, folder, folderID, parentFolder;
+
+        try {
+            try {
+                folderID = await this.getFolderId(req);
+
+                if (this.Validation.checkNumericBounderies(folderID, this.Validation.NumericBounderies.folder.id)) {
+                    try {
+                        // @ts-ignore
+                        folderItems = await this.Database.getFolderItems(folderID, req.user.organisation);
+                        cards = this.prepareContentArray(folderItems);
+                        folder = await this.Database.getFolder(folderID);
+                        parentFolder = folder.ParentFoldId;
+
+                        res.render('selection', {
+                            Version: this.Version,
+                            path: folderID,
+                            cards,
+                            parentFolder,
+                            user: req.user
+                        });
+                    } catch {
+                        this.send404(req, res, "Folder not found!", "The folder with this ID does not exist.");
+                    }
+                } else {
+                    this.send404(req, res, "Folder not found!", "The folder ID is outside the permittet bounderies.");
+                }
+            } catch (error) {
+                this.send404(req, res, "Folder not found!", "This Organisation does not have a root folder.");
+                return;
+            }
+        } catch (err) {
+            CM.error(err);
+            this.send404(req, res, "Folder not found!", ":( there was an internal Error");
+        }
     }
 
     public async sendExperiment(req: express.Request, res: express.Response) {
@@ -311,5 +333,43 @@ export class CPages {
         } else {
             res.redirect('/');
         }
+    }
+
+    // help functions
+    private prepareContentArray(input: { folders: [{ FoldId: number; FoldIcon: string; FoldName: string; ParentFoldId: number; OrgId: string }?]; experiments: [{ ExpId: number; ExpName: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }?] }): [{ name: string; imagename: string; redirect: string }?] {
+        let cards: [{ name: string; imagename: string; redirect: string }?] = [];
+        if (input.folders !== undefined) {
+            input.folders.forEach(folder => {
+                cards.push({ name: folder!.FoldName, imagename: folder!.FoldIcon, redirect: `selection/${folder!.FoldId}` });
+            });
+        }
+        if (input.experiments !== undefined) {
+            input.experiments.forEach(experiment => {
+                cards.push({ name: experiment!.ExpName, imagename: experiment!.ExpIcon, redirect: `experimen/${experiment!.ExpId}` });
+            });
+        }
+        return cards;
+    }
+
+    private async getFolderId(req: express.Request): Promise<string> {
+        let folderID: string;
+
+        if ('id' in req.params) {
+            folderID = req.params.id?.toString()!;
+            folderID = this.Validation.cleanInput(folderID, this.Validation.Regex.folder.id);
+        } else {
+            // @ts-ignore
+            let OrgId = req.user.OrgId;
+            this.Validation.cleanInput(OrgId, this.Validation.Regex.organisation.id);
+            const folder = await this.Database.getRootFolder(OrgId);
+
+            if (folder === null) {
+                throw new Error("This Organisation does not have a root folder.");
+            } else {
+                folderID = folder.FoldId.toString();
+            }
+        }
+
+        return folderID;
     }
 }

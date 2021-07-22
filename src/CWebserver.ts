@@ -20,7 +20,7 @@ export class CWebserver {
         this.App = express();
         this.Database = database;
         this.Config = config;
-        this.Pages = new CPages(this.Config.version);
+        this.Pages = new CPages(this.Config.version, database);
         this.PassportConfig = new CPassportConfig(
             passport,
             database.getUserByName.bind(database),
@@ -53,7 +53,7 @@ export class CWebserver {
         this.App.get('/welcome', this.checkNotAuthenticated, this.Pages.sendWelcome.bind(this.Pages));
 
         this.App.get('/selection', this.checkAuthenticated, this.Pages.sendSelection.bind(this.Pages));
-        this.App.get('/selection/*', this.checkAuthenticated, this.Pages.sendSelection.bind(this.Pages));
+        this.App.get('/selection/:id', this.checkAuthenticated, this.Pages.sendSelection.bind(this.Pages));
 
         this.App.get('/experiment/:id', this.checkAuthenticated, this.Pages.sendExperiment.bind(this.Pages));
         this.App.post('/delete/:id', this.checkAuthenticated, this.Pages.handelDelete.bind(this.Pages));

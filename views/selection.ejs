@@ -11,7 +11,7 @@ Copyright (c) 2021 Alexander Romberg
     <link rel="stylesheet" href="/css/selection.css">
 
     <%- include('favicon'); %>
-    <% if (user.canEdit) { %>
+    <% if (user.CanEdit) { %>
     <!-- scripts -->
     <script src="/res/lib/jquery.min.js"></script>
     <script src="/js/editorCard.js" defer></script>
@@ -22,7 +22,7 @@ Copyright (c) 2021 Alexander Romberg
     <div class="container">
         <%- include('header',{ origin: "../" , title: "Experimente" }) %>
         <main>
-            <% if (user.canEdit) { %>
+            <% if (user.CanEdit) { %>
             <div class="edit"><img id="pen" class="shadow selectable" alt="Bearbeiten"></div>
             <% } %>
             <div class="selection">
@@ -33,7 +33,7 @@ Copyright (c) 2021 Alexander Romberg
                             <h2><%- card.name %></h2>
                         </div>
                     </a>
-                    <% if (user.canEdit) { %>
+                    <% if (user.CanEdit) { %>
                     <div class="card-controls">
                         <form action="/delete<%-card.redirect /*card.experimentId === undefined ? id : card.experimentId*/ %>" method="post">
                             <button type="submit" class="selectable">Löschen</button>
@@ -44,7 +44,7 @@ Copyright (c) 2021 Alexander Romberg
                     </div>
                     <% } %>
                 </div>
-                <% }); if (user.canEdit) { %>
+                <% }); if (user.CanEdit) { %>
                 <div id="editor-card" class="card selectable-no-border shadow">
                     <img id="editor-card-img" src="/res/img/menuIcons/add.svg" alt="Missing Folder Icon">
                     <div class="Text">

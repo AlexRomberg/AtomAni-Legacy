@@ -1,6 +1,7 @@
 import MariaDB from 'mariadb';
-import { StructuredType } from 'typescript';
 import CM from './modules/consoleModule';
+import { CValidation } from './CValidation';
+
 
 // --------------------------------------------------------------------------------------
 // Database Class
@@ -9,29 +10,7 @@ export class CDatabase {
     private DBPool: MariaDB.Pool;
     private DBName: string;
     private DBUser: string;
-    private ValidationRegex = {
-        organisation: {
-            id: /[^a-zA-Z0-9]/g,
-            name: /[^a-z0-9\u00E0-\u00FC_\-\ ]/ig
-        },
-        user: {
-            id: /[^0-9]/g,
-            identification: /[^a-zA-Z0-9]/g,
-            name: /[^a-z0-9\u00E0-\u00FC_\-\ ]/ig,
-            pw: /[^$0-9a-zA-Z/\.]|^.{0,59}$|^.{61,}$/g,
-            imagename: /[^0-9a-f]/ig
-        },
-        folder: {
-            id: /[^\-0-9]/g,
-            name: /[^a-z0-9\u00E0-\u00FC_\-\ ]/ig,
-            icon: /[^0-9a-f]/ig
-        },
-        experiment: {
-            id: /[^0-9a-f]/ig,
-            name: /[^a-z0-9\u00E0-\u00FC_\-\ ]/ig,
-            icon: /[^0-9a-f]/ig
-        }
-    };
+    private Validation: CValidation;
 
     constructor(DBConfig: { host: string; user: string; password: string; database: string; }) {
         this.DBPool = MariaDB.createPool({
@@ -41,6 +20,7 @@ export class CDatabase {
         });
         this.DBName = DBConfig.database;
         this.DBUser = DBConfig.user;
+        this.Validation = new CValidation();
     }
 
     public async setup(onConnectioRunning: Function) {
@@ -99,7 +79,7 @@ export class CDatabase {
     public async create(): Promise<void> {
         await this.runSQL(`CREATE SCHEMA IF NOT EXISTS ${this.DBName} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
         await this.runSQL(`CREATE TABLE IF NOT EXISTS ${this.DBName}.TOrganisations ( OrgId VARCHAR(50) NOT NULL, OrgName VARCHAR(100) NOT NULL, PRIMARY KEY (OrgId) ) ENGINE = InnoDB;`);
-        await this.runSQL(`CREATE TABLE IF NOT EXISTS ${this.DBName}.TFolders ( FoldId INT UNSIGNED NOT NULL AUTO_INCREMENT, FoldIcon CHAR(32) NULL, FoldName VARCHAR(100) NOT NULL, ParentFoldId INT UNSIGNED NOT NULL, OrgId VARCHAR(50) NOT NULL, PRIMARY KEY (FoldId) ) ENGINE = InnoDB;`);
+        await this.runSQL(`CREATE TABLE IF NOT EXISTS ${this.DBName}.TFolders ( FoldId INT UNSIGNED NOT NULL AUTO_INCREMENT, FoldIcon CHAR(32) NULL, FoldName VARCHAR(100) NOT NULL, ParentFoldId INT NOT NULL, OrgId VARCHAR(50) NOT NULL, PRIMARY KEY (FoldId) ) ENGINE = InnoDB;`);
         await this.runSQL(`CREATE TABLE IF NOT EXISTS ${this.DBName}.TExperiments ( ExpId INT UNSIGNED NOT NULL AUTO_INCREMENT, ExpName VARCHAR(100) NOT NULL, ExpIcon CHAR(32) NULL, ExpDeletable TINYINT NOT NULL, FoldId INT UNSIGNED NOT NULL, PRIMARY KEY (ExpId) ) ENGINE = InnoDB;`);
         await this.runSQL(`CREATE TABLE IF NOT EXISTS ${this.DBName}.TUsers ( UserId INT UNSIGNED NOT NULL AUTO_INCREMENT, UserIdentification VARCHAR(50) NOT NULL, UserName VARCHAR(100) NOT NULL, UserPW CHAR(60) NOT NULL, UserImage CHAR(32) NULL, UserCanEdit TINYINT NOT NULL, UserIsAdmin TINYINT NOT NULL, OrgId VARCHAR(50) NOT NULL, PRIMARY KEY (UserId)) ENGINE = InnoDB;`);
 
@@ -117,11 +97,6 @@ export class CDatabase {
 
             CM.log('red', 'Database will be droped in 10 Seconds. Press [ctrl]+c to prevent this action.');
         }
-    }
-
-    private cleanInput(input: string, regex: RegExp) {
-        input = input.toString();
-        return input.replace(regex, '');;
     }
 
     private async runSQL(SQL: string) {
@@ -175,8 +150,8 @@ export class CDatabase {
     //#region
 
     public async addOrganisation(id: string, name: string): Promise<void> {
-        id = this.cleanInput(id, this.ValidationRegex.organisation.id);
-        name = this.cleanInput(name, this.ValidationRegex.organisation.name);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.organisation.id);
+        name = this.Validation.cleanInput(name, this.Validation.Regex.organisation.name);
 
         if (await this.getOrganisation(id) === null) {
             this.runSQL(`INSERT INTO ${this.DBName}.TOrganisations (OrgId, OrgName) VALUES ('${id}','${name}');`);
@@ -188,27 +163,27 @@ export class CDatabase {
     }
 
     public async getOrganisation(id: string): Promise<{ OrgId: string; OrgName: string; } | null> {
-        id = this.cleanInput(id, this.ValidationRegex.organisation.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.organisation.id);
 
-        const organisation = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TOrganisations WHERE OrgId = '${id}'`);
+        const organisation = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TOrganisations WHERE OrgId = '${id}';`);
         return organisation[0] === undefined ? null : organisation[0];
     }
 
     public async countOrganisations(): Promise<number> {
-        const organisations = await this.runSQLQuerry(`SELECT count(*) AS count FROM ${this.DBName}.TOrganisations`);
+        const organisations = await this.runSQLQuerry(`SELECT count(*) AS count FROM ${this.DBName}.TOrganisations;`);
         return organisations[0].count;
     }
 
     public async searchOrganisations(searchterm: string): Promise<[{ OrgId: string; OrgName: string; }]> {
-        searchterm = this.cleanInput(searchterm, this.ValidationRegex.organisation.name);
+        searchterm = this.Validation.cleanInput(searchterm, this.Validation.Regex.organisation.name);
 
-        let organisations = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TOrganisations WHERE (OrgId LIKE '%${searchterm}%') OR (OrgName LIKE '%${searchterm}%') OR (OrgId SOUNDS LIKE '%${searchterm}%') OR (OrgName SOUNDS LIKE '%${searchterm}%')`);
+        let organisations = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TOrganisations WHERE (OrgId LIKE '%${searchterm}%') OR (OrgName LIKE '%${searchterm}%') OR (OrgId SOUNDS LIKE '%${searchterm}%') OR (OrgName SOUNDS LIKE '%${searchterm}%');`);
         return organisations;
     }
 
     public async updateOrganisation(id: string, name: string): Promise<void> {
-        id = this.cleanInput(id, this.ValidationRegex.organisation.id);
-        name = this.cleanInput(name, this.ValidationRegex.organisation.name);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.organisation.id);
+        name = this.Validation.cleanInput(name, this.Validation.Regex.organisation.name);
 
         if (await this.getOrganisation(id) !== null) {
             this.runSQL(`UPDATE ${this.DBName}.TOrganisations SET OrgName = '${name}' WHERE OrgId = '${id}';`);
@@ -218,7 +193,7 @@ export class CDatabase {
     }
 
     public async removeOrganisation(id: string): Promise<void> {
-        id = this.cleanInput(id, this.ValidationRegex.organisation.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.organisation.id);
 
         if (await this.countMembers(id) <= 1) {
             this.runSQL(`REMOVE FROM ${this.DBName}.TOrganisations WHERE OrgId = ${id};`)
@@ -228,14 +203,14 @@ export class CDatabase {
     }
 
     public async getMembers(id: string): Promise<[{ UserId: number; UserIdentification: string; UserName: string; UserImagename: string; UserCanEdit: boolean; UserIsAdmin: boolean; OrgId: string; }]> {
-        id = this.cleanInput(id, this.ValidationRegex.organisation.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.organisation.id);
 
         let users = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TUsers WHERE OrgId = '${id}';`);
         return users;
     }
 
     public async countMembers(id: string): Promise<number> {
-        id = this.cleanInput(id, this.ValidationRegex.organisation.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.organisation.id);
 
         let users = await this.runSQLQuerry(`SELECT count(*) as count FROM ${this.DBName}.TUsers WHERE OrgId = '${id}';`);
         return users[0].count;
@@ -247,10 +222,10 @@ export class CDatabase {
     // ---------------------------------------------------------------------------------
     //#region
     public async addUser(identification: string, name: string, pw: string, canEdit: boolean, isAdmin: boolean, orgId: string): Promise<void> {
-        identification = this.cleanInput(identification, this.ValidationRegex.user.identification);
-        name = this.cleanInput(name, this.ValidationRegex.user.name);
-        pw = this.cleanInput(pw, this.ValidationRegex.user.pw);
-        orgId = this.cleanInput(orgId, this.ValidationRegex.organisation.id);
+        identification = this.Validation.cleanInput(identification, this.Validation.Regex.user.identification);
+        name = this.Validation.cleanInput(name, this.Validation.Regex.user.name);
+        pw = this.Validation.cleanInput(pw, this.Validation.Regex.user.pw);
+        orgId = this.Validation.cleanInput(orgId, this.Validation.Regex.organisation.id);
         canEdit = canEdit === true;
         isAdmin = isAdmin === true;
 
@@ -266,41 +241,41 @@ export class CDatabase {
     }
 
     public async getUserById(id: string): Promise<{ UserId: number; UserIdentification: string; UserName: string; UserPW: string; UserImage: string; UserCanEdit: boolean; UserIsAdmin: boolean; OrgId: string }> {
-        id = this.cleanInput(id, this.ValidationRegex.user.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.user.id);
 
-        const user = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TUsers WHERE UserId = '${id}'`);
+        const user = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TUsers WHERE UserId = '${id}';`);
         return user[0];
     }
 
     public async getUserByName(identification: string, orgId: string): Promise<{ UserId: number; UserIdentification: string; UserName: string; UserPW: string; UserImage: string; UserCanEdit: boolean; UserIsAdmin: boolean; OrgId: string }> {
-        identification = this.cleanInput(identification, this.ValidationRegex.user.identification);
-        orgId = this.cleanInput(orgId, this.ValidationRegex.organisation.id);
+        identification = this.Validation.cleanInput(identification, this.Validation.Regex.user.identification);
+        orgId = this.Validation.cleanInput(orgId, this.Validation.Regex.organisation.id);
 
-        const user = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TUsers WHERE UserIdentification = '${identification}' AND OrgId = '${orgId}'`);
+        const user = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TUsers WHERE UserIdentification = '${identification}' AND OrgId = '${orgId}';`);
         return user[0];
     }
 
     public async userExists(identification: string, orgId: string): Promise<boolean> {
-        identification = this.cleanInput(identification, this.ValidationRegex.user.identification);
-        orgId = this.cleanInput(orgId, this.ValidationRegex.organisation.id);
+        identification = this.Validation.cleanInput(identification, this.Validation.Regex.user.identification);
+        orgId = this.Validation.cleanInput(orgId, this.Validation.Regex.organisation.id);
 
-        const usercount = await this.runSQLQuerry(`SELECT count(*) as count FROM ${this.DBName}.TUsers WHERE UserIdentification = '${identification}' AND OrgId = '${orgId}'`);
+        const usercount = await this.runSQLQuerry(`SELECT count(*) as count FROM ${this.DBName}.TUsers WHERE UserIdentification = '${identification}' AND OrgId = '${orgId}';`);
         return usercount[0].count > 0;
     }
 
     public async updateUser(id: string, identification: string, name: string, pw: string, imageName: string, canEdit: boolean, isAdmin: boolean, orgId: string): Promise<void> {
-        id = this.cleanInput(id, this.ValidationRegex.user.id);
-        identification = this.cleanInput(identification, this.ValidationRegex.user.identification);
-        name = this.cleanInput(name, this.ValidationRegex.user.name);
-        pw = this.cleanInput(pw, this.ValidationRegex.user.pw);
-        imageName = this.cleanInput(imageName, this.ValidationRegex.user.imagename);
-        orgId = this.cleanInput(orgId, this.ValidationRegex.organisation.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.user.id);
+        identification = this.Validation.cleanInput(identification, this.Validation.Regex.user.identification);
+        name = this.Validation.cleanInput(name, this.Validation.Regex.user.name);
+        pw = this.Validation.cleanInput(pw, this.Validation.Regex.user.pw);
+        imageName = this.Validation.cleanInput(imageName, this.Validation.Regex.user.imagename);
+        orgId = this.Validation.cleanInput(orgId, this.Validation.Regex.organisation.id);
         canEdit = canEdit === true;
         isAdmin = isAdmin === true;
 
         if (await this.getOrganisation(orgId) !== null) {
             if (await this.getUserById(id) !== null) {
-                this.runSQL(`UPDATE ${this.DBName}.TUsers SET UserIdentification = '${identification}', UserName = '${name}', UserPW = '${pw}', UserImage = '${imageName}', UserCanEdit = ${canEdit}, UserIsAdmin = ${isAdmin}, OrgId = '${orgId}' WHERE UserId = ${id}`)
+                this.runSQL(`UPDATE ${this.DBName}.TUsers SET UserIdentification = '${identification}', UserName = '${name}', UserPW = '${pw}', UserImage = '${imageName}', UserCanEdit = ${canEdit}, UserIsAdmin = ${isAdmin}, OrgId = '${orgId}' WHERE UserId = ${id};`)
             } else {
                 throw new Error(`User with ID '${id}' does not exist in this organisation`);
             }
@@ -310,20 +285,20 @@ export class CDatabase {
     }
 
     public async updateUserImage(id: string, imageName: string): Promise<void> {
-        id = this.cleanInput(id, this.ValidationRegex.user.id);
-        imageName = this.cleanInput(imageName, this.ValidationRegex.user.imagename);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.user.id);
+        imageName = this.Validation.cleanInput(imageName, this.Validation.Regex.user.imagename);
 
         if (await this.getUserById(id) !== null) {
-            this.runSQL(`UPDATE ${this.DBName}.TUsers SET UserImage = '${imageName}' WHERE UserId = ${id}`)
+            this.runSQL(`UPDATE ${this.DBName}.TUsers SET UserImage = '${imageName}' WHERE UserId = ${id};`)
         } else {
             throw new Error(`User with ID '${id}' does not exist in this organisation`);
         }
     }
 
     public async removeUser(id: string): Promise<void> {
-        id = this.cleanInput(id, this.ValidationRegex.user.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.user.id);
 
-        this.runSQL(`REMOVE FROM ${this.DBName}.TUsers WHERE UserId = '${id}'`)
+        this.runSQL(`REMOVE FROM ${this.DBName}.TUsers WHERE UserId = '${id}';`)
     }
     //#endregion
 
@@ -332,9 +307,9 @@ export class CDatabase {
     // ---------------------------------------------------------------------------------
     //#region
     public async addFolder(name: string, orgId: string, parentFolder: string): Promise<void> {
-        name = this.cleanInput(name, this.ValidationRegex.folder.name);
-        orgId = this.cleanInput(orgId, this.ValidationRegex.organisation.id);
-        parentFolder = this.cleanInput(parentFolder, this.ValidationRegex.folder.id);
+        name = this.Validation.cleanInput(name, this.Validation.Regex.folder.name);
+        orgId = this.Validation.cleanInput(orgId, this.Validation.Regex.organisation.id);
+        parentFolder = this.Validation.cleanInput(parentFolder, this.Validation.Regex.folder.id);
 
         if (await this.getOrganisation(orgId) !== null) {
             if (parentFolder === '-1' || await this.getFolder(parentFolder) !== null) {
@@ -348,23 +323,30 @@ export class CDatabase {
     }
 
     public async getFolder(id: string): Promise<{ FoldId: number; FoldIcon: string; FoldName: string; ParentFoldId: number; OrgId: string }> {
-        id = this.cleanInput(id, this.ValidationRegex.folder.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.folder.id);
 
-        const folder = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TFolders WHERE FoldId = '${id}'`);
+        const folder = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TFolders WHERE FoldId = '${id}';`);
+        return folder[0];
+    }
+
+    public async getRootFolder(OrgId: string): Promise<{ FoldId: number; FoldIcon: string; FoldName: string; ParentFoldId: number; OrgId: string }> {
+        OrgId = this.Validation.cleanInput(OrgId, this.Validation.Regex.organisation.id);
+
+        const folder = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TFolders WHERE ParentFoldId = -1 AND OrgId = '${OrgId}';`);
         return folder[0];
     }
 
     public async updateFolder(id: string, name: string, icon: string, parentFolder: string, orgId: string): Promise<void> {
-        id = this.cleanInput(id, this.ValidationRegex.folder.id);
-        name = this.cleanInput(name, this.ValidationRegex.folder.name);
-        icon = this.cleanInput(icon, this.ValidationRegex.folder.icon);
-        parentFolder = this.cleanInput(parentFolder, this.ValidationRegex.folder.id);
-        orgId = this.cleanInput(orgId, this.ValidationRegex.organisation.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.folder.id);
+        name = this.Validation.cleanInput(name, this.Validation.Regex.folder.name);
+        icon = this.Validation.cleanInput(icon, this.Validation.Regex.folder.icon);
+        parentFolder = this.Validation.cleanInput(parentFolder, this.Validation.Regex.folder.id);
+        orgId = this.Validation.cleanInput(orgId, this.Validation.Regex.organisation.id);
 
         if (await this.getOrganisation(orgId) !== null) {
             if (await this.getFolder(id) !== null) {
                 if (await this.getFolder(parentFolder) !== null) {
-                    this.runSQL(`UPDATE ${this.DBName}.TFolders SET FoldName = '${name}', FoldIcon = '${icon}', ParentFoldId = '${parentFolder}', OrgId = '${orgId}' WHERE FoldId = ${id}`);
+                    this.runSQL(`UPDATE ${this.DBName}.TFolders SET FoldName = '${name}', FoldIcon = '${icon}', ParentFoldId = '${parentFolder}', OrgId = '${orgId}' WHERE FoldId = ${id};`);
                 } else {
                     throw new Error(`ParentFolder with ID '${parentFolder}' does not exist in this organisation`);
                 }
@@ -377,29 +359,29 @@ export class CDatabase {
     }
 
     public async updateFolderImage(id: string, icon: string): Promise<void> {
-        id = this.cleanInput(id, this.ValidationRegex.folder.icon);
-        icon = this.cleanInput(icon, this.ValidationRegex.folder.icon);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.folder.icon);
+        icon = this.Validation.cleanInput(icon, this.Validation.Regex.folder.icon);
 
         if (await this.getFolder(id) !== null) {
-            this.runSQL(`UPDATE ${this.DBName}.TFolders SET FoldIcon = '${icon}' WHERE FoldId = ${id}`);
+            this.runSQL(`UPDATE ${this.DBName}.TFolders SET FoldIcon = '${icon}' WHERE FoldId = ${id};`);
         } else {
             throw new Error(`Folder with ID '${id}' does not exist in this organisation`);
         }
     }
 
-    public async getFolderItems(id: string): Promise<{ folders: [{ FoldId: number; FoldIcon: string; FoldName: string; ParentFoldId: number; OrgId: string }?], experiments: [{ ExpId: number, ExpName: string, ExpIcon: string, ExpDeletable: boolean, FoldId: number }?] }> {
-        id = this.cleanInput(id, this.ValidationRegex.folder.id);
+    public async getFolderItems(id: string): Promise<{ folders: [{ FoldId: number; FoldIcon: string; FoldName: string; ParentFoldId: number; OrgId: string }?]; experiments: [{ ExpId: number; ExpName: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }?] }> {
+        id = this.Validation.cleanInput(id, this.Validation.Regex.folder.id);
 
-        const folders = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TFolders WHERE ParentFoldId = '${id}'`);
-        const experiments = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TExperiments WHERE FoldId = '${id}'`);
+        const folders = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TFolders WHERE ParentFoldId = '${id}';`);
+        const experiments = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TExperiments WHERE FoldId = '${id}';`);
         return { folders, experiments };
     }
 
     public async removeFolder(id: string): Promise<void> {
-        id = this.cleanInput(id, this.ValidationRegex.folder.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.folder.id);
         const folderItems = await this.getFolderItems(id);
         if (folderItems.folders.length === 0 && folderItems.experiments.length === 0) {
-            this.runSQL(`REMOVE FROM ${this.DBName}.TFolders WHERE FoldId = '${id}'`);
+            this.runSQL(`REMOVE FROM ${this.DBName}.TFolders WHERE FoldId = '${id}';`);
         } else {
             throw new Error("Folder is not empty!");
         }
@@ -411,8 +393,8 @@ export class CDatabase {
     // ---------------------------------------------------------------------------------
     //#region
     public async addExperiments(name: string, deletable: boolean, folder: string): Promise<void> {
-        name = this.cleanInput(name, this.ValidationRegex.experiment.name);
-        folder = this.cleanInput(folder, this.ValidationRegex.folder.id);
+        name = this.Validation.cleanInput(name, this.Validation.Regex.experiment.name);
+        folder = this.Validation.cleanInput(folder, this.Validation.Regex.folder.id);
         deletable = deletable === true;
 
         if (folder === '-1' || await this.getFolder(folder) !== null) {
@@ -423,22 +405,22 @@ export class CDatabase {
     }
 
     public async getExperiment(id: string): Promise<{ ExpId: number; ExpName: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }> {
-        id = this.cleanInput(id, this.ValidationRegex.experiment.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.experiment.id);
 
-        const experiment = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TExperiments WHERE ExpId = '${id}'`);
+        const experiment = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TExperiments WHERE ExpId = '${id}';`);
         return experiment[0];
     }
 
     public async updateExperiment(id: string, name: string, icon: string, deletable: boolean, FoldId: string): Promise<void> {
-        id = this.cleanInput(id, this.ValidationRegex.experiment.id);
-        name = this.cleanInput(name, this.ValidationRegex.experiment.name);
-        icon = this.cleanInput(icon, this.ValidationRegex.experiment.icon);
-        FoldId = this.cleanInput(FoldId, this.ValidationRegex.folder.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.experiment.id);
+        name = this.Validation.cleanInput(name, this.Validation.Regex.experiment.name);
+        icon = this.Validation.cleanInput(icon, this.Validation.Regex.experiment.icon);
+        FoldId = this.Validation.cleanInput(FoldId, this.Validation.Regex.folder.id);
         deletable = deletable === true;
 
         if (await this.getFolder(FoldId) !== null) {
             if (await this.getExperiment(id) !== null) {
-                this.runSQL(`UPDATE ${this.DBName}.TExperiments SET ExpName = '${name}', ExpIcon = '${icon}', ExpDeletable = '${deletable}', FoldId = '${FoldId}' WHERE ExpId = ${id}`);
+                this.runSQL(`UPDATE ${this.DBName}.TExperiments SET ExpName = '${name}', ExpIcon = '${icon}', ExpDeletable = '${deletable}', FoldId = '${FoldId}' WHERE ExpId = ${id};`);
             } else {
                 throw new Error(`Experiment with ID '${id}' does not exist.`);
             }
@@ -448,18 +430,18 @@ export class CDatabase {
     }
 
     public async updateExperimentImage(id: string, icon: string): Promise<void> {
-        id = this.cleanInput(id, this.ValidationRegex.experiment.id);
-        icon = this.cleanInput(icon, this.ValidationRegex.experiment.icon);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.experiment.id);
+        icon = this.Validation.cleanInput(icon, this.Validation.Regex.experiment.icon);
 
         if (await this.getExperiment(id) !== null) {
-            this.runSQL(`UPDATE ${this.DBName}.TExperiments SET ExpIcon = '${icon}' WHERE ExpId = ${id}`);
+            this.runSQL(`UPDATE ${this.DBName}.TExperiments SET ExpIcon = '${icon}' WHERE ExpId = ${id};`);
         } else {
             throw new Error(`Experiment with ID '${id}' does not exist.`);
         }
     }
 
     public async getExperimentOrganisation(id: string): Promise<{ OrgId: string }> {
-        id = this.cleanInput(id, this.ValidationRegex.experiment.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.experiment.id);
 
         const organisation = await this.runSQLQuerry(`SELECT OrgId FROM ${this.DBName}.TExperiments, ${this.DBName}.TFolders WHERE ${this.DBName}.TExperiments.ExpId = '${id}' AND ${this.DBName}.TExperiments.FoldId = ${this.DBName}.TFolders.FoldId;`);
 
@@ -467,9 +449,9 @@ export class CDatabase {
     }
 
     public async removeExperiment(id: string): Promise<void> {
-        id = this.cleanInput(id, this.ValidationRegex.experiment.id);
+        id = this.Validation.cleanInput(id, this.Validation.Regex.experiment.id);
 
-        this.runSQL(`REMOVE FROM ${this.DBName}.TExperiments WHERE ExpId = '${id}'`);
+        this.runSQL(`REMOVE FROM ${this.DBName}.TExperiments WHERE ExpId = '${id}';`);
     }
     //#endregion
 
