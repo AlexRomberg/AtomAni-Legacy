@@ -3,16 +3,19 @@ import help from './modules/helpMarkdown';
 import { CValidation } from './CValidation';
 import express from 'express';
 import { CDatabase } from './CDatabase';
+import { CStorage } from './CStorage';
 
 export class CPages {
     private Version: string;
     private Validation: CValidation;
     private Database: CDatabase;
+    private Storage: CStorage;
 
     constructor(version: string, database: CDatabase) {
         this.Version = version;
         this.Validation = new CValidation();
         this.Database = database;
+        this.Storage = new CStorage(`${__dirname}/data`); // make dynamic
     }
 
     public async sendIndex(req: express.Request, res: express.Response) {
@@ -76,20 +79,21 @@ export class CPages {
     }
 
     public async sendExperiment(req: express.Request, res: express.Response) {
-        // const query = req.params.id?.toString()!;
-        // if (query.match(/^[0-9a-f]{16}$/) !== null) {
-        //     try {
-        //         const scriptParams = experiments.loadExperimentParams(query);
-        //         res.render('experiment', {
-        //             Version: this.Version,
-        //             scriptParams
-        //         });
-        //     } catch {
-        //         send404(req, res, "Experiment not found!", "experiment file not found.");
-        //     }
-        // } else {
-        //     send404(req, res, "Experiment not found!", "ID does not match format. (16 hexadecimal digits)");
-        // }
+        let query = req.params.id?.toString()!;
+
+        if (query.match(/^[0-9a-f]{32}$/) !== null) {
+            try {
+                const scriptParams = this.Storage.loadExperimentParams(query);
+                res.render('experiment', {
+                    Version: this.Version,
+                    scriptParams
+                });
+            } catch {
+                this.send404(req, res, "Experiment not found!", "experiment file not found.");
+            }
+        } else {
+            this.send404(req, res, "Experiment not found!", "ID does not match format. (32 hexadecimal digits)");
+        }
     }
 
     public async sendNewExperiment(req: express.Request, res: express.Response) {
@@ -336,16 +340,16 @@ export class CPages {
     }
 
     // help functions
-    private prepareContentArray(input: { folders: [{ FoldId: number; FoldIcon: string; FoldName: string; ParentFoldId: number; OrgId: string }?]; experiments: [{ ExpId: number; ExpName: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }?] }): [{ name: string; imagename: string; redirect: string }?] {
+    private prepareContentArray(input: { folders: [{ FoldId: number; FoldIcon: string; FoldName: string; ParentFoldId: number; OrgId: string }?]; experiments: [{ ExpId: number; ExpName: string; ExpHash: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }?] }): [{ name: string; imagename: string; redirect: string }?] {
         let cards: [{ name: string; imagename: string; redirect: string }?] = [];
         if (input.folders !== undefined) {
             input.folders.forEach(folder => {
-                cards.push({ name: folder!.FoldName, imagename: folder!.FoldIcon, redirect: `selection/${folder!.FoldId}` });
+                cards.push({ name: folder!.FoldName, imagename: folder!.FoldIcon, redirect: `/selection/${folder!.FoldId}` });
             });
         }
         if (input.experiments !== undefined) {
             input.experiments.forEach(experiment => {
-                cards.push({ name: experiment!.ExpName, imagename: experiment!.ExpIcon, redirect: `experimen/${experiment!.ExpId}` });
+                cards.push({ name: experiment!.ExpName, imagename: experiment!.ExpIcon, redirect: `/experiment/${experiment!.ExpHash}` });
             });
         }
         return cards;

@@ -80,7 +80,7 @@ export class CDatabase {
         await this.runSQL(`CREATE SCHEMA IF NOT EXISTS ${this.DBName} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
         await this.runSQL(`CREATE TABLE IF NOT EXISTS ${this.DBName}.TOrganisations ( OrgId VARCHAR(50) NOT NULL, OrgName VARCHAR(100) NOT NULL, PRIMARY KEY (OrgId) ) ENGINE = InnoDB;`);
         await this.runSQL(`CREATE TABLE IF NOT EXISTS ${this.DBName}.TFolders ( FoldId INT UNSIGNED NOT NULL AUTO_INCREMENT, FoldIcon CHAR(32) NULL, FoldName VARCHAR(100) NOT NULL, ParentFoldId INT NOT NULL, OrgId VARCHAR(50) NOT NULL, PRIMARY KEY (FoldId) ) ENGINE = InnoDB;`);
-        await this.runSQL(`CREATE TABLE IF NOT EXISTS ${this.DBName}.TExperiments ( ExpId INT UNSIGNED NOT NULL AUTO_INCREMENT, ExpName VARCHAR(100) NOT NULL, ExpIcon CHAR(32) NULL, ExpDeletable TINYINT NOT NULL, FoldId INT UNSIGNED NOT NULL, PRIMARY KEY (ExpId) ) ENGINE = InnoDB;`);
+        await this.runSQL(`CREATE TABLE IF NOT EXISTS ${this.DBName}.TExperiments ( ExpId INT UNSIGNED NOT NULL AUTO_INCREMENT, ExpName VARCHAR(100) NOT NULL, ExpHash CHAR(32) NOT NULL, ExpIcon CHAR(32) NULL, ExpDeletable TINYINT NOT NULL, FoldId INT UNSIGNED NOT NULL, PRIMARY KEY (ExpId) ) ENGINE = InnoDB;`);
         await this.runSQL(`CREATE TABLE IF NOT EXISTS ${this.DBName}.TUsers ( UserId INT UNSIGNED NOT NULL AUTO_INCREMENT, UserIdentification VARCHAR(50) NOT NULL, UserName VARCHAR(100) NOT NULL, UserPW CHAR(60) NOT NULL, UserImage CHAR(32) NULL, UserCanEdit TINYINT NOT NULL, UserIsAdmin TINYINT NOT NULL, OrgId VARCHAR(50) NOT NULL, PRIMARY KEY (UserId)) ENGINE = InnoDB;`);
 
         CM.info(`Created database: ${this.DBName}`);
@@ -369,7 +369,7 @@ export class CDatabase {
         }
     }
 
-    public async getFolderItems(id: string): Promise<{ folders: [{ FoldId: number; FoldIcon: string; FoldName: string; ParentFoldId: number; OrgId: string }?]; experiments: [{ ExpId: number; ExpName: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }?] }> {
+    public async getFolderItems(id: string): Promise<{ folders: [{ FoldId: number; FoldIcon: string; FoldName: string; ParentFoldId: number; OrgId: string }?]; experiments: [{ ExpId: number; ExpName: string; ExpHash: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }?] }> {
         id = this.Validation.cleanInput(id, this.Validation.Regex.folder.id);
 
         const folders = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TFolders WHERE ParentFoldId = '${id}';`);
@@ -392,8 +392,9 @@ export class CDatabase {
     // Experiments
     // ---------------------------------------------------------------------------------
     //#region
-    public async addExperiments(name: string, deletable: boolean, folder: string): Promise<void> {
+    public async addExperiments(name: string, hash: string, deletable: boolean, folder: string): Promise<void> {
         name = this.Validation.cleanInput(name, this.Validation.Regex.experiment.name);
+        hash = this.Validation.cleanInput(hash, this.Validation.Regex.experiment.icon);
         folder = this.Validation.cleanInput(folder, this.Validation.Regex.folder.id);
         deletable = deletable === true;
 
@@ -404,23 +405,24 @@ export class CDatabase {
         }
     }
 
-    public async getExperiment(id: string): Promise<{ ExpId: number; ExpName: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }> {
+    public async getExperiment(id: string): Promise<{ ExpId: number; ExpName: string; ExpHash: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }> {
         id = this.Validation.cleanInput(id, this.Validation.Regex.experiment.id);
 
         const experiment = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TExperiments WHERE ExpId = '${id}';`);
         return experiment[0];
     }
 
-    public async updateExperiment(id: string, name: string, icon: string, deletable: boolean, FoldId: string): Promise<void> {
+    public async updateExperiment(id: string, name: string, hash: string, icon: string, deletable: boolean, FoldId: string): Promise<void> {
         id = this.Validation.cleanInput(id, this.Validation.Regex.experiment.id);
         name = this.Validation.cleanInput(name, this.Validation.Regex.experiment.name);
+        hash = this.Validation.cleanInput(hash, this.Validation.Regex.experiment.icon);
         icon = this.Validation.cleanInput(icon, this.Validation.Regex.experiment.icon);
         FoldId = this.Validation.cleanInput(FoldId, this.Validation.Regex.folder.id);
         deletable = deletable === true;
 
         if (await this.getFolder(FoldId) !== null) {
             if (await this.getExperiment(id) !== null) {
-                this.runSQL(`UPDATE ${this.DBName}.TExperiments SET ExpName = '${name}', ExpIcon = '${icon}', ExpDeletable = '${deletable}', FoldId = '${FoldId}' WHERE ExpId = ${id};`);
+                this.runSQL(`UPDATE ${this.DBName}.TExperiments SET ExpName = '${name}', ExpHash = '${hash}', ExpIcon = '${icon}', ExpDeletable = '${deletable}', FoldId = '${FoldId}' WHERE ExpId = ${id};`);
             } else {
                 throw new Error(`Experiment with ID '${id}' does not exist.`);
             }
