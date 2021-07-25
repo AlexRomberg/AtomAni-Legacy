@@ -21,10 +21,10 @@ optionNewFolder.on('click', () => {
 function getId() {
     const url = window.location.href;
     let idFragments = url.split('/');
-    idFragments.shift(); // http | https
-    idFragments.shift(); // empty string between //
-    idFragments.shift(); // domain
-    idFragments.shift(); // selection
+    idFragments.shift();
+    idFragments.shift();
+    idFragments.shift();
+    idFragments.shift();
     let id = idFragments.join('/');
     id = id.replace(/[^0-9\/]/g, '');
     return id;
@@ -43,7 +43,7 @@ function closeMenu() {
         editorText.style.marginTop = '0px';
         editorCard.addClass('selectable-no-border');
         menuOpen = false;
-        return false; // prevent other events from being fired
+        return false;
     }
 }
 function toggleCardMenu() {

@@ -62,8 +62,9 @@ Copyright (c) 2021 Alexander Romberg
     </main>
     <%- include('footer.ejs', { Version }) %>
     <script type="module">
-        import * as Experiment from '/js/experiment.js';
-        let simulationScript = <%- JSON.stringify(scriptParams); %>;
-        Experiment.initSimulation(simulationScript);
+        import CExperiment from '/js/simulation.js';
+        const simulationScript = <%- JSON.stringify(scriptParams); %>;
+        const Experiment = new CExperiment(simulationScript, true);
+        Experiment.handleResize();
     </script>
 </body>

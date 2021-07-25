@@ -1,16 +1,10 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "CommonJS",
+    "module": "es2020",
     "strict": true,
-    "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node",
     "removeComments": true
-  },
-  "exclude": [
-    "node_modules",
-    "public"
-  ]
+  }
 }

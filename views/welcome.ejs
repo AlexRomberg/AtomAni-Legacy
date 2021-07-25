@@ -85,20 +85,21 @@ Copyright (c) 2021 Alexander Romberg
                 </div>
             </div>
             <script type="module">
-                import * as Experiment from '/js/experiment.js';
+                import CExperiment from '/js/simulation.js';
                 let simulationScript = {
                     charts: [],
                     atoms: [{
-                        type: "grid",
-                        x: -12,
-                        y: -12,
-                        z: -12,
+                        type: "fcc",
+                        x: 0,
+                        y: 0,
+                        z: 0,
                         atomType: "ne",
-                        width: 5,
-                        height: 5,
-                        depth: 5
+                        width: 3,
+                        height: 3,
+                        depth: 3
                     }],
                     walls: [{
+                            type: "box",
                             style: "visual",
                             x: -50,
                             y: -50,
@@ -108,45 +109,46 @@ Copyright (c) 2021 Alexander Romberg
                             depth: 100
                         },
                         {
-                            style: "wall",
-                            type: "rebound",
+                            type: "wall",
+                            style: "rebound",
                             position: -50,
                             direction: "x"
                         },
                         {
-                            style: "wall",
-                            type: "rebound",
+                            type: "wall",
+                            style: "rebound",
                             position: -50,
                             direction: "y"
                         },
                         {
-                            style: "wall",
-                            type: "rebound",
+                            type: "wall",
+                            style: "rebound",
                             position: -50,
                             direction: "z"
                         },
                         {
-                            style: "wall",
-                            type: "rebound",
+                            type: "wall",
+                            style: "rebound",
                             position: 50,
                             direction: "x"
                         },
                         {
-                            style: "wall",
-                            type: "rebound",
+                            type: "wall",
+                            style: "rebound",
                             position: 50,
                             direction: "y"
                         },
                         {
-                            style: "wall",
-                            type: "rebound",
+                            type: "wall",
+                            style: "rebound",
                             position: 50,
                             direction: "z"
                         }
                     ],
                     controls: []
                 };
-                Experiment.initSimulation(simulationScript);
+                const Experiment = new CExperiment(simulationScript, true);
+                Experiment.handleResize();
             </script>
         </div>
     </main>
