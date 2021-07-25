@@ -16,10 +16,10 @@ package-lock.json
 *planing.md
 
 # experiments
-/src/data/experiments/
-/src/data/experiments.json
-/src/data/AtomAniData.json
-/src/data/AtomAniUsers.json
+/server/**
+!server/data/
+!server/data/experiments
+!*help.md
 
 #.htaccess
 *.htaccess
@@ -31,3 +31,8 @@ public/sitemap.xml
 
 # config
 config/*.json
+
+# others
+public/js/editorCard.js
+public/js/loginDropdown.js
+public/js/simulation.js

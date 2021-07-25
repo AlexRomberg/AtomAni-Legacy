@@ -5,6 +5,12 @@
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "removeComments": true
-  }
+    "removeComments": true,
+    "outDir": "../../public/js/"
+  },
+  "exclude": [
+    "node_modules",
+    "public",
+    "src/server"
+  ]
 }

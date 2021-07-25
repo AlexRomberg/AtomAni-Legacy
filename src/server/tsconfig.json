@@ -7,10 +7,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "Node",
-    "removeComments": true
+    "removeComments": true,
+    "outDir": "../../server/"
   },
   "exclude": [
     "node_modules",
-    "public"
+    "public",
+    "src/client"
   ]
 }

@@ -4,11 +4,10 @@
     "description": "An atom simulation",
     "main": "src/server.js",
     "scripts": {
-        "start": "set NODE_ENV=stable&&tsc&&node ./src/server.js",
-        "start-old": "tsc&&node ./src/old-server.js",
-        "dev": "set NODE_ENV=dev&&nodemon ./src/server.js --ignore ./src/data/",
-        "dev-old": "nodemon ./src/old-server.js --ignore ./src/data/",
-        "test": "set NODE_ENV=test&&tsc&&node ./src/test.js"
+        "build": "tsc --build ./src/server/tsconfig.json&&tsc --build ./src/client/tsconfig.json",
+        "start": "set NODE_ENV=stable&&npm run build&&node ./server/server.js",
+        "dev": "set NODE_ENV=dev&&nodemon ./server/server.js --ignore ./server/data/",
+        "test": "set NODE_ENV=test&&tsc&&node ./server/test.js"
     },
     "repository": {
         "type": "git",
