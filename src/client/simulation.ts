@@ -59,7 +59,10 @@ type ConfigScript = {
             id: "temp";
             name: string;
         }?
-    ]
+    ];
+    settings: {
+        initialMomentum: number;
+    }
 }
 
 type Atom = {
@@ -258,6 +261,14 @@ class CAtom {
         this.Velocity = new THREE.Vector3(0, 0, 0);
         this.Object.position.set(x, y, z);
     }
+
+    public applyInitialMomentum(max: number) {
+        this.Velocity = new THREE.Vector3(this.getRandomMax(max), this.getRandomMax(max), this.getRandomMax(max));
+    }
+
+    private getRandomMax(max: number): number {
+        return Math.random() * 2 * max - max;
+    }
 }
 
 class CWallConfig {
@@ -427,11 +438,13 @@ class CControls {
     private Simulation: CSimulation;
     private AtomConfig: CAtomConfig;
     private WallConfig: CWallConfig;
+    private Settings: CSettings;
 
-    constructor(simulation: CSimulation, atomConfig: CAtomConfig, wallConfig: CWallConfig) {
+    constructor(simulation: CSimulation, atomConfig: CAtomConfig, wallConfig: CWallConfig, settings: CSettings) {
         this.Simulation = simulation;
         this.AtomConfig = atomConfig;
         this.WallConfig = wallConfig;
+        this.Settings = settings;
     }
 
     public handle(simulationScript: ConfigScript) {
@@ -471,6 +484,7 @@ class CControls {
             this.Simulation.reset(true);
             this.AtomConfig.loadFromScript(simulationScript);
             this.WallConfig.loadFromScript(simulationScript);
+            this.Settings.applyInitialMomentum(this.AtomConfig.AtomList);
 
             this.Simulation.addAtoms(this.AtomConfig.AtomList);
             this.Simulation.addWalls(this.WallConfig.WallList);
@@ -928,7 +942,25 @@ class CCalcultion {
     }
 }
 
+class CSettings {
+    private initialMomentum: number = 0;
+    constructor(script: ConfigScript) {
+        if ('settings' in script) {
+            if ('initialMomentum' in script.settings) {
+                this.initialMomentum = script.settings.initialMomentum;
+            }
+        }
+    }
+
+    public applyInitialMomentum(atomList: [CAtom?]) {
+        atomList.forEach(atom => {
+            atom!.applyInitialMomentum(this.initialMomentum);
+        });
+    }
+}
+
 class CExperiment {
+    private Settings: CSettings;
     private AtomConfig: CAtomConfig;
     private WallConfig: CWallConfig;
     private Controls: CControls;
@@ -937,13 +969,15 @@ class CExperiment {
     constructor(script: ConfigScript, hasControlelements: boolean) {
         this.handleResize();
 
+        this.Settings = new CSettings(script);
         this.AtomConfig = new CAtomConfig();
         this.WallConfig = new CWallConfig();
         this.Simulation = new CSimulation(this.AtomConfig);
-        this.Controls = new CControls(this.Simulation, this.AtomConfig, this.WallConfig);
+        this.Controls = new CControls(this.Simulation, this.AtomConfig, this.WallConfig, this.Settings);
 
         this.AtomConfig.loadFromScript(script);
         this.WallConfig.loadFromScript(script);
+        this.Settings.applyInitialMomentum(this.AtomConfig.AtomList);
 
         this.Simulation.addAtoms(this.AtomConfig.AtomList);
         this.Simulation.addWalls(this.WallConfig.WallList);
