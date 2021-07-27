@@ -56,7 +56,7 @@ type ConfigScript = {
     ];
     controls: [
         {
-            id: "control" | "temp";
+            id: "temp";
             name: string;
         }?
     ]
@@ -499,12 +499,19 @@ class CControls {
 
     public loadFromScript(script: ConfigScript) {
         const controlOptions = script.controls;
-        controlOptions.forEach(controlOption => {
-            if (controlOption !== undefined) {
-                $('#' + controlOption.id).css('display', 'flex');
-                $('#' + controlOption.id + ' h4').text(controlOption.name);
-            }
-        });
+        // @ts-ignore
+        if (controlOptions.length === 0) {
+            $('#controlsBox').remove();
+            return false;
+        } else {
+            controlOptions.forEach(controlOption => {
+                if (controlOption !== undefined) {
+                    $('#' + controlOption.id).css('display', 'flex');
+                    $('#' + controlOption.id + ' h4').text(controlOption.name);
+                }
+            });
+            return true;
+        }
     }
 }
 
@@ -557,11 +564,18 @@ class CSimulation {
 
     public initCharts(script: ConfigScript) {
         const chartList = script.charts;
-        chartList.forEach(chartObject => {
-            if (chartObject !== undefined) {
-                this.Charts.push(new CChart(chartObject.id, chartObject.title, chartObject.lineColor, chartObject.fillColor));
-            }
-        });
+        // @ts-ignore
+        if (chartList.length === 0) {
+            $('#chartsBox').remove();
+            return false;
+        } else {
+            chartList.forEach(chartObject => {
+                if (chartObject !== undefined) {
+                    this.Charts.push(new CChart(chartObject.id, chartObject.title, chartObject.lineColor, chartObject.fillColor));
+                }
+            });
+            return true;
+        }
     }
 
     public async addAtoms(atoms: [CAtom?]) {
@@ -935,9 +949,13 @@ class CExperiment {
         this.Simulation.addWalls(this.WallConfig.WallList);
 
         if (hasControlelements) {
-            this.Simulation.initCharts(script);
-            this.Controls.loadFromScript(script);
+            const hasCharts = this.Simulation.initCharts(script);
+            const hasControls = this.Controls.loadFromScript(script)
             this.Controls.handle(script);
+
+            if (!(hasCharts || hasControls)) {
+                $('.simulationWindow').addClass('no-sidebar');
+            }
         }
 
         this.Simulation.startRendering();

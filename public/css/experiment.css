@@ -47,6 +47,11 @@
     z-index: 0;
 }
 
+.simulationWindow .row {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 
 /* --- controls --- */
 
@@ -82,6 +87,22 @@
 .no-js .simulationWindow {
     display: none;
 }
+
+
+/* --- no-sidebar --- */
+
+.no-sidebar .simulation {
+    width: 100%;
+}
+
+.no-sidebar #sim {
+    width: 100% !important;
+}
+
+.no-sidebar .controlPane {
+    display: none;
+}
+
 
 /* --- controls --- */
 
@@ -233,7 +254,8 @@
         width: 100%;
         display: flex;
         flex-flow: column;
-        overflow-y: scroll;
+        overflow-y: auto;
+        scrollbar-width: thin;
     }
     .controlPane h3 {
         margin: 0px;
@@ -249,23 +271,19 @@
         margin-top: 10px;
         min-height: 100px !important;
     }
-    
     .charts,
     .controls {
         display: flex;
         flex-flow: row nowrap;
         overflow-x: auto;
     }
-    
     .chart,
     .control {
         min-width: calc(50vw - 25px);
         margin-right: 10px;
     }
-    
     .chart:nth-last-child(1),
     .control:nth-last-child(1) {
         margin-right: 0px;
     }
-    
 }
