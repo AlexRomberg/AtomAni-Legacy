@@ -423,6 +423,91 @@ class CChart {
     }
 }
 
+class CControls {
+    private Simulation: CSimulation;
+    private AtomConfig: CAtomConfig;
+    private WallConfig: CWallConfig;
+
+    constructor(simulation: CSimulation, atomConfig: CAtomConfig, wallConfig: CWallConfig) {
+        this.Simulation = simulation;
+        this.AtomConfig = atomConfig;
+        this.WallConfig = wallConfig;
+    }
+
+    public handle(simulationScript: ConfigScript) {
+        this.startBtn();
+        this.resetBtn(simulationScript);
+        this.animationSpeedBtn();
+    }
+
+    private animationSpeedBtn() {
+        $('#btnSpeed').on("click", () => {
+            switch ($('#btnSpeed').attr('value')) {
+                case '2':
+                    $('#btnSpeed').attr('value', 1);
+                    $('#btnSpeed').text('1×');
+                    break;
+                case '1':
+                    $('#btnSpeed').attr('value', 0.5);
+                    $('#btnSpeed').text('0.5×');
+                    break;
+                case '0.5':
+                    $('#btnSpeed').attr('value', 0.25);
+                    $('#btnSpeed').text('0.25×');
+                    break;
+                case '0.25':
+                    $('#btnSpeed').attr('value', 2);
+                    $('#btnSpeed').text('2×');
+                    break;
+                default:
+                    console.log($('#btnSpeed').val());
+                    break;
+            }
+        });
+    }
+
+    private resetBtn(simulationScript: ConfigScript) {
+        $('#btnReset').on('click', () => {
+            this.Simulation.reset(true);
+            this.AtomConfig.loadFromScript(simulationScript);
+            this.WallConfig.loadFromScript(simulationScript);
+
+            this.Simulation.addAtoms(this.AtomConfig.AtomList);
+            this.Simulation.addWalls(this.WallConfig.WallList);
+            this.Simulation.initCharts(simulationScript);
+            if ($('#btnStart img').attr('alt') != 'Start') {
+                setTimeout(() => {
+                    this.Simulation.start();
+                }, 100);
+            }
+        });
+    }
+
+    private startBtn() {
+        $('#btnStart').on("click", () => {
+            if ($('#btnStart img').attr('alt') == 'Start') {
+                this.Simulation.start();
+                $('#btnStart img').attr('alt', 'Stop');
+                $('#btnStart img').toggleClass('btnPause');
+            } else {
+                this.Simulation.stop();
+                $('#btnStart img').attr('alt', 'Start');
+                $('#btnStart img').toggleClass('btnPause');
+            }
+        });
+    }
+
+    public loadFromScript(script: ConfigScript) {
+        const controlOptions = script.controls;
+        controlOptions.forEach(controlOption => {
+            if (controlOption !== undefined) {
+                $('#' + controlOption.id).css('display', 'flex');
+                $('#' + controlOption.id + ' h4').text(controlOption.name);
+            }
+        });
+    }
+}
+
 class CSimulation {
     private AtomList: [CAtom?] = [];
     private WallList: [CWall?, CBox?] = [];
@@ -564,7 +649,7 @@ class CSimulation {
     public async reset(hasControlelements = false) {
         this.AnimationRunning = false;
         this.clearCanvas();
-        if (!hasControlelements) {
+        if (hasControlelements) {
             $('.charts').text('');
         }
     }
@@ -832,6 +917,7 @@ class CCalcultion {
 class CExperiment {
     private AtomConfig: CAtomConfig;
     private WallConfig: CWallConfig;
+    private Controls: CControls;
     private Simulation: CSimulation;
 
     constructor(script: ConfigScript, hasControlelements: boolean) {
@@ -840,6 +926,7 @@ class CExperiment {
         this.AtomConfig = new CAtomConfig();
         this.WallConfig = new CWallConfig();
         this.Simulation = new CSimulation(this.AtomConfig);
+        this.Controls = new CControls(this.Simulation, this.AtomConfig, this.WallConfig);
 
         this.AtomConfig.loadFromScript(script);
         this.WallConfig.loadFromScript(script);
@@ -849,13 +936,16 @@ class CExperiment {
 
         if (hasControlelements) {
             this.Simulation.initCharts(script);
+            this.Controls.loadFromScript(script);
+            this.Controls.handle(script);
         }
+
         this.Simulation.startRendering();
 
         if (hasControlelements) {
             setTimeout(() => {
                 this.Simulation.start();
-            }, 1000);
+            }, 100);
         }
 
         window.addEventListener("resize", this.handleResize.bind(this))
@@ -884,8 +974,3 @@ class CExperiment {
 }
 
 export default CExperiment;
-
-// export function start(simulationScript: ConfigScript, hasControlelements: boolean) {
-//     const Experiment = new CExperiment(simulationScript, hasControlelements);
-//     Experiment.handleResize();
-// }
