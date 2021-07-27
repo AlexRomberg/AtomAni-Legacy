@@ -9,7 +9,7 @@ Copyright (c) 2021 Alexander Romberg
     <!-- stylesheets -->
     <link rel="stylesheet" href="/css/general.css">
     <link rel="stylesheet" href="/css/experiment.css">
-    <link rel="stylesheet" href="/css/controls.css">
+    <!-- <link rel="stylesheet" href="/css/controls.css"> -->
 
     <%- include('favicon'); %>
 
@@ -32,6 +32,13 @@ Copyright (c) 2021 Alexander Romberg
             <div class="simulation">
                 <!-- Simulation -->
                 <canvas id="sim"></canvas>
+                <div id="control">
+                    <span class="row space-even shadow-floating-control">
+                        <buttom id="btnSpeed" class="btnRound btnSmall" value="1">1×</buttom>
+                        <buttom id="btnStart" class="btnRound"><img class="btnPause" alt="Stop"></buttom>
+                        <buttom id="btnReset" class="btnRound btnSmall"><img alt="Zurücksetzen"></buttom>
+                    </span>
+                </div>
             </div>
             <div class="controlPane">
                 <!-- Controls -->
@@ -46,14 +53,6 @@ Copyright (c) 2021 Alexander Romberg
                         <div class="control" id="temp" style="display: none;">
                             <h4></h4>
                             <input type="range" class="slider" id="inpTemp" min="0.997" max="1.003" value="1" step="0.001">
-                        </div>
-                        <div class="control" id="control" style="display: none;">
-                            <h4></h4>
-                            <span class="row space-even">
-                                <buttom id="btnSpeed" class="btnRound btnSmall" value="1">1×</buttom>
-                                <buttom id="btnStart" class="btnRound"><img class="btnPause" alt="Stop"></buttom>
-                                <buttom id="btnReset" class="btnRound btnSmall"><img alt="Zurücksetzen"></buttom>
-                            </span>
                         </div>
                     </div>
                 </div>

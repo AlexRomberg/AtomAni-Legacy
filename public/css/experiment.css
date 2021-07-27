@@ -19,13 +19,32 @@
 
 /* --- simulation --- */
 
+.simulationWindow .simulation {
+    position: relative;
+    width: calc(100% - 400px);
+    height: 100%;
+}
+
 .simulationWindow #sim {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 400px;
     margin-bottom: -4px;
     height: calc(100vh - 7em - 20px) !important;
     width: calc(100vw - 420px) !important;
     min-height: 400px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+}
+
+.simulationWindow #control {
+    position: absolute;
+    flex-flow: column;
+    bottom: 10px;
+    width: 100%;
+    z-index: 0;
 }
 
 
@@ -64,19 +83,189 @@
     display: none;
 }
 
+/* --- controls --- */
+
+#chartsBox {
+    flex: 1;
+    scrollbar-width: thin;
+    overflow-y: auto;
+}
+
+#controlsBox {
+    max-height: 60%;
+    scrollbar-width: thin;
+    overflow-y: auto;
+}
+
+.control,
+.chart {
+    min-height: 50px;
+    margin-top: 10px;
+    border-radius: 5px;
+    width: 100%;
+    min-width: 200px;
+    background-color: var(--content-bg-col-dark);
+    padding: 5px;
+    flex-flow: column;
+}
+
+.chart h4 {
+    text-align: left;
+    margin-left: 5px;
+}
+
+.row {
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: var(--content-bg-col-darker);
+    border-radius: 50px;
+}
+
+.space-even {
+    justify-content: space-between;
+    width: 200px;
+    align-self: center;
+    text-align: center;
+    justify-self: center;
+}
+
+
+/*--- slider ---*/
+
+.slider {
+    width: calc(100% - 10px);
+    height: 10px;
+    background: linear-gradient(to right, blue, red);
+    border-radius: 10px;
+    outline: none;
+    -webkit-appearance: none;
+    margin: 15px 5px 10px 5px;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 20px;
+    background: grey;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 10px;
+    height: 20px;
+    border-radius: 10px;
+    background: gray;
+    cursor: pointer;
+}
+
+
+/*--- button ---*/
+
+.btnRound {
+    display: block;
+    border-radius: 30px;
+    background-color: var(--btn-bg);
+    width: 60px;
+    height: 60px;
+    padding: 10px;
+    line-height: 40px;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--btn-txt);
+    user-select: none;
+}
+
+.btnSmall {
+    margin: 5px;
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+}
+
+.btnRound:hover {
+    background-color: #0004;
+}
+
+.btnRound img {
+    width: 40px;
+    height: 40px;
+}
+
+
+/* --- images --- */
+
+#btnReset img {
+    content: var(--btn-reload);
+}
+
+#btnStart img {
+    content: var(--btn-play);
+}
+
+#btnStart .btnPause {
+    content: var(--btn-pause);
+}
+
 @media only screen and (max-width: 890px) {
     .simulationWindow {
         flex-flow: column nowrap;
-        min-height: 750px;
+        min-height: 635px;
+    }
+    .simulation {
+        width: calc(100vw - 20px) !important;
+        height: calc(100vh - 7em - 360px);
+        min-height: 400px;
     }
     .simulationWindow #sim {
+        position: static;
+        height: 100% !important;
+        width: 100% !important;
         border-bottom-left-radius: 0px;
         border-top-right-radius: 10px;
-        height: 400px !important;
-        width: 100% !important;
     }
     .controlPane {
-        height: unset;
+        min-height: 235pX;
+        height: 200px;
         width: 100%;
+        display: flex;
+        flex-flow: column;
+        overflow-y: scroll;
     }
+    .controlPane h3 {
+        margin: 0px;
+    }
+    .controlPane #chartsBox,
+    .controlPane #controlsBox {
+        min-height: 220px !important;
+        display: block;
+        overflow-y: revert;
+        overflow-x: auto;
+    }
+    .controlPane #controlsBox {
+        margin-top: 10px;
+        min-height: 100px !important;
+    }
+    
+    .charts,
+    .controls {
+        display: flex;
+        flex-flow: row nowrap;
+        overflow-x: auto;
+    }
+    
+    .chart,
+    .control {
+        min-width: calc(50vw - 25px);
+        margin-right: 10px;
+    }
+    
+    .chart:nth-last-child(1),
+    .control:nth-last-child(1) {
+        margin-right: 0px;
+    }
+    
 }
