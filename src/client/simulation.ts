@@ -26,7 +26,7 @@ type ConfigScript = {
             atomType: Atomtype;
         }?,
         {
-            type: "grid" | "fcc";
+            type: "grid" | "fcc" | "fcc-aba" | "fcc-abca";
             x: number;
             y: number;
             z: number;
@@ -146,11 +146,10 @@ class CAtomConfig {
         }
     }
 
-    public async generateFCCGrid(type: Atomtype, X: number, Y: number, Z: number, width: number, height: number, depth: number) {
+    public async generateFCCGridABCA(type: Atomtype, X: number, Y: number, Z: number, width: number, height: number, depth: number) {
         // 1.122462048309 = 6th root of 2
         const forceEquilibrium = this.Sigma * 1.122462048309;
-        const cubeSize = Math.pow(((forceEquilibrium * forceEquilibrium * 4) / 2), 1 / 2);
-        console.table({ forceEquilibrium, cubeSize });
+        const cubeSize = Math.sqrt((forceEquilibrium * forceEquilibrium * 4) / 2);
 
         for (let x = 0; x <= width; x++) {
             for (let y = 0; y <= height; y++) {
@@ -176,6 +175,46 @@ class CAtomConfig {
         }
     }
 
+    public async generateFCCGridABA(type: Atomtype, X: number, Y: number, Z: number, width: number, height: number, depth: number) {
+        // 1.122462048309 = 6th root of 2
+        // const forceEquilibrium = this.Sigma * 1.122462048309;
+        const forceEquilibrium = this.Sigma * 1.059463094359;
+        const distanceNextRow = Math.sqrt(forceEquilibrium * forceEquilibrium - (forceEquilibrium / 2) * (forceEquilibrium / 2));
+        const zshiftNextLayer = distanceNextRow / 3;
+        const heightDistanceNextLayer = Math.sqrt(distanceNextRow * distanceNextRow - zshiftNextLayer * zshiftNextLayer);
+
+        for (let x = 0; x <= width; x++) {
+            for (let y = 0; y <= height; y++) {
+                for (let z = 0; z <= depth; z++) {
+                    let xpos = 0, ypos = 0, zpos = 0;
+                    xpos = x * forceEquilibrium;
+                    ypos = y * heightDistanceNextLayer;
+                    zpos = z * distanceNextRow;
+
+                    if (y % 2 === 0) {
+                        if (z % 2 === 1) {
+                            xpos += forceEquilibrium / 2;
+                        }
+                    } else {
+                        zpos -= zshiftNextLayer;
+                        if (z % 2 === 0) {
+                            xpos += forceEquilibrium / 2;
+                        }
+                    }
+
+                    // center grid
+                    xpos += X - width * forceEquilibrium / 2;
+                    ypos += Y - height * heightDistanceNextLayer / 2;
+                    zpos += Z - depth * distanceNextRow / 2 + zshiftNextLayer / 2; // second layer gets moved forward by zshift -> move all 1/2 zshift back
+
+
+                    let atom = new CAtom(type, xpos, ypos, zpos, this.Geometry);
+                    this.AtomList.push(atom);
+                }
+            }
+        }
+    }
+
     public loadFromScript(script: ConfigScript) {
         this.AtomList = [];
         const atomOptions = script.atoms;
@@ -189,7 +228,11 @@ class CAtomConfig {
                         this.generateGrid(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, atomOption.width, atomOption.height, atomOption.depth);
                         break;
                     case 'fcc':
-                        this.generateFCCGrid(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, atomOption.width, atomOption.height, atomOption.depth);
+                    case 'fcc-aba':
+                        this.generateFCCGridABA(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, atomOption.width, atomOption.height, atomOption.depth);
+                        break;
+                    case 'fcc-abca':
+                        this.generateFCCGridABCA(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, atomOption.width, atomOption.height, atomOption.depth);
                         break;
                     default:
                         console.log("unknown atom definition!");
