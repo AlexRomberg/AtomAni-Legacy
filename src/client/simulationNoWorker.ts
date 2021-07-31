@@ -1,101 +1,62 @@
 // @ts-ignore
-import * as THREE from '../res/lib/three.module.js';
+// import * as THREE from '../res/lib/three.module.js';
 // @ts-ignore
 import { OrbitControls } from '../res/lib/OrbitControls.js';
 
-// import THREE from "three";
+import * as THREE from "three";
 
 
 // #region types
 type Atomtype = 'ne' | 'ar' | 'kr';
 type ConfigScript = {
-    charts: [
-        {
-            id: "fps" | "avgVel" | "pres";
-            title: string;
-            fillColor: string;
-            lineColor: string;
-        }?
-    ];
-    atoms: [
-        {
-            type: "single";
-            x: number;
-            y: number;
-            z: number;
-            atomType: Atomtype;
-        }?,
-        {
-            type: "grid" | "fcc" | "fcc-aba" | "fcc-abca";
-            x: number;
-            y: number;
-            z: number;
-            width: number;
-            height: number;
-            depth: number;
-            atomType: Atomtype;
-        }?
-    ];
-    walls: [
-        {
-            type: "box"
-            style: "visual" | "force-LJ";
-            x: number;
-            y: number;
-            z: number;
-            width: number;
-            height: number;
-            depth: number;
-        }?,
-        {
-            type: "wall";
-            style: "rebound" | "force-LJ";
-            position: number;
-            direction: "x" | "y" | "z";
-        }?
-    ];
-    controls: [
-        {
-            id: "temp";
-            name: string;
-        }?
-    ];
+    charts:
+    ({
+        id: "fps" | "avgVel" | "pres";
+        title: string;
+        fillColor: string;
+        lineColor: string;
+    })[];
+    atoms:
+    ({
+        type: "single";
+        x: number;
+        y: number;
+        z: number;
+        atomType: Atomtype;
+    } | {
+        type: "grid" | "fcc" | "fcc-aba" | "fcc-abca";
+        x: number;
+        y: number;
+        z: number;
+        width: number;
+        height: number;
+        depth: number;
+        atomType: Atomtype;
+    })[];
+    walls:
+    ({
+        type: "box"
+        style: "visual" | "force-LJ";
+        x: number;
+        y: number;
+        z: number;
+        width: number;
+        height: number;
+        depth: number;
+    } | {
+        type: "wall";
+        style: "rebound" | "force-LJ";
+        position: number;
+        direction: "x" | "y" | "z";
+    })[];
+    controls:
+    ({
+        id: "temp";
+        name: string;
+    })[];
     settings: {
         initialMomentum: number;
     }
-}
-
-type Atom = {
-    type: "single";
-    x: number;
-    y: number;
-    z: number;
-    atomType: Atomtype;
-} | {
-    type: "grid" | "fcc";
-    x: number;
-    y: number;
-    z: number;
-    width: number;
-    height: number;
-    depth: number;
-    atomType: Atomtype;
-}
-
-type Wall = {
-    type: "box"
-    style: "visual" | "force-LJ";
-    x: number;
-    y: number;
-    z: number;
-    width: number;
-    height: number;
-    depth: number;
-} | {
-    type: "wall";
-    style: "rebound" | "force-LJ";
-    position: number;
-    direction: "x" | "y" | "z";
 }
 //#endregion
 
@@ -111,7 +72,7 @@ class CAtomConfig {
     public Epsilon: number;
     public Sigma = 2.79;
     public Sigma2: number;
-    public AtomList: [CAtom?]
+    public AtomList: CAtom[]
 
     private Radius = 1;
     private SegmentWidth = 30;
@@ -222,25 +183,23 @@ class CAtomConfig {
         this.AtomList = [];
         const atomOptions = script.atoms;
         atomOptions.forEach(atomOption => {
-            if (atomOption !== undefined) {
-                switch (atomOption.type) {
-                    case 'single':
-                        this.AtomList.push(new CAtom(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, this.Geometry));
-                        break;
-                    case 'grid':
-                        this.generateGrid(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, atomOption.width, atomOption.height, atomOption.depth);
-                        break;
-                    case 'fcc':
-                    case 'fcc-aba':
-                        this.generateFCCGridABA(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, atomOption.width, atomOption.height, atomOption.depth);
-                        break;
-                    case 'fcc-abca':
-                        this.generateFCCGridABCA(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, atomOption.width, atomOption.height, atomOption.depth);
-                        break;
-                    default:
-                        console.log("unknown atom definition!");
-                        break;
-                }
+            switch (atomOption.type) {
+                case 'single':
+                    this.AtomList.push(new CAtom(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, this.Geometry));
+                    break;
+                case 'grid':
+                    this.generateGrid(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, atomOption.width, atomOption.height, atomOption.depth);
+                    break;
+                case 'fcc':
+                case 'fcc-aba':
+                    this.generateFCCGridABA(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, atomOption.width, atomOption.height, atomOption.depth);
+                    break;
+                case 'fcc-abca':
+                    this.generateFCCGridABCA(atomOption.atomType, atomOption.x, atomOption.y, atomOption.z, atomOption.width, atomOption.height, atomOption.depth);
+                    break;
+                default:
+                    console.log("unknown atom definition!");
+                    break;
             }
         });
     }
@@ -275,7 +234,7 @@ class CWallConfig {
     static WALL_COLOR: THREE.ColorRepresentation = 0xffffff;
     static LINE_WIDTH: number = 2;
 
-    public WallList: [CWall?, CBox?];
+    public WallList: (CWall | CBox)[];
 
     constructor() {
         this.WallList = [];
@@ -285,18 +244,16 @@ class CWallConfig {
         this.WallList = [];
         const wallOptions = script.walls;
         wallOptions.forEach(wallOption => {
-            if (wallOption !== undefined) {
-                switch (wallOption.type) {
-                    case "box":
-                        this.WallList.push(new CBox(this.WallList.length, wallOption.style, wallOption.x, wallOption.y, wallOption.z, wallOption.width, wallOption.height, wallOption.depth));
-                        break;
-                    case "wall":
-                        this.WallList.push(new CWall(this.WallList.length, wallOption.style, wallOption.direction, wallOption.position));
-                        break;
-                    default:
-                        console.log("unknown wall definition!");
-                        break;
-                }
+            switch (wallOption.type) {
+                case "box":
+                    this.WallList.push(new CBox(this.WallList.length, wallOption.style, wallOption.x, wallOption.y, wallOption.z, wallOption.width, wallOption.height, wallOption.depth));
+                    break;
+                case "wall":
+                    this.WallList.push(new CWall(this.WallList.length, wallOption.style, wallOption.direction, wallOption.position));
+                    break;
+                default:
+                    console.log("unknown wall definition!");
+                    break;
             }
         });
     }
@@ -351,7 +308,7 @@ class CChart {
     public Id: string;
 
     private Type: string;
-    private Data: { datasets: [{ data: [number?], borderColor: string, backgroundColor: string }], labels: [string?] };
+    private Data: { datasets: [{ data: number[], borderColor: string, backgroundColor: string }], labels: string[] };
     private Options: any;
     private Defaults: any;
 
@@ -489,7 +446,7 @@ class CControls {
             this.Simulation.addAtoms(this.AtomConfig.AtomList);
             this.Simulation.addWalls(this.WallConfig.WallList);
             this.Simulation.initCharts(simulationScript);
-            if ($('#btnStart img').attr('alt') != 'Start') {
+            if ($('#btnStart img').attr('alt') !== 'Start') {
                 setTimeout(() => {
                     this.Simulation.start();
                 }, 100);
@@ -519,10 +476,8 @@ class CControls {
             return false;
         } else {
             controlOptions.forEach(controlOption => {
-                if (controlOption !== undefined) {
-                    $('#' + controlOption.id).css('display', 'flex');
-                    $('#' + controlOption.id + ' h4').text(controlOption.name);
-                }
+                $('#' + controlOption.id).css('display', 'flex');
+                $('#' + controlOption.id + ' h4').text(controlOption.name);
             });
             return true;
         }
@@ -530,10 +485,10 @@ class CControls {
 }
 
 class CSimulation {
-    private AtomList: [CAtom?] = [];
-    private WallList: [CWall?, CBox?] = [];
+    private AtomList: CAtom[] = [];
+    private WallList: (CWall | CBox)[] = [];
     private AnimationRunning = false;
-    private Charts: [CChart?] = [];
+    private Charts: CChart[] = [];
     private Controls;
     private PrevTime = 0;
     private Frame = 0;
@@ -584,31 +539,25 @@ class CSimulation {
             return false;
         } else {
             chartList.forEach(chartObject => {
-                if (chartObject !== undefined) {
-                    this.Charts.push(new CChart(chartObject.id, chartObject.title, chartObject.lineColor, chartObject.fillColor));
-                }
+                this.Charts.push(new CChart(chartObject.id, chartObject.title, chartObject.lineColor, chartObject.fillColor));
             });
             return true;
         }
     }
 
-    public async addAtoms(atoms: [CAtom?]) {
+    public async addAtoms(atoms: CAtom[]) {
         atoms.forEach(atom => {
-            if (atom !== undefined) {
-                this.Scene.add(atom.Object);
-                this.AtomList.push(atom);
-            }
+            this.Scene.add(atom.Object);
+            this.AtomList.push(atom);
         });
     }
 
-    public async addWalls(walls: [CWall?, CBox?]) {
+    public async addWalls(walls: (CWall | CBox)[]) {
         walls.forEach(wall => {
-            if (wall !== undefined) {
-                if (wall.Type === "box") {
-                    this.Scene.add(wall.Object);
-                }
-                this.WallList.push(wall);
+            if (wall.Type === "box") {
+                this.Scene.add(wall.Object);
             }
+            this.WallList.push(wall);
         });
     }
 
@@ -685,10 +634,8 @@ class CSimulation {
     // ChartInfo
     private async updateCharts(chartInfo: { avgVel: number, pres: number, fps?: number }, time: number) {
         this.Charts.forEach(chart => {
-            if (chart !== undefined) {
-                // @ts-ignore
-                chart.addPoint(chartInfo[chart.Id], (Math.round(time / 100) / 10).toString());
-            }
+            // @ts-ignore
+            chart.addPoint(chartInfo[chart.Id], (Math.round(time / 100) / 10).toString());
         });
     }
 
@@ -702,7 +649,7 @@ class CCalcultion {
     private MaxDistance = 160000;
     private MaxTimestep = 25; //ms
     private Timefactor = 7e-6;
-    private OldPositions: [THREE.Vector3?] = [];
+    private OldPositions: THREE.Vector3[] = [];
 
     private AtomConfig: CAtomConfig;
     private speedControl: JQuery<HTMLElement>;
@@ -725,7 +672,7 @@ class CCalcultion {
         this.tempControl = $('#inpTemp');
     }
 
-    public async run(atomList: [CAtom?], wallList: [CWall?, CBox?], timeStep: number) {
+    public async run(atomList: CAtom[], wallList: (CWall | CBox)[], timeStep: number) {
         timeStep *= Number(this.speedControl.attr('value')); // change simulation speed
 
         if (timeStep > this.MaxTimestep) { timeStep = this.MaxTimestep; } // prevent too long timessteps
@@ -743,29 +690,24 @@ class CCalcultion {
     }
 
 
-    private async getForceVectors(atomList: [CAtom?]) {
-        let calcJobs: [Promise<void>?] = [];
+    private async getForceVectors(atomList: CAtom[]) {
         // @ts-ignore
-        let forces: [THREE.Vector3] = new Array(atomList.length);
+        let forces: THREE.Vector3[] = new Array(atomList.length);
         forces.fill(new THREE.Vector3());
 
 
         for (let atom = 0; atom < atomList.length; atom++) {
             await this.calcTargetForces(atom, atomList, forces);
-            // calcJobs.push(this.calcTargetForces(atom, atomList, forces));
         }
-
-        // Promise.all(calcJobs);
         return forces;
-
     }
 
-    private async calcTargetForces(atom: number, atomList: [CAtom?], forces: any[]) {
-        let atomPos = new THREE.Vector3().copy(atomList[atom]!.Object.position);
+    private async calcTargetForces(atom: number, atomList: CAtom[], forces: THREE.Vector3[]) {
+        let atomPos = new THREE.Vector3().copy(atomList[atom].Object.position);
         this.OldPositions[atom] = atomPos;
 
         for (let target = atom + 1; target < atomList.length; target++) {
-            let targetPos = new THREE.Vector3().copy(atomList[target]!.Object.position);
+            let targetPos = new THREE.Vector3().copy(atomList[target].Object.position);
 
             let length2 = targetPos.distanceToSquared(atomPos);
             let distanceV = targetPos.sub(atomPos);
@@ -797,7 +739,7 @@ class CCalcultion {
         });
     }
 
-    private setNewPositions(atomList: [CAtom?], forces: [THREE.Vector3], timeStep: number) {
+    private setNewPositions(atomList: CAtom[], forces: THREE.Vector3[], timeStep: number) {
         const tempControlValue = Number(this.tempControl.val());
         let invAtomMass = 1 / this.AtomConfig.AtomMass;
 
@@ -805,34 +747,32 @@ class CCalcultion {
             // acceleration
             let acceleration = (forces[atom]).multiplyScalar(invAtomMass);
             // velocity
-            atomList[atom]!.Velocity.add(acceleration.multiplyScalar(timeStep));
+            atomList[atom].Velocity.add(acceleration.multiplyScalar(timeStep));
 
             // temperature
-            let vel = new THREE.Vector3().copy(atomList[atom]!.Velocity.multiplyScalar(tempControlValue));
-            this.logAverage(atomList[atom]!.Velocity, 'avgVel');
+            let vel = new THREE.Vector3().copy(atomList[atom].Velocity.multiplyScalar(tempControlValue));
+            this.logAverage(atomList[atom].Velocity, 'avgVel');
 
             // positions
             vel.multiplyScalar(timeStep);
-            atomList[atom]!.Object.position.add(vel);
+            atomList[atom].Object.position.add(vel);
         }
     }
 
     // Wall functions --------------------------------------
-    private calculateForceWalls(wallList: [CWall?, CBox?], atomList: [CAtom?], forces: [THREE.Vector3?]) {
+    private calculateForceWalls(wallList: (CWall | CBox)[], atomList: CAtom[], forces: THREE.Vector3[]) {
         for (let atomIndex = 0; atomIndex < atomList.length; atomIndex++) {
             wallList.forEach(wall => {
-                if (wall !== undefined) {
-                    if (wall.Type === "box") {
-                        if (wall.Style === 'force-LJ') {
-                            this.handleLJWall(atomList, atomIndex, wall, forces);
-                        }
+                if (wall.Type === "box") {
+                    if (wall.Style === 'force-LJ') {
+                        this.handleLJWall(atomList, atomIndex, wall, forces);
                     }
                 }
             });
         }
     }
 
-    private calculateReboundWalls(wallList: [CWall?, CBox?], atomList: [CAtom?]) {
+    private calculateReboundWalls(wallList: (CWall | CBox)[], atomList: CAtom[]) {
         for (let atomIndex = 0; atomIndex < atomList.length; atomIndex++) {
             wallList.forEach(wall => {
                 if (wall?.Style == "rebound") {
@@ -843,49 +783,49 @@ class CCalcultion {
     }
 
 
-    private async handleLJWall(atomList: [CAtom?], atomIndex: number, wall: CBox, forces: [THREE.Vector3?]) {
-        let wallDistances = this.getDistances(atomList[atomIndex]!, wall);
+    private async handleLJWall(atomList: CAtom[], atomIndex: number, wall: CBox, forces: THREE.Vector3[]) {
+        let wallDistances = this.getDistances(atomList[atomIndex], wall);
         if (wallDistances) {
             let force = await this.calculateWallForcesLJ(wallDistances);
-            forces[atomIndex] = new THREE.Vector3().addVectors(forces[atomIndex]!, force);
+            forces[atomIndex] = new THREE.Vector3().addVectors(forces[atomIndex], force);
             this.logAverage(force, 'pres');
         }
     }
 
-    private handleReboundWall(atomList: [CAtom?], atomIndex: number, wall: CWall) {
+    private handleReboundWall(atomList: CAtom[], atomIndex: number, wall: CWall) {
         let atomDirectionPosition = this.getAtomDirectionPositions(atomList, atomIndex, wall);
-        if (atomDirectionPosition != null) {
+        if (atomDirectionPosition !== null) {
             if ((atomDirectionPosition.old <= wall.Position && atomDirectionPosition.new >= wall.Position) ||
                 (atomDirectionPosition.old >= wall.Position && atomDirectionPosition.new <= wall.Position)) {
                 this.setAtomReboundPositions(atomList, atomIndex, wall);
-                this.changeDirection(atomList[atomIndex]!, wall);
+                this.changeDirection(atomList[atomIndex], wall);
             }
         }
     }
 
-    private getAtomDirectionPositions(atomList: [CAtom?], atomIndex: number, wall: CWall) {
+    private getAtomDirectionPositions(atomList: CAtom[], atomIndex: number, wall: CWall) {
         switch (wall.Direction) {
             case "x":
-                return { old: this.OldPositions[atomIndex]!.x, new: atomList[atomIndex]!.Object.position.x }
+                return { old: this.OldPositions[atomIndex].x, new: atomList[atomIndex].Object.position.x }
             case "y":
-                return { old: this.OldPositions[atomIndex]!.y, new: atomList[atomIndex]!.Object.position.y }
+                return { old: this.OldPositions[atomIndex].y, new: atomList[atomIndex].Object.position.y }
             case "z":
-                return { old: this.OldPositions[atomIndex]!.z, new: atomList[atomIndex]!.Object.position.z }
+                return { old: this.OldPositions[atomIndex].z, new: atomList[atomIndex].Object.position.z }
             default:
                 return null;
         }
     }
 
-    private setAtomReboundPositions(atomList: [CAtom?], atomIndex: number, wall: CWall) {
+    private setAtomReboundPositions(atomList: CAtom[], atomIndex: number, wall: CWall) {
         switch (wall.Direction) {
             case "x":
-                atomList[atomIndex]!.Object.position.x = wall.Position - (atomList[atomIndex]!.Object.position.x - wall.Position);
+                atomList[atomIndex].Object.position.x = wall.Position - (atomList[atomIndex].Object.position.x - wall.Position);
                 break;
             case "y":
-                atomList[atomIndex]!.Object.position.y = wall.Position - (atomList[atomIndex]!.Object.position.y - wall.Position);
+                atomList[atomIndex].Object.position.y = wall.Position - (atomList[atomIndex].Object.position.y - wall.Position);
                 break;
             case "z":
-                atomList[atomIndex]!.Object.position.z = wall.Position - (atomList[atomIndex]!.Object.position.z - wall.Position);
+                atomList[atomIndex].Object.position.z = wall.Position - (atomList[atomIndex].Object.position.z - wall.Position);
                 break;
         }
     }
@@ -952,9 +892,9 @@ class CSettings {
         }
     }
 
-    public applyInitialMomentum(atomList: [CAtom?]) {
+    public applyInitialMomentum(atomList: CAtom[]) {
         atomList.forEach(atom => {
-            atom!.applyInitialMomentum(this.initialMomentum);
+            atom.applyInitialMomentum(this.initialMomentum);
         });
     }
 }

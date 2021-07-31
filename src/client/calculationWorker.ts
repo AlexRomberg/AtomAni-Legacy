@@ -97,12 +97,6 @@ type Size = {
 }
 //#endregion
 
-
-
-
-
-
-
 class CAtomConfig {
     static CONST_k = 1.380658e-23;
 
@@ -172,9 +166,9 @@ class CAtomConfig {
         const zshiftNextLayer = distanceNextRow / 3;
         const heightDistanceNextLayer = Math.sqrt(distanceNextRow * distanceNextRow - zshiftNextLayer * zshiftNextLayer);
 
-        for (let x = 0; x <= width; x++) {
-            for (let y = 0; y <= height; y++) {
-                for (let z = 0; z <= depth; z++) {
+        for (let x = 0; x < width; x++) {
+            for (let y = 0; y < height; y++) {
+                for (let z = 0; z < depth; z++) {
                     let xpos = 0, ypos = 0, zpos = 0;
                     xpos = x * forceEquilibrium;
                     ypos = y * heightDistanceNextLayer;
@@ -227,6 +221,7 @@ class CAtomConfig {
                     break;
             }
         });
+        console.log("worker:", this.AtomList.length);
     }
 }
 
@@ -314,6 +309,7 @@ class CSimulation {
     private AnimationRunning;
     private PrevTime;
     private Frame;
+    private calcInterval: any;
     private Calculation: CCalcultion;
 
     constructor(atomConfig: CAtomConfig) {
@@ -336,22 +332,38 @@ class CSimulation {
     }
 
     public async runCalculation() {
-        this.Frame++;
-
-        const timeStep = this.getTimeStep();
-
-        // calculation
-        this.Calculation.run(this.AtomList, this.WallList, timeStep);
-
-        // chartdata
-        let chartdata: { avgVel: number, pres: number, fps?: number } = this.Calculation.getChartdata();
-        chartdata['fps'] = 1000 / timeStep;
-
         if (this.AnimationRunning) {
-            this.runCalculation();
-        }
+            if (this.calcInterval === undefined) {
+                this.calcInterval = setInterval(() => {
+                    this.Frame++;
 
-        postMessage({ contentType: 'data', data: { pos: this.getAtomPositions(this.AtomList), chart: chartdata } }, TargetOrigin)
+                    const timeStep = this.getTimeStep();
+
+                    // calculation
+                    this.Calculation.run(this.AtomList, this.WallList, timeStep);
+
+                    // chartdata
+                    let chartdata: { avgVel: number, pres: number, fps?: number } = this.Calculation.getChartdata();
+                    chartdata['fps'] = 1000 / timeStep;
+
+
+                    const message = { contentType: 'data', data: { pos: this.getAtomPositions(this.AtomList), chart: chartdata } }
+                    postMessage(message, TargetOrigin);
+                }, 0);
+            }
+        } else {
+            this.Frame++;
+            const timeStep = 0;
+            // calculation
+            this.Calculation.run(this.AtomList, this.WallList, 0);
+
+            // chartdata
+            let chartdata: { avgVel: number, pres: number, fps?: number } = this.Calculation.getChartdata();
+            chartdata['fps'] = 1000 / timeStep;
+
+            const message = { contentType: 'data', data: { pos: this.getAtomPositions(this.AtomList), chart: chartdata } }
+            postMessage(message, TargetOrigin);
+        }
     }
 
     private getTimeStep(): number {
@@ -366,10 +378,13 @@ class CSimulation {
 
     public async stop() {
         this.AnimationRunning = false;
+        clearInterval(this.calcInterval);
+        this.calcInterval = undefined;
     }
 
     public async start() {
         this.AnimationRunning = true;
+        this.runCalculation();
     }
 
     public async reset() {
@@ -391,7 +406,7 @@ class CSimulation {
 class CCalcultion {
     private MaxDistance = 160000;
     private MaxTimestep = 25; //ms
-    private Timefactor = 7e-6;
+    private Timefactor = 10e-6;
     private OldPositions: Vector[] = [];
 
     private AtomConfig: CAtomConfig;
@@ -444,7 +459,7 @@ class CCalcultion {
     }
 
     private calcForceVectorsOfAtom(atomList: CAtom[], atom: number, forces: Vector[]) {
-        let atomPos = atomList[atom].Position;
+        let atomPos = CVector.copy(atomList[atom].Position);
         this.OldPositions[atom] = atomPos;
 
         for (let target = atom + 1; target < atomList.length; target++) {
@@ -481,7 +496,7 @@ class CCalcultion {
     }
 
     private setNewPositions(atomList: CAtom[], forces: Vector[], timeStep: number) {
-        const tempControlValue = Number(this.Temp);
+        const tempControlValue = this.Temp;
         let invAtomMass = 1 / this.AtomConfig.AtomMass;
 
         for (let atom = 0; atom < atomList.length; atom++) {
@@ -637,9 +652,9 @@ class CVector {
 
     static sub(vector1: Vector, vector2: Vector) {
         return {
-            x: vector2.x - vector1.x,
-            y: vector2.y - vector1.y,
-            z: vector2.z - vector1.z
+            x: vector1.x - vector2.x,
+            y: vector1.y - vector2.y,
+            z: vector1.z - vector2.z
         }
     }
 
@@ -709,32 +724,46 @@ class CExperiment {
         this.Simulation.stop();
     }
 
-    public redraw(script: ConfigScript) {
+    public resetAnimation(script: ConfigScript) {
         this.Simulation.reset();
         this.AtomConfig.loadFromScript(script);
         this.WallConfig.loadFromScript(script);
         this.Simulation.addAtoms(this.AtomConfig.AtomList);
         this.Simulation.addWalls(this.WallConfig.WallList);
+        this.Simulation.runCalculation();
     }
 }
 
 let Experiment: CExperiment;
 let TargetOrigin: any;
+let Config: ConfigScript;
+
 
 onmessage = (e) => {
     // @ts-ignore
     TargetOrigin = e.originalTarget;
-    const message: { contentType: 'cs', data: ConfigScript } | { contentType: 'cmd', data: 'start' | 'stop' } | { contentType: 'data', data: { type: 'speed' | 'temp', value: number } } = e.data;
+    const message: { contentType: 'cs', data: ConfigScript } | { contentType: 'cmd', data: 'start' | 'stop' | 'reset' } | { contentType: 'data', data: { type: 'speed' | 'temp', value: number } } = e.data;
 
     switch (message.contentType) {
         case "cs":
-            Experiment = new CExperiment(message.data)
+            Config = message.data;
+            Experiment = new CExperiment(Config);
+            console.log("worker.gotConfig: ", Config);
             break;
         case "cmd":
-            if (message.data === "start") {
-                Experiment.startAnimation();
-            } else if (message.data === "stop") {
-                Experiment.stopAnimation();
+            switch (message.data) {
+                case "start":
+                    console.log("worker.start");
+                    Experiment.startAnimation();
+                    break;
+                case "stop":
+                    console.log("worker.stop");
+                    Experiment.stopAnimation();
+                    break;
+                case "reset":
+                    console.log("worker.reset");
+                    Experiment.resetAnimation(Config);
+                    break;
             }
             break;
         case "data":
