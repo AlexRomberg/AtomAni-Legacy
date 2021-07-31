@@ -14,48 +14,52 @@ Copyright (c) 2021 Alexander Romberg
     <% if (user.CanEdit) { %>
     <!-- scripts -->
     <script src="/res/lib/jquery.min.js"></script>
-    <script src="/js/editorCard.js" defer></script>
+    <script src="/js/selection.js" defer></script>
     <% } %>
 </head>
 
 <body>
     <div class="container">
-        <%- include('header',{ origin: "../" , title: "Experimente" }) %>
+        <%- include('header',{ origin: parentFolder===-1 ? '../' : parentFolder , title: "Experimente" }) %>
         <main>
             <% if (user.CanEdit) { %>
-            <!-- <div class="edit"><img id="pen" class="shadow selectable" alt="Bearbeiten"></div> -->
+            <div class="edit"><img id="pen" class="shadow selectable" alt="Bearbeiten"></div>
             <% } %>
             <div class="selection">
                 <% cards.forEach(card=>{ %>
-                <div class="card-container selectable-no-border shadow"><a class="card shadow" href="<%- card.redirect %>">
-                        <img src="/res/img/menuIcons/<%- card.imagename %>" alt="Missing Folder Icon">
+                <div class="card-container selectable-no-border shadow">
+                    <a class="card shadow" href="<%- card.redirect %>">
+                        <img src="/res/img/menuIcons/<%- card.imagename %>" alt="Missing card icon">
                         <div class="Text">
                             <h2><%- card.name %></h2>
+                            <input class="inputfield" type="text" value="<%- card.name %>" pattern="[A-Za-z0-9\u00C0-\u00FC][A-Za-z0-9\u00C0-\u00FC_\- ]*" style="display: none;" required>
                         </div>
                     </a>
                     <% if (user.CanEdit) { %>
-                    <!-- <div class="card-controls"> -->
-                        <!-- <form action="/delete<%-card.redirect /*card.experimentId === undefined ? id : card.experimentId*/ %>" method="post"> -->
-                            <!-- <button type="submit" class="selectable">Löschen</button> -->
-                        <!-- </form> -->
-                        <!-- <form action="/edit<%-card.redirect /*card.experimentId === undefined ? id : card.experimentId*/ %>" method="post"> -->
-                            <!-- <button type="submit" class="selectable">Bearbeiten</button> -->
-                        <!-- </form> -->
-                    <!-- </div> -->
+                    <div class="card-controls">
+                        <button path="/api/delete<%-card.redirect %>" question="Wirklich löschen?" class="selectable deleteBtn">Löschen</button>
+                        <button class="selectable editBtn">Bearbeiten</button>
+                        <button path="/api/edit<%-card.redirect %>" style="display: none;" class="selectable saveBtn">Speichern</button>
+                        <button style="display: none;" class="selectable cancelBtn">Abbrechen</button>
+                    </div>
                     <% } %>
                 </div>
                 <% }); if (user.CanEdit) { %>
-                <!-- <div id="editor-card" class="card selectable-no-border shadow"> -->
-                    <!-- <img id="editor-card-img" src="/res/img/menuIcons/add.svg" alt="Missing Folder Icon"> -->
-                    <!-- <div class="Text"> -->
-                        <!-- <h2>Editor</h2> -->
-                    <!-- </div> -->
-                    <!-- <div class="options"> -->
-                        <!-- <button id="option-new-experiment">Neues Experiment</button> -->
-                        <!-- <button id="option-new-folder">Neuer Ordner</button> -->
-                        <!-- <button id="option-cancel">Abbrechen</button> -->
-                    <!-- </div> -->
-                <!-- </div> -->
+                <div id="editor-card" class="card selectable-no-border shadow">
+                    <img id="editor-card-img" src="/res/img/menuIcons/add.svg" alt="Missing Folder Icon">
+                    <div class="Text">
+                        <h2 text-add="Hinzufügen" text-newExp="Neues Experiment" text-newFold="Neuer Ordner">Hinzufügen</h2>
+                    </div>
+                    <div class="options">
+                        <button class="inputfield" id="option-new-experiment">Neues Experiment</button>
+                        <button class="inputfield" id="option-new-folder">Neuer Ordner</button>
+                        <button class="inputfield" id="option-exp-editor" folder="<%- path %>" style="display: none;">Editor öffnen</button>
+                        <button class="inputfield" id="option-exp-import" folder="<%- path %>" style="display: none;">Importieren</button>
+                        <input class="inputfield" id="option-fold-name" type="text" placeholder="Ordnername" style="display: none;" pattern="[A-Za-z0-9\u00C0-\u00FC][A-Za-z0-9\u00C0-\u00FC_\- ]*" required>
+                        <button class="inputfield" id="option-fold-save" folder="<%- path %>" style="display: none;">Speichern</button>
+                        <button class="inputfield" id="option-cancel">Abbrechen</button>
+                    </div>
+                </div>
                 <% } %>
             </div>
         </main>

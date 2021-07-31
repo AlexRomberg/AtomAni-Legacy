@@ -33,6 +33,6 @@ public/sitemap.xml
 config/*.json
 
 # others
-public/js/editorCard.js
 public/js/loginDropdown.js
 public/js/simulation.js
+public/js/selection.js

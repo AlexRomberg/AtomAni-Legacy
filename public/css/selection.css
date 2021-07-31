@@ -73,14 +73,9 @@
     justify-content: space-between;
 }
 
-.card-controls form {
-    width: calc(50% - 1px);
-    height: 50px;
-}
-
 .card-controls button {
     width: 100%;
-    height: 100%;
+    height: 50px;
     background-color: transparent;
     border-radius: 8px;
 }
@@ -106,8 +101,8 @@
     flex-flow: column nowrap;
 }
 
-.options button {
-    padding: 5px;
+.inputfield {
+    padding: 6px;
     margin-top: 5px;
     border: solid 3px transparent;
     background-color: var(--content-bg-col-dark);
@@ -115,10 +110,32 @@
     font-size: 1.25em;
 }
 
-.options button:hover,
-.options button:focus {
+.options input:invalid {
+    border-color: #f55;
+}
+
+.inputfield:hover,
+.inputfield:focus {
     outline: none;
     border: solid 3px var(--accent-col);
+}
+
+.edit-title {
+    padding: 0px !important;
+    overflow: hidden;
+}
+
+.edit-title h2 {
+    display: none;
+}
+
+.edit-title .inputfield {
+    display: block !important;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    width: 100%;
+    height: 46px;
+    margin: 0px;
 }
 
 main a {
