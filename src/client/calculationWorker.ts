@@ -221,6 +221,7 @@ class CAtomConfig {
                     break;
             }
         });
+        console.log("worker:", this.AtomList.length);
     }
 }
 
