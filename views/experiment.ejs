@@ -62,8 +62,14 @@ Copyright (c) 2021 Alexander Romberg
     <%- include('footer.ejs', { Version }) %>
     <script type="module">
         import CExperiment from '/js/simulation.js';
+        import CExperimentNoWorker from '/js/simulationNoWorker.js';
         const simulationScript = <%- JSON.stringify(scriptParams); %>;
-        const Experiment = new CExperiment(simulationScript, true);
-        Experiment.handleResize();
+        if (Worker !== undefined) {
+            const Experiment = new CExperiment(simulationScript, true);
+            Experiment.handleResize();
+        } else {
+            const Experiment = new CExperimentNoWorker(simulationScript, true);
+            Experiment.handleResize();
+        }
     </script>
 </body>

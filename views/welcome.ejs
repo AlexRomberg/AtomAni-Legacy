@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <!--
 Copyright (c) 2021 Alexander Romberg
-
 -->
 
 <head>
@@ -86,6 +85,7 @@ Copyright (c) 2021 Alexander Romberg
             </div>
             <script type="module">
                 import CExperiment from '/js/simulation.js';
+                import CExperimentNoWorker from '/js/simulationNoWorker.js';
                 let simulationScript = {
                     charts: [],
                     atoms: [{
@@ -94,9 +94,9 @@ Copyright (c) 2021 Alexander Romberg
                         y: 0,
                         z: 0,
                         atomType: "ne",
-                        width: 3,
-                        height: 3,
-                        depth: 3
+                        width: 4,
+                        height: 5,
+                        depth: 5
                     }],
                     walls: [{
                             type: "box",
@@ -147,8 +147,13 @@ Copyright (c) 2021 Alexander Romberg
                     ],
                     controls: []
                 };
-                const Experiment = new CExperiment(simulationScript, true);
-                Experiment.handleResize();
+                if (Worker !== undefined) {
+                    const Experiment = new CExperiment(simulationScript, true);
+                    Experiment.handleResize();
+                } else {
+                    const Experiment = new CExperimentNoWorker(simulationScript, true);
+                    Experiment.handleResize();
+                }
             </script>
         </div>
     </main>
