@@ -42,15 +42,22 @@ class CEditorCard {
             window.location.href = `/import/${this.OptionExpImport.attr('folder')}`;
             this.closeMenu();
         });
-        this.OptionFoldSave.on('click', () => {
-            const name = this.OptionFoldName.val()!.toString().replace(/[^a-z0-9\u00E0-\u00FC_\-\ ]|^[ \-_]*/ig, '');
-            if (name.length > 0 && name === this.OptionFoldName.val()!.toString()) {
-                window.location.href = `/api/new/folder/?folder=${this.OptionExpImport.attr('folder')}&name=${this.OptionFoldName.val()}`;
-                this.closeMenu();
-            } else {
-                this.OptionFoldName.focus();
+        this.OptionFoldName.on('keydown', (e)=> {
+            if (e.key === "Enter") {
+                this.saveFolder();
             }
         });
+        this.OptionFoldSave.on('click', this.saveFolder);
+    }
+
+    private saveFolder() {
+        const name = this.OptionFoldName.val()!.toString().replace(/[^a-z0-9\u00E0-\u00FC_\-\ ]|^[ \-_]*/ig, '');
+        if (name.length > 0 && name === this.OptionFoldName.val()!.toString()) {
+            window.location.href = `/api/new/folder/?folder=${this.OptionExpImport.attr('folder')}&name=${this.OptionFoldName.val()}`;
+            this.closeMenu();
+        } else {
+            this.OptionFoldName.focus();
+        }
     }
 
     public show() {
@@ -129,6 +136,17 @@ class CCardControls {
         $('.deleteBtn').on('click', this.deleteItem);
         $('.editBtn').on('click', this.editItem);
         $('.Text input').on('click', () => { return false; })
+        $('.Text input').on('keydown', this.handleEnter.bind(this));
+    }
+
+    private handleEnter(e: JQuery.KeyDownEvent) {
+        if (e.key === "Enter") {
+            const path = $(e.target).parent().parent().siblings('.card-controls').children('.saveBtn').attr('path')!;
+            this.saveChanges($(e.target), path);
+
+            e.preventDefault();
+            return false;
+        }
     }
 
     private deleteItem(e: JQuery.ClickEvent) {
@@ -145,17 +163,21 @@ class CCardControls {
         input.focus()
 
         $(target).parent().children().hide();
-        const saveBtn = $(target).parent().children('.saveBtn').on('click', (e) => { CardControls.saveChanges(e); });
+        const saveBtn = $(target).parent().children('.saveBtn').on('click', (e) => { CardControls.handleSaveClick(e); });
         saveBtn.show();
         const cancelBtn = $(target).parent().children('.cancelBtn').on('click', (e) => { CardControls.resetCards(); });
         cancelBtn.show();
     }
 
-    public saveChanges(e: JQuery.ClickEvent) {
+    public handleSaveClick(e: JQuery.ClickEvent) {
         const input = $(e.target).parent().siblings('a').children('.Text').children('input');
+        this.saveChanges(input, $(e.target).attr('path')!);
+    }
+
+    public saveChanges(input: JQuery<HTMLElement>, path: string) {
         const name = input.val()!.toString().replace(/[^a-z0-9\u00E0-\u00FC_\-\ ]|^[ \-_]*/ig, '');
         if (name.length > 0 && name === input.val()!.toString()) {
-            window.location.href = `${$(e.target).attr('path')!}?name=${name}`;
+            window.location.href = `${path}?name=${name}`;
             this.resetCards();
         } else {
             input.focus();

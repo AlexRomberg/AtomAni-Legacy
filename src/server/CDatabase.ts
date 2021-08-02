@@ -196,7 +196,7 @@ export class CDatabase {
         id = this.Validation.cleanInput(id, this.Validation.Regex.organisation.id);
 
         if (await this.countMembers(id) <= 1) {
-            this.runSQL(`REMOVE FROM ${this.DBName}.TOrganisations WHERE OrgId = ${id};`)
+            this.runSQL(`DELETE FROM ${this.DBName}.TOrganisations WHERE OrgId = ${id};`)
         } else {
             throw new Error("organisation has users");
         }
@@ -298,7 +298,7 @@ export class CDatabase {
     public async removeUser(id: string): Promise<void> {
         id = this.Validation.cleanInput(id, this.Validation.Regex.user.id);
 
-        this.runSQL(`REMOVE FROM ${this.DBName}.TUsers WHERE UserId = '${id}';`)
+        this.runSQL(`DELETE FROM ${this.DBName}.TUsers WHERE UserId = '${id}';`)
     }
     //#endregion
 
@@ -313,7 +313,7 @@ export class CDatabase {
 
         if (await this.getOrganisation(orgId) !== null) {
             if (parentFolder === '-1' || await this.getFolder(parentFolder) !== null) {
-                this.runSQL(`INSERT INTO ${this.DBName}.TFolders (FoldName, ParentFoldId, OrgId) VALUES ('${name}', '${parentFolder}', '${orgId}');`);
+                this.runSQL(`INSERT INTO ${this.DBName}.TFolders (FoldIcon, FoldName, ParentFoldId, OrgId) VALUES ('exampleGroup.svg','${name}', '${parentFolder}', '${orgId}');`);
             } else {
                 throw new Error(`Parentfold with ID '${parentFolder}' does not exist in this organisation!`);
             }
@@ -346,6 +346,8 @@ export class CDatabase {
         if (await this.getOrganisation(orgId) !== null) {
             if (await this.getFolder(id) !== null) {
                 if (await this.getFolder(parentFolder) !== null) {
+                    console.log(`UPDATE ${this.DBName}.TFolders SET FoldName = '${name}', FoldIcon = '${icon}', ParentFoldId = '${parentFolder}', OrgId = '${orgId}' WHERE FoldId = ${id};`);
+
                     this.runSQL(`UPDATE ${this.DBName}.TFolders SET FoldName = '${name}', FoldIcon = '${icon}', ParentFoldId = '${parentFolder}', OrgId = '${orgId}' WHERE FoldId = ${id};`);
                 } else {
                     throw new Error(`ParentFolder with ID '${parentFolder}' does not exist in this organisation`);
@@ -369,7 +371,7 @@ export class CDatabase {
         }
     }
 
-    public async getFolderItems(id: string): Promise<{ folders: [{ FoldId: number; FoldIcon: string; FoldName: string; ParentFoldId: number; OrgId: string }?]; experiments: [{ ExpId: number; ExpName: string; ExpHash: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }?] }> {
+    public async getFolderItems(id: string): Promise<{ folders: { FoldId: number; FoldIcon: string; FoldName: string; ParentFoldId: number; OrgId: string }[]; experiments: { ExpId: number; ExpName: string; ExpHash: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }[] }> {
         id = this.Validation.cleanInput(id, this.Validation.Regex.folder.id);
 
         const folders = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TFolders WHERE ParentFoldId = '${id}';`);
@@ -381,7 +383,7 @@ export class CDatabase {
         id = this.Validation.cleanInput(id, this.Validation.Regex.folder.id);
         const folderItems = await this.getFolderItems(id);
         if (folderItems.folders.length === 0 && folderItems.experiments.length === 0) {
-            this.runSQL(`REMOVE FROM ${this.DBName}.TFolders WHERE FoldId = '${id}';`);
+            this.runSQL(`DELETE FROM ${this.DBName}.TFolders WHERE FoldId = ${id};`);
         } else {
             throw new Error("Folder is not empty!");
         }
@@ -399,9 +401,9 @@ export class CDatabase {
         deletable = deletable === true;
 
         if (folder === '-1' || await this.getFolder(folder) !== null) {
-            this.runSQL(`INSERT INTO ${this.DBName}.TExperiments (ExpName, ExpDeletable, FolderId) VALUES ('${name}', '${deletable}', '${folder}');`);
+            this.runSQL(`INSERT INTO ${this.DBName}.TExperiments (ExpName, ExpHash, ExpIcon, ExpDeletable, FolderId) VALUES ('${name}', '${hash}', 'exampleExperiment.svg', '${deletable}', '${folder}');`);
         } else {
-            throw new Error(`Parentfold with ID '${folder}' does not exist in this organisation!`);
+            throw new Error(`Parentfolder with ID '${folder}' does not exist in this organisation!`);
         }
     }
 
@@ -453,7 +455,7 @@ export class CDatabase {
     public async removeExperiment(id: string): Promise<void> {
         id = this.Validation.cleanInput(id, this.Validation.Regex.experiment.id);
 
-        this.runSQL(`REMOVE FROM ${this.DBName}.TExperiments WHERE ExpId = '${id}';`);
+        this.runSQL(`DELETE FROM ${this.DBName}.TExperiments WHERE ExpId = '${id}';`);
     }
     //#endregion
 

@@ -1,6 +1,6 @@
 import { CConfig } from './CConfig';
 import { CDatabase } from './CDatabase';
-import { CPages } from './CPages';
+import { CPages, CAPI } from './CPages';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import flash from 'express-flash';
@@ -11,16 +11,16 @@ import morgan from 'morgan';
 
 export class CWebserver {
     private App: express.Express;
-    private Database: CDatabase;
     private Pages: CPages;
     private Config: CConfig;
+    private API: CAPI
     private PassportConfig: CPassportConfig;
 
     constructor(database: CDatabase, config: CConfig) {
         this.App = express();
-        this.Database = database;
         this.Config = config;
         this.Pages = new CPages(this.Config.version, database);
+        this.API = new CAPI(this.Pages, database);
         this.PassportConfig = new CPassportConfig(
             passport,
             database.getUserByName.bind(database),
@@ -57,32 +57,26 @@ export class CWebserver {
         this.App.get('/help', this.Pages.sendHelp.bind(this.Pages));
 
         // editor & api
-        this.App.get('/editor/:id', this.checkAuthenticated, this.Pages.sendEditor.bind(this.Pages));
+        this.App.get('/editor/:id', this.checkAuthenticated, this.checkCanEdit, this.Pages.sendEditor.bind(this.Pages));
+        this.App.get('/api/new/folder', this.checkAuthenticated, this.checkCanEdit, this.API.createFolder.bind(this.API))
+        this.App.get('/api/edit/selection/:folder', this.checkAuthenticated, this.checkCanEdit, this.API.renameFolder.bind(this.API))
+        this.App.get('/api/delete/selection/:folder', this.checkAuthenticated, this.checkCanEdit, this.API.deleteFolder.bind(this.API))
 
 
-        // this.App.post('/delete/:id', this.checkAuthenticated, this.Pages.handelDelete.bind(this.Pages));
-        // this.App.post('/edit/:id', this.checkAuthenticated, this.Pages.handelDelete.bind(this.Pages));
-
-        // this.App.get('/new/experiment', this.checkAuthenticated, this.Pages.sendNewExperiment.bind(this.Pages));
-        // this.App.post('/new/experiment', this.checkAuthenticated, this.Pages.handleNewExperiment.bind(this.Pages));
-        // this.App.get('/new/folder', this.checkAuthenticated, this.Pages.sendNewFolder.bind(this.Pages));
-        // this.App.post('/new/folder', this.checkAuthenticated, this.Pages.handleNewFolder.bind(this.Pages));
 
         // accounts
         this.App.get('/logout', this.Pages.handleLogout);
-        this.App.get('/register', this.checkAuthenticated, this.Pages.sendRegister.bind(this.Pages));
         this.App.get('/login', this.checkNotAuthenticated, this.Pages.sendLogin.bind(this.Pages));
-
-        this.App.post('/register', this.checkAuthenticated, (req, res) => { this.Pages.handleRegister(req, res, this.Database.addUser) });
-
         this.App.post('/login', this.checkNotAuthenticated, passport.authenticate('local', {
             successRedirect: '/',
             failureRedirect: '/login',
             failureFlash: true
         }));
 
-
-        this.App.use(this.Pages.handle404.bind(this.Pages));
+        this.App.get('/404', this.Pages.handle404.bind(this.Pages));
+        this.App.use((req: express.Request, res: express.Response) => {
+            res.redirect('/404');
+        });
     }
 
     private checkAuthenticated(req: express.Request, res: express.Response, next: Function) {
@@ -102,6 +96,24 @@ export class CWebserver {
             res.redirect('/');
         } else {
             next();
+        }
+    }
+
+    private checkCanEdit(req: express.Request, res: express.Response, next: Function) {
+        // @ts-ignore
+        if (req.user.CanEdit) {
+            next();
+        } else {
+            res.redirect('/404')
+        }
+    }
+
+    private checkIsAdmin(req: express.Request, res: express.Response, next: Function) {
+        // @ts-ignore
+        if (req.user.IsAdmin) {
+            next();
+        } else {
+            res.redirect('/404')
         }
     }
 }

@@ -23,7 +23,7 @@ Copyright (c) 2021 Alexander Romberg
         <%- include('header',{ origin: parentFolder===-1 ? '../' : parentFolder , title: "Experimente" }) %>
         <main>
             <% if (user.CanEdit) { %>
-            <div class="edit"><img id="pen" class="shadow selectable" alt="Bearbeiten"></div>
+            <img id="pen" class="shadow selectable" alt="Bearbeiten">
             <% } %>
             <div class="selection">
                 <% cards.forEach(card=>{ %>
@@ -32,7 +32,7 @@ Copyright (c) 2021 Alexander Romberg
                         <img src="/res/img/menuIcons/<%- card.imagename %>" alt="Missing card icon">
                         <div class="Text">
                             <h2><%- card.name %></h2>
-                            <input class="inputfield" type="text" value="<%- card.name %>" pattern="[A-Za-z0-9\u00C0-\u00FC][A-Za-z0-9\u00C0-\u00FC_\- ]*" style="display: none;" required>
+                            <% if (user.CanEdit) { %><input class="inputfield" type="text" value="<%- card.name %>" pattern="[A-Za-z0-9\u00C0-\u00FC][A-Za-z0-9\u00C0-\u00FC_\- ]*" style="display: none;" required><% } %>
                         </div>
                     </a>
                     <% if (user.CanEdit) { %>

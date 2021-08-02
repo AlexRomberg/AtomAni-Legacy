@@ -14,12 +14,12 @@ export class CValidation {
         folder: {
             id: /[^\-0-9]/g,
             name: /[^a-z0-9\u00E0-\u00FC_\-\ ]/ig,
-            icon: /[^0-9a-f]/ig
+            icon: /[^0-9a-z\.]/ig
         },
         experiment: {
             id: /[^0-9a-f]/ig,
             name: /[^a-z0-9\u00E0-\u00FC_\-\ ]/ig,
-            icon: /[^0-9a-f]/ig
+            icon: /[^0-9a-z\.]/ig
         }
     }
 
@@ -32,7 +32,10 @@ export class CValidation {
         }
     }
 
-    public cleanInput(input: string, regex: RegExp) {
+    public cleanInput(input: any, regex: RegExp) {
+        if (input === null) {
+            return "";
+        }
         input = input.toString();
         return input.replace(regex, '');
     }

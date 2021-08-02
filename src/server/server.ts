@@ -16,8 +16,6 @@ DB.setup(runServer).catch((err: Error) => { CM.error(err.message); process.exit(
 
 // Main Programm
 function runServer() {
-    // DB.addFolder("root", "ARO", "-1");
-
     CM.log('green', 'Server started!\n----------------------------------------------------');
     CM.log('cyan', `Version: ${Config.version}`);
     CM.log('blue', `running at: http://localhost:${Config.server.port}`);
