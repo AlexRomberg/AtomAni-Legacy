@@ -35,11 +35,24 @@ Copyright (c) 2021 Alexander Romberg
                 <!-- Simulation -->
                 <canvas id="sim"></canvas>
             </div>
-            <div class="controlPane">
-                <!-- Controls -->
-                <div id="chartsBox">
+        </div>
+
+        <div class="configuration">
+            <div class="confignav">
+                <p id="diagrammTab" class="selected-tab">Diagramme</p>
+                <hr>
+                <p id="controlsTab">Steuerelemente</p>
+                <hr>
+                <p id="atomsTab">Atome</p>
+                <hr>
+                <p id="wallsTab">Wände</p>
+                <hr>
+                <p id="settingsTab">Einstellungen / Speichern</p>
+            </div>
+            <div class="configcontent">
+                <div class="tab-panel" id="diagrammPanel">
                     <h3>Diagramme</h3>
-                    <div class="charts">
+                    <div class="list" id="chartList">
                         <div class="chart">
                             <input type="checkbox" name="fps" id="fps">fps</input>
                             <hr>
@@ -78,9 +91,9 @@ Copyright (c) 2021 Alexander Romberg
                         </div>
                     </div>
                 </div>
-                <div id="controlsBox">
-                    <h3>Steuerung</h3>
-                    <div class="controls">
+                <div class="tab-panel hidden" id="controlsPanel">
+                    <h3>Steuerelemente</h3>
+                    <div class="list" id="controlsList">
                         <div class="control">
                             <input type="checkbox" name="temp" id="temp">temp</input>
                             <hr>
@@ -89,45 +102,35 @@ Copyright (c) 2021 Alexander Romberg
                                 <input type="text" name="tempName" id="tempName" value="temp">
                             </span>
                         </div>
-                        <div class="control">
-                            <input type="checkbox" name="control" id="control">control</input>
-                            <hr>
-                            <span>
-                                <label for="controlName">Element Name</label>
-                                <input type="text" name="controlName" id="controlName" value="control">
-                            </span>
-                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="configuration">
-            <div class="collumn">
-                <h3>Atome</h3>
-                <div class="list" id="atomList">
-                    <button class="selectionBox add" id="addAtom"><img src="../res/img/add.svg" alt="Neu"></button>
-                </div>
-            </div>
-            <div class="collumn">
-                <h3>Wände</h3>
-                <div class="list" id="wallList">
-                    <button class="selectionBox add" id="addWall"><img src="../res/img/add.svg" alt="Neu"></button>
-                </div>
-            </div>
-            <div class="collumn">
-                <h3>Einstellungen</h3>
-                <form action="/new/experiment" method="post">
-                    <div class="list settings">
-                        <div class="settingsBox">
-                            <label for="name">Experiment Name:</label>
-                            <input type="text" pattern="^(?!\s*$).+" name="name" id="experimentName" required>
-                            <input type="hidden" name="id" value="<%-origId%>">
-                            <input type="hidden" id="data" name="data" value='{"charts": [],"atoms": [],"walls": [],"controls": []}'>
-                            <input type="submit" name="save" value="Speichern">
-                        </div>
+                <div class="tab-panel hidden" id="atomsPanel">
+                    <h3>Atome</h3>
+                    <div class="list" id="atomList">
+                        <button class="selectionBox add" id="addAtom"><img src="../res/img/add.svg" alt="Neu"></button>
                     </div>
-                </form>
+                </div>
+                <div class="tab-panel hidden" id="wallsPanel">
+                    <h3>Wände</h3>
+                    <div class="list" id="wallList">
+                        <button class="selectionBox add" id="addWall"><img src="../res/img/add.svg" alt="Neu"></button>
+                    </div>
+                    <p><b>Info:</b> Zur Zeit können nur Boxen erstellt werden. Für die Einbindung von Wänden kann die Konfigurationsdatei manuell bearbeitet werden.</p>
+                </div>
+                <div class="tab-panel hidden" id="settingsPanel">
+                    <h3>Einstellungen</h3>
+                    <form action="/api/new/experiment" method="post">
+                        <div class="list settings">
+                            <div class="settingsBox">
+                                <label for="name">Experiment Name:</label>
+                                <input type="text" pattern="^(?!\s*$).+" name="name" id="experimentName" required>
+                                <input type="hidden" name="id" value="<%-origId%>">
+                                <input type="hidden" id="data" name="data" value='{"charts": [],"atoms": [],"walls": [],"controls": []}'>
+                                <input type="submit" name="save" value="Speichern">
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </main>

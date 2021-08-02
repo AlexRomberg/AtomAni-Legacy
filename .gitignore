@@ -6,6 +6,7 @@
 package-lock.json
 
 # js
+/public/js/
 /src/*.js
 /src/modules/*.js
 
@@ -33,6 +34,3 @@ public/sitemap.xml
 config/*.json
 
 # others
-public/js/loginDropdown.js
-public/js/simulation.js
-public/js/selection.js

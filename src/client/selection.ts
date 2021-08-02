@@ -45,7 +45,7 @@ class CEditorCard {
         this.OptionFoldSave.on('click', () => {
             const name = this.OptionFoldName.val()!.toString().replace(/[^a-z0-9\u00E0-\u00FC_\-\ ]|^[ \-_]*/ig, '');
             if (name.length > 0 && name === this.OptionFoldName.val()!.toString()) {
-                window.location.href = `/api/newFolder/?folder=${this.OptionExpImport.attr('folder')}&name=${this.OptionFoldName.val()}`;
+                window.location.href = `/api/new/folder/?folder=${this.OptionExpImport.attr('folder')}&name=${this.OptionFoldName.val()}`;
                 this.closeMenu();
             } else {
                 this.OptionFoldName.focus();

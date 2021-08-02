@@ -218,26 +218,26 @@ export class CPages {
         // }
     }
 
-    public async handleEditor(req: express.Request, res: express.Response) {
-        // const user: any = req.user;
-        // if (user.canEdit) {
-        //     if ('id' in req.body) {
-        //         let id = req.body.id;
-        //         id = cleanID(id);
-        //         if (storage.checkFolderExists(id, user.organisation)) {
-        //             res.render('editor', {
-        //                 Version: this.Version,
-        //                 origId: id
-        //             });
-        //         } else {
-        //             send404(req, res, "Path problem!", "Folder not found");
-        //         }
-        //     } else {
-        //         send404(req, res, "Path problem!", "ID parameter not set");
-        //     }
-        // } else {
-        //     res.redirect('/');
-        // }
+    public async sendEditor(req: express.Request, res: express.Response) {
+        const user: any = req.user;
+        if (user.CanEdit) {
+            if ('id' in req.params) {
+                let id = req.params.id;
+                // id = cleanID(id);
+                // if (this.Storage.checkFolderExists(id, user.organisation)) {
+                res.render('editor', {
+                    Version: this.Version,
+                    origId: id
+                });
+                // } else {
+                // this.send404(req, res, "Path problem!", "Folder not found");
+                // }
+            } else {
+                this.send404(req, res, "Path problem!", "ID parameter not set");
+            }
+        } else {
+            this.handle404(req, res);
+        }
     }
 
     public async handelDelete(req: express.Request, res: express.Response) {

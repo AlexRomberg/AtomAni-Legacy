@@ -1,9 +1,23 @@
-.controlPane,
-.simulationWindow #sim,
-.simulationWindow {
+.simulationWindow,
+.simulationWindow #sim {
     height: calc(100vh - 16em) !important;
     min-height: unset;
     max-height: 500px;
+}
+
+.simulationWindow .simulation,
+.simulationWindow #sim {
+    width: 100% !important;
+}
+
+
+/* --- control / chart --- */
+
+.chart,
+.control {
+    background-color: var(--content-bg-col-darker);
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 .control input,
@@ -20,18 +34,6 @@
 .control span input,
 .chart span input {
     width: 100%;
-}
-
-#controlsBox,
-#chartsBox {
-    flex: unset;
-    overflow-y: unset;
-    max-height: unset;
-}
-
-.controlPane {
-    scrollbar-width: thin;
-    overflow-y: auto;
 }
 
 
@@ -85,6 +87,14 @@ main button:active {
     border-radius: 5px;
     display: flex;
     overflow-x: auto;
+}
+
+.list>* {
+    margin-right: 10px
+}
+
+.list>*:last-child {
+    margin-right: 0px;
 }
 
 .small-grid {
@@ -142,6 +152,56 @@ main button:active {
 .settingsBox input {
     max-width: 300px;
     margin-top: 5px;
+}
+
+
+/* --- confignav --- */
+
+.configuration {
+    padding: 0px;
+    overflow: hidden;
+}
+
+.confignav {
+    display: flex;
+    background-color: var(--content-bg-col-dark);
+}
+
+.confignav p {
+    width: 100%;
+    text-align: center;
+    padding: 15px 0px;
+    cursor: pointer;
+    box-shadow: inset 0 0px 0px var(--accent-col);
+    transition: 0.1s;
+}
+
+.selected-tab {
+    border: none;
+    box-shadow: inset 0 -4px 0px var(--accent-col) !important;
+}
+
+.confignav p:hover {
+    box-shadow: inset 0 -8px 0px var(--accent-col) !important;
+}
+
+.confignav hr {
+    margin: 10px 0px
+}
+
+
+/* --- configcontent --- */
+
+.configcontent {
+    padding: 10px;
+}
+
+.tab-panel h3 {
+    margin-bottom: 10px;
+}
+
+.hidden {
+    display: none;
 }
 
 
