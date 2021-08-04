@@ -1,9 +1,9 @@
-import CM from './modules/consoleModule';
-import help from './modules/helpMarkdown';
-import { CValidation } from './CValidation';
 import express from 'express';
 import { CDatabase } from './CDatabase';
 import { CStorage } from './CStorage';
+import { CValidation } from './CValidation';
+import CM from './modules/consoleModule';
+import help from './modules/helpMarkdown';
 
 export class CPages {
     private Version: string;
@@ -11,11 +11,11 @@ export class CPages {
     private Database: CDatabase;
     private Storage: CStorage;
 
-    constructor(version: string, database: CDatabase) {
+    constructor(version: string, database: CDatabase, storage: CStorage) {
         this.Version = version;
         this.Validation = new CValidation();
         this.Database = database;
-        this.Storage = new CStorage(`${__dirname}/data`); // make dynamic
+        this.Storage = storage;
     }
 
     public async sendIndex(req: express.Request, res: express.Response) {
@@ -159,8 +159,6 @@ export class CPages {
     private prepareContentArray(input: { folders: { FoldId: number; FoldIcon: string; FoldName: string; ParentFoldId: number; OrgId: string }[]; experiments: { ExpId: number; ExpName: string; ExpHash: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }[] }): { name: string; imagename: string; redirect: string }[] {
         let cards: { name: string; imagename: string; redirect: string }[] = [];
         input.folders.forEach(folder => {
-            console.log(folder.FoldIcon);
-
             cards.push({ name: folder.FoldName, imagename: folder.FoldIcon === null ? "exampleGroup.svg" : folder.FoldIcon, redirect: `/selection/${folder.FoldId}` });
         });
         input.experiments.forEach(experiment => {
@@ -189,78 +187,5 @@ export class CPages {
         }
 
         return folderID;
-    }
-}
-
-export class CAPI {
-    private Pages: CPages;
-    private Database: CDatabase;
-    private Validation: CValidation;
-
-    constructor(pages: CPages, database: CDatabase) {
-        this.Pages = pages;
-        this.Database = database;
-        this.Validation = new CValidation();
-    }
-
-    public async createFolder(req: express.Request, res: express.Response) {
-        // @ts-ignore
-        const OrgId = this.Validation.cleanInput(req.user.OrgId, this.Validation.Regex.organisation.id);
-        const ParentFolderId = this.Validation.cleanInput(req.query.folder!.toString(), this.Validation.Regex.folder.id);
-        const FolderName = this.Validation.cleanInput(req.query.name!.toString(), this.Validation.Regex.folder.name);
-
-        try {
-            const Folder = await this.Database.getFolder(ParentFolderId);
-            if (Folder !== null && Folder.OrgId === OrgId) {
-                this.Database.addFolder(FolderName, OrgId, ParentFolderId);
-            } else {
-                this.Pages.send404(req, res, "Folder not found!", "Couldn't create Folder, because parentfolder does not exit!")
-            }
-            res.redirect(req.headers.referer ? req.headers.referer : "/");
-        } catch {
-            res.redirect(req.headers.referer ? req.headers.referer : "/");
-        }
-    }
-
-    public async renameFolder(req: express.Request, res: express.Response) {
-        // @ts-ignore
-        const OrgId = this.Validation.cleanInput(req.user.OrgId, this.Validation.Regex.organisation.id);
-        const FolderId = this.Validation.cleanInput(req.params.folder!.toString(), this.Validation.Regex.folder.id);
-        const FolderName = this.Validation.cleanInput(req.query.name!.toString(), this.Validation.Regex.folder.name);
-
-        try {
-            const Folder = await this.Database.getFolder(FolderId);
-            if (Folder !== null && Folder.OrgId === OrgId) {
-                this.Database.updateFolder(FolderId, FolderName, Folder.FoldIcon, Folder.ParentFoldId.toString(), OrgId);
-            } else {
-                this.Pages.send404(req, res, "Folder not found!", "Couldn't create Folder, because parentfolder does not exit!")
-            }
-            res.redirect(req.headers.referer ? req.headers.referer : "/");
-        } catch {
-            res.redirect(req.headers.referer ? req.headers.referer : "/");
-        }
-    }
-
-    public async deleteFolder(req: express.Request, res: express.Response) {
-        // @ts-ignore
-        const OrgId = this.Validation.cleanInput(req.user.OrgId, this.Validation.Regex.organisation.id);
-        const FolderId = this.Validation.cleanInput(req.params.folder!.toString(), this.Validation.Regex.folder.id);
-
-        try {
-            const Folder = await this.Database.getFolder(FolderId);
-            if (Folder !== null && Folder.OrgId === OrgId) {
-                const items = await this.Database.getFolderItems(FolderId);
-                if (items.experiments.length === 0 && items.folders.length === 0) {
-                    this.Database.removeFolder(FolderId);
-                } else {
-                    this.Pages.send404(req, res, "Folder not empty!", "You must delete all subitems to delete a folder.")
-                }
-            } else {
-                this.Pages.send404(req, res, "Folder not found!", "Couldn't create Folder, because parentfolder does not exit!")
-            }
-            res.redirect(req.headers.referer ? req.headers.referer : "/");
-        } catch {
-            res.redirect(req.headers.referer ? req.headers.referer : "/");
-        }
     }
 }

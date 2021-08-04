@@ -6,10 +6,10 @@
     "scripts": {
         "build": "tsc --build ./src/server/tsconfig.json&&tsc --build ./src/client/tsconfig.json",
         "start-windows": "set NODE_ENV=stable&&node ./server/server.js",
-        "dev-windows": "set NODE_ENV=dev&&nodemon ./server/server.js --ignore ./public/",
+        "dev-windows": "set NODE_ENV=dev&&nodemon ./server/server.js --ignore ./server/data/",
         "test-windows": "set NODE_ENV=test&&tsc&&node ./server/test.js",
         "start-linux": "export NODE_ENV=stable&&node ./server/server.js",
-        "dev-linux": "export NODE_ENV=dev&&nodemon ./server/server.js --ignore ./public/",
+        "dev-linux": "export NODE_ENV=dev&&nodemon ./server/server.js --ignore ./server/data/",
         "test-linux": "export NODE_ENV=test&&tsc&&node ./server/test.js"
     },
     "repository": {

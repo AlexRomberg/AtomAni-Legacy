@@ -394,14 +394,14 @@ export class CDatabase {
     // Experiments
     // ---------------------------------------------------------------------------------
     //#region
-    public async addExperiments(name: string, hash: string, deletable: boolean, folder: string): Promise<void> {
+    public async addExperiment(name: string, hash: string, deletable: boolean, folder: string): Promise<void> {
         name = this.Validation.cleanInput(name, this.Validation.Regex.experiment.name);
         hash = this.Validation.cleanInput(hash, this.Validation.Regex.experiment.icon);
         folder = this.Validation.cleanInput(folder, this.Validation.Regex.folder.id);
         deletable = deletable === true;
 
         if (folder === '-1' || await this.getFolder(folder) !== null) {
-            this.runSQL(`INSERT INTO ${this.DBName}.TExperiments (ExpName, ExpHash, ExpIcon, ExpDeletable, FolderId) VALUES ('${name}', '${hash}', 'exampleExperiment.svg', '${deletable}', '${folder}');`);
+            this.runSQL(`INSERT INTO ${this.DBName}.TExperiments (ExpName, ExpHash, ExpIcon, ExpDeletable, FoldId) VALUES ('${name}', '${hash}', 'exampleExperiment.svg', '${deletable}', '${folder}');`);
         } else {
             throw new Error(`Parentfolder with ID '${folder}' does not exist in this organisation!`);
         }

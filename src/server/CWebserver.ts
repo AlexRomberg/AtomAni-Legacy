@@ -1,13 +1,15 @@
-import { CConfig } from './CConfig';
-import { CDatabase } from './CDatabase';
-import { CPages, CAPI } from './CPages';
-import express from 'express';
 import cookieParser from 'cookie-parser';
+import express from 'express';
 import flash from 'express-flash';
 import session from 'express-session';
-import passport from 'passport';
-import { CPassportConfig } from './CPassportConfig';
 import morgan from 'morgan';
+import passport from 'passport';
+import { CAPI } from "./CAPI";
+import { CConfig } from './CConfig';
+import { CDatabase } from './CDatabase';
+import { CPages } from './CPages';
+import { CPassportConfig } from './CPassportConfig';
+import { CStorage } from './CStorage';
 
 export class CWebserver {
     private App: express.Express;
@@ -17,10 +19,12 @@ export class CWebserver {
     private PassportConfig: CPassportConfig;
 
     constructor(database: CDatabase, config: CConfig) {
+        const storage = new CStorage(`${__dirname}/data`); // make dynamic
+
         this.App = express();
         this.Config = config;
-        this.Pages = new CPages(this.Config.version, database);
-        this.API = new CAPI(this.Pages, database);
+        this.Pages = new CPages(this.Config.version, database, storage);
+        this.API = new CAPI(this.Pages, database, storage);
         this.PassportConfig = new CPassportConfig(
             passport,
             database.getUserByName.bind(database),
@@ -28,20 +32,18 @@ export class CWebserver {
         );
 
 
+        this.intiExpress();
+    }
+
+    private intiExpress() {
         this.App.set('view engine', 'ejs');
-        if (this.Config.settings.loglevel >= 4) {
-            this.App.use(morgan('dev'));
-        }
+        if (this.Config.settings.loglevel >= 4) { this.App.use(morgan('dev')); }
         this.App.use(express.static('public'));
         this.App.use(express.urlencoded({ extended: false, limit: '1kb' }));
         this.App.use(express.json({ limit: '1kb' }));
         this.App.use(cookieParser());
         this.App.use(flash());
-        this.App.use(session({
-            secret: this.Config.server.sessionSecret,
-            resave: false,
-            saveUninitialized: false
-        }));
+        this.App.use(session({ secret: this.Config.server.sessionSecret, resave: false, saveUninitialized: false }));
         this.App.use(passport.initialize());
         this.App.use(passport.session());
         this.App.listen(this.Config.server.port);
@@ -59,6 +61,7 @@ export class CWebserver {
         // editor & api
         this.App.get('/editor/:id', this.checkAuthenticated, this.checkCanEdit, this.Pages.sendEditor.bind(this.Pages));
         this.App.get('/api/new/folder', this.checkAuthenticated, this.checkCanEdit, this.API.createFolder.bind(this.API))
+        this.App.post('/api/new/experiment', this.checkAuthenticated, this.checkCanEdit, this.API.createExperiment.bind(this.API))
         this.App.get('/api/edit/selection/:folder', this.checkAuthenticated, this.checkCanEdit, this.API.renameFolder.bind(this.API))
         this.App.get('/api/delete/selection/:folder', this.checkAuthenticated, this.checkCanEdit, this.API.deleteFolder.bind(this.API))
 
