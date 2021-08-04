@@ -56,6 +56,7 @@ export class CWebserver {
         this.App.get('/selection', this.checkAuthenticated, this.Pages.sendSelection.bind(this.Pages));
         this.App.get('/selection/:id', this.checkAuthenticated, this.Pages.sendSelection.bind(this.Pages));
         this.App.get('/experiment/:id', this.checkAuthenticated, this.Pages.sendExperiment.bind(this.Pages));
+        this.App.get('/UAC', this.checkAuthenticated, this.checkIsAdmin, this.Pages.sendUAC.bind(this.Pages));
         this.App.get('/help', this.Pages.sendHelp.bind(this.Pages));
 
         // editor & api
@@ -79,9 +80,7 @@ export class CWebserver {
         }));
 
         this.App.get('/404', this.Pages.handle404.bind(this.Pages));
-        this.App.use((req: express.Request, res: express.Response) => {
-            res.redirect('/404');
-        });
+        this.App.use(this.Pages.handle404.bind(this.Pages));
     }
 
     private checkAuthenticated(req: express.Request, res: express.Response, next: Function) {

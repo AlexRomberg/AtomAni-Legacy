@@ -1,0 +1,92 @@
+.content {
+  width: 100%;
+  max-height: calc(100vh - 7em);
+  overflow-y: auto;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around
+}
+
+.cardframe {
+  background-color: var(--content-bg-col);
+  width: 370px;
+  border-radius: 8px;
+  margin: 20px;
+}
+
+.usercard {
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.infoarea {
+  height: 140px;
+  display: grid;
+  grid-template-columns: 100px auto;
+  grid-template-rows: 100px 30px;
+  align-items: center;
+}
+
+.permissionsarea {
+  height: 60px;
+  background-color: var(--content-bg-col-dark);
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 20px 35px; 
+  align-items: center;
+  text-align: center;
+  padding-top: 3px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  margin: 10px;
+  border-radius: 50%;
+  background-color: var(--content-bg-col-dark);
+}
+
+.infoarea h2 {
+  margin: 10px;
+  word-break: break-word;
+  font-size: 1.75em;
+}
+
+.infoarea h3{
+  text-align: center
+}
+
+.userId {
+  margin: 10px;
+  text-align: left !important;
+}
+
+.permissionsarea img {
+  width: 35px;
+  height: 35px;
+  margin: auto;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  height: 50px;
+}
+
+.controls button {
+  background-color: #0000;
+  border-radius: 10px;
+  border: #0000 3px solid;
+}
+
+.controls button:hover,
+.controls button:focus {
+  outline: none;
+  border: solid 3px var(--accent-col);
+}
+
+.controls button:active {
+  background-color: var(--accent-col);
+}

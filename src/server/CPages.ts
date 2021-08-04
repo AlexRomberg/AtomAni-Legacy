@@ -138,8 +138,20 @@ export class CPages {
         });
     }
 
+    public async sendUAC(req: express.Request, res: express.Response) {
+        // @ts-ignore
+        const OrgId = this.Validation.cleanInput(req.user.OrgId, this.Validation.Regex.organisation.id);
+        const users = await this.Database.getMembers(OrgId);
+        console.log(users);
+
+        res.render('UAC', {
+            users,
+            Version: this.Version
+        });
+    }
+
     public async send404(req: express.Request, res: express.Response, error: string, reason: string) {
-        res.render('404', {
+        res.status(404).render('404', {
             Version: this.Version,
             error,
             reason
@@ -188,4 +200,5 @@ export class CPages {
 
         return folderID;
     }
+
 }

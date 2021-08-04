@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2021 Alexander Romberg
+-->
+
+<head>
+  <title>AtomAni</title>
+
+  <!-- stylesheets -->
+  <link rel="stylesheet" href="/css/general.css">
+  <link rel="stylesheet" href="/css/uac.css">
+
+  <%- include('favicon'); %>
+</head>
+
+<body>
+  <%- include('header',{ origin: `script.back` , title: "Benutzeraccounts" }) %>
+  <main>
+    <% if (messages.error) { %>
+    <div id="errorMessage"><%= messages.error %></div>
+    <% } %>
+    <div class="content">
+      <% users.forEach(user=>{ %>
+      <div class="cardframe shadow">
+        <div class="usercard shadow">
+          <div class="infoarea">
+            <div class="avatar">
+              <img src="<%- user.UserImage ? user.UserImage : '/res/img/logo-small-light.svg' %>" alt="avatar">
+            </div>
+            <h2 class="name"><%- user.UserName %>
+              <!-- Alexander Romberg -->
+            </h2>
+            <h3>ID:</h3>
+            <h3 class="userId"><%- user.UserIdentification %>
+              <!-- AR -->
+            </h3>
+          </div>
+          <div class="permissionsarea">
+            <p>Ist Admin:</p>
+            <p>Kann bearbeiten:</p>
+            <img src="<%- user.UserIsAdmin > 0? '/res/img/checkmark.svg" alt="Ja':'/res/img/cross.svg" alt="Nein' %>">
+            <img src="<%- user.UserCanEdit > 0? '/res/img/checkmark.svg" alt="Ja':'/res/img/cross.svg" alt="Nein' %>">
+          </div>
+        </div>
+        <div userID="<%- user.UserId %>" class="controls">
+          <button class="deletebtn selectable">Löschen</button>
+          <button class="editbtn selectable">Bearbeiten</button>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+  </main>
+  <%- include('footer.ejs', { Version }) %>
+</body>
