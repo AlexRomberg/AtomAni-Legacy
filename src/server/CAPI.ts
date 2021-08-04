@@ -28,10 +28,10 @@ export class CAPI {
             const folder = await this.Database.getFolder(parentFolderId);
             if (folder !== null && folder.OrgId === orgId) {
                 this.Database.addFolder(folderName, orgId, parentFolderId);
+                res.redirect(req.headers.referer ? req.headers.referer : "/");
             } else {
                 this.Pages.send404(req, res, "Folder not found!", "Couldn't create Folder, because parentfolder does not exit!");
             }
-            res.redirect(req.headers.referer ? req.headers.referer : "/");
         } catch {
             res.redirect(req.headers.referer ? req.headers.referer : "/");
         }
@@ -47,10 +47,10 @@ export class CAPI {
             const Folder = await this.Database.getFolder(folderId);
             if (Folder !== null && Folder.OrgId === orgId) {
                 this.Database.updateFolder(folderId, folderName, Folder.FoldIcon, Folder.ParentFoldId.toString(), orgId);
+                res.redirect(req.headers.referer ? req.headers.referer : "/");
             } else {
                 this.Pages.send404(req, res, "Folder not found!", "Couldn't create folder, because parentfolder does not exit!");
             }
-            res.redirect(req.headers.referer ? req.headers.referer : "/");
         } catch {
             res.redirect(req.headers.referer ? req.headers.referer : "/");
         }
@@ -67,13 +67,13 @@ export class CAPI {
                 const items = await this.Database.getFolderItems(folderId);
                 if (items.experiments.length === 0 && items.folders.length === 0) {
                     this.Database.removeFolder(folderId);
+                    res.redirect(req.headers.referer ? req.headers.referer : "/");
                 } else {
                     this.Pages.send404(req, res, "Folder not empty!", "You must delete all subitems to delete a folder.");
                 }
             } else {
                 this.Pages.send404(req, res, "Folder not found!", "Couldn't create folder, because parentfolder does not exit!");
             }
-            res.redirect(req.headers.referer ? req.headers.referer : "/");
         } catch {
             res.redirect(req.headers.referer ? req.headers.referer : "/");
         }
@@ -97,6 +97,55 @@ export class CAPI {
             }
         } catch {
             this.Pages.send404(req, res, 'Can\'t create file!', "There was a Problem while saving your experiment.");
+        }
+    }
+
+    public async renameExperiment(req: express.Request, res: express.Response) {
+        // @ts-ignore
+        const orgId = this.Validation.cleanInput(req.user.OrgId, this.Validation.Regex.organisation.id);
+        const experimentHash = this.Validation.cleanInput(req.params.experiment!.toString(), this.Validation.Regex.experiment.id);
+        const experimentName = this.Validation.cleanInput(req.query.name!.toString(), this.Validation.Regex.experiment.name);
+
+        try {
+            const experiment = await this.Database.getExperimentByHash(experimentHash);
+            if (experiment) {
+                const ExpOrgId = await this.Database.getExperimentOrganisation(experiment.ExpId.toString());
+                console.table({ ExpOrgId, orgId, result: ExpOrgId == orgId, result2: ExpOrgId === orgId })
+                if (ExpOrgId === orgId) {
+                    this.Database.updateExperiment(experiment.ExpId.toString(), experimentName, experiment.ExpHash, experiment.ExpIcon, experiment.ExpDeletable, experiment.FoldId.toString());
+                    res.redirect(req.headers.referer ? req.headers.referer : "/");
+                } else {
+                    this.Pages.send404(req, res, "Experiment not found!", "Couldn't update experiment, because it does not exit!");
+                }
+            } else {
+                this.Pages.send404(req, res, "Experiment not found!", "Couldn't update experiment, because it does not exit!");
+            }
+        } catch (err) {
+            res.redirect(req.headers.referer ? req.headers.referer : "/");
+        }
+    }
+
+    public async deleteExperiment(req: express.Request, res: express.Response) {
+        // @ts-ignore
+        const orgId = this.Validation.cleanInput(req.user.OrgId, this.Validation.Regex.organisation.id);
+        const exprimentId = this.Validation.cleanInput(req.params.experiment!.toString(), this.Validation.Regex.experiment.id);
+
+        try {
+            const experiment = await this.Database.getExperimentByHash(exprimentId);
+            if (experiment) {
+                const ExpOrgId = await this.Database.getExperimentOrganisation(experiment.ExpId.toString());
+                if (ExpOrgId === orgId) {
+                    this.Storage.deleteExperimentfile(exprimentId);
+                    this.Database.removeExperiment(experiment.ExpId.toString());
+                    res.redirect(req.headers.referer ? req.headers.referer : "/");
+                } else {
+                    this.Pages.send404(req, res, "Experiment not found!", "Can't delete Experiment because it does not exist.");
+                }
+            } else {
+                this.Pages.send404(req, res, "Experiment not found!", "Can't delete Experiment because it does not exist.");
+            }
+        } catch {
+            res.redirect(req.headers.referer ? req.headers.referer : "/");
         }
     }
 }

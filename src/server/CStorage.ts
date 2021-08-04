@@ -30,6 +30,19 @@ export class CStorage {
         }
     }
 
+    public deleteExperimentfile(hash: string) {
+        try {
+            const filePath = `${this.DataPath}/experiments/${hash}.json`;
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            } else {
+                throw new Error("ID not found!");
+            }
+        } catch {
+            throw new Error("ID not found!");
+        }
+    }
+
     private getId() {
         let id = "";
         for (let i = 0; i < 32; i++) {

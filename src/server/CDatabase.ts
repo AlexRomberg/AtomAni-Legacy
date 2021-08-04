@@ -103,6 +103,7 @@ export class CDatabase {
         let connection;
         try {
             connection = await this.DBPool.getConnection();
+            CM.info("SQL: " + SQL);
             await connection.query(SQL);
             connection.end();
         } catch (err) {
@@ -132,6 +133,7 @@ export class CDatabase {
         let connection;
         try {
             connection = await this.DBPool.getConnection();
+            CM.info("SQL: " + SQL);
             let data = await connection.query(SQL);
             delete data['meta'];
             connection.end();
@@ -414,6 +416,16 @@ export class CDatabase {
         return experiment[0];
     }
 
+    public async getExperimentByHash(hash: string): Promise<{ ExpId: number; ExpName: string; ExpHash: string; ExpIcon: string; ExpDeletable: boolean; FoldId: number }> {
+        console.log(hash);
+
+        hash = this.Validation.cleanInput(hash, this.Validation.Regex.experiment.id);
+        console.log(hash);
+
+        const experiment = await this.runSQLQuerry(`SELECT * FROM ${this.DBName}.TExperiments WHERE ExpHash = '${hash}';`);
+        return experiment[0];
+    }
+
     public async updateExperiment(id: string, name: string, hash: string, icon: string, deletable: boolean, FoldId: string): Promise<void> {
         id = this.Validation.cleanInput(id, this.Validation.Regex.experiment.id);
         name = this.Validation.cleanInput(name, this.Validation.Regex.experiment.name);
@@ -444,12 +456,12 @@ export class CDatabase {
         }
     }
 
-    public async getExperimentOrganisation(id: string): Promise<{ OrgId: string }> {
+    public async getExperimentOrganisation(id: string): Promise<string> {
         id = this.Validation.cleanInput(id, this.Validation.Regex.experiment.id);
 
         const organisation = await this.runSQLQuerry(`SELECT OrgId FROM ${this.DBName}.TExperiments, ${this.DBName}.TFolders WHERE ${this.DBName}.TExperiments.ExpId = '${id}' AND ${this.DBName}.TExperiments.FoldId = ${this.DBName}.TFolders.FoldId;`);
 
-        return organisation[0];
+        return organisation[0].OrgId;
     }
 
     public async removeExperiment(id: string): Promise<void> {

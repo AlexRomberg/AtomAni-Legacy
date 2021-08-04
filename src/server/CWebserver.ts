@@ -63,7 +63,9 @@ export class CWebserver {
         this.App.get('/api/new/folder', this.checkAuthenticated, this.checkCanEdit, this.API.createFolder.bind(this.API))
         this.App.post('/api/new/experiment', this.checkAuthenticated, this.checkCanEdit, this.API.createExperiment.bind(this.API))
         this.App.get('/api/edit/selection/:folder', this.checkAuthenticated, this.checkCanEdit, this.API.renameFolder.bind(this.API))
+        this.App.get('/api/edit/experiment/:experiment', this.checkAuthenticated, this.checkCanEdit, this.API.renameExperiment.bind(this.API))
         this.App.get('/api/delete/selection/:folder', this.checkAuthenticated, this.checkCanEdit, this.API.deleteFolder.bind(this.API))
+        this.App.get('/api/delete/experiment/:experiment', this.checkAuthenticated, this.checkCanEdit, this.API.deleteExperiment.bind(this.API))
 
 
 
