@@ -11,6 +11,9 @@ Copyright (c) 2021 Alexander Romberg
   <link rel="stylesheet" href="/css/uac.css">
 
   <%- include('favicon'); %>
+
+  <script src="/res/lib/jquery.min.js"></script>
+  <script src="/js/uac.js" defer></script>
 </head>
 
 <body>
@@ -27,13 +30,9 @@ Copyright (c) 2021 Alexander Romberg
             <div class="avatar">
               <img src="<%- user.UserImage ? user.UserImage : '/res/img/logo-small-light.svg' %>" alt="avatar">
             </div>
-            <h2 class="name"><%- user.UserName %>
-              <!-- Alexander Romberg -->
-            </h2>
+            <h2 class="name"><%- user.UserName %></h2>
             <h3>ID:</h3>
-            <h3 class="userId"><%- user.UserIdentification %>
-              <!-- AR -->
-            </h3>
+            <h3 class="userId"><%- user.UserIdentification %></h3>
           </div>
           <div class="permissionsarea">
             <p>Ist Admin:</p>
@@ -42,12 +41,47 @@ Copyright (c) 2021 Alexander Romberg
             <img src="<%- user.UserCanEdit > 0? '/res/img/checkmark.svg" alt="Ja':'/res/img/cross.svg" alt="Nein' %>">
           </div>
         </div>
-        <div userID="<%- user.UserId %>" class="controls">
+        <div userid="<%- user.UserId %>" class="controls">
           <button class="deletebtn selectable">Löschen</button>
           <button class="editbtn selectable">Bearbeiten</button>
         </div>
       </div>
       <% }); %>
+      <div class="usercard selectable-no-border" id="newcard">
+        <div class="newcard">
+          <img src="/res/img/menuIcons/add.svg" alt="Missing Folder Icon">
+        </div>
+        <div class="newcardtext">
+          <h3>Hinzufügen</h3>
+        </div>
+      </div>
+      <div class="userEditOverlay" style="display: none;">
+        <div class="userEditDialog">
+          <form action="/api/new/user" class="full-width-form" id="userEditForm" method="post">
+            <div class="formbody">
+              <h2 id="formTitle">Benutzer Hinzufügen</h2>
+              <label for="UserId">Benutzer-ID:</label>
+              <input class="selectable" autocomplete="username" type="text" name="UserId" id="UserId" pattern="[A-Za-z0-9_\-\.]*" required>
+              <label for="UserName">Name:</label>
+              <input class="selectable" autocomplete="name" type="text" name="UserName" id="UserName" pattern="[A-Za-z0-9\u00C0-\u00FC][A-Za-z0-9\u00C0-\u00FC_\- ]*" required>
+              <label for="UserPW">Passwort:</label>
+              <input class="selectable" autocomplete="new-password" type="password" name="UserPW" id="UserPW" required>
+              <div class="inputRow">
+                <label for="UserCanEdit">Kann bearbeiten:</label>
+                <input class="selectable" type="checkbox" name="UserCanEdit" id="UserCanEdit">
+              </div>
+              <div class="inputRow">
+                <label for="UserIsAdmin">Ist Admin:</label>
+                <input class="selectable" type="checkbox" name="UserIsAdmin" id="UserIsAdmin">
+              </div>
+            </div>
+            <div class="buttongroup">
+              <input id="resetBtn" class="selectable" type="reset" value="Abbrechen">
+              <input id="submitBtn" class="selectable" type="submit" value="Speichern">
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </main>
   <%- include('footer.ejs', { Version }) %>

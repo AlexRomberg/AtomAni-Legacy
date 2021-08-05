@@ -207,6 +207,10 @@ footer {
     border-radius: 5px;
 }
 
+.full-width-form input:invalid {
+    border: solid #f55 3px;
+}
+
 .full-width-form textarea {
     resize: vertical;
 }

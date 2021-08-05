@@ -18,6 +18,7 @@ export class CAPI {
         this.Validation = new CValidation();
     }
 
+    // folder
     public async createFolder(req: express.Request, res: express.Response) {
         // @ts-ignore
         const orgId = this.Validation.cleanInput(req.user.OrgId, this.Validation.Regex.organisation.id);
@@ -79,6 +80,7 @@ export class CAPI {
         }
     }
 
+    // experiments
     public async createExperiment(req: express.Request, res: express.Response) {
         // @ts-ignore
         const orgId = this.Validation.cleanInput(req.user.OrgId, this.Validation.Regex.organisation.id);
@@ -147,5 +149,37 @@ export class CAPI {
         } catch {
             res.redirect(req.headers.referer ? req.headers.referer : "/");
         }
+    }
+
+    public createUser(req: express.Request, res: express.Response) {
+        // @ts-ignore
+        const orgId = this.Validation.cleanInput(req.user.OrgId, this.Validation.Regex.organisation.id);
+        const userId = this.Validation.cleanInput(req.body.UserId, this.Validation.Regex.user.identification);
+        const userName = this.Validation.cleanInput(req.body.UserName, this.Validation.Regex.user.name);
+        const userPWRaw = req.body.UserPW;
+        const userCanEdit = 'UserCanEdit' in req.body && req.body.UserCanEdit === "on";
+        const userIsAdmin = 'UserIsAdmin' in req.body && req.body.UserIsAdmin === "on";
+
+        this.Database.addUser(userId, userName, userPWRaw, userCanEdit, userIsAdmin, orgId);
+        res.redirect(req.headers.referer ? req.headers.referer : "/UAC");
+    }
+
+    public async updateUser(req: express.Request, res: express.Response) {
+
+    }
+
+    public deleteUser(req: express.Request, res: express.Response) {
+        // @ts-ignore
+        const orgId = this.Validation.cleanInput(req.user.OrgId, this.Validation.Regex.organisation.id);
+        // @ts-ignore
+        const reqUserId = this.Validation.cleanInput(req.user.id, this.Validation.Regex.organisation.id);
+        const userId = this.Validation.cleanInput(req.params.user, this.Validation.Regex.user.identification);
+
+        // validate OrgId
+        if (reqUserId !== userId) {
+            this.Database.removeUser(userId);
+        }
+
+        res.redirect(req.headers.referer ? req.headers.referer : "/UAC");
     }
 }

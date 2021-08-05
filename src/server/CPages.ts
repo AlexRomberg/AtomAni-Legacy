@@ -142,7 +142,6 @@ export class CPages {
         // @ts-ignore
         const OrgId = this.Validation.cleanInput(req.user.OrgId, this.Validation.Regex.organisation.id);
         const users = await this.Database.getMembers(OrgId);
-        console.log(users);
 
         res.render('UAC', {
             users,

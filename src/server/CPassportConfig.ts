@@ -33,14 +33,16 @@ export class CPassportConfig {
             const user = this.convertUser(await this.GetUserByLoginName(username, organisation));
 
             if (user === null) {
-                return done(null, false, { message: 'username, password or organisation incorrect' });
+                // return done(null, false, { message: 'username, password or organisation incorrect' });
+                return done(null, false, { message: 'user not found' });
             }
 
             try {
-                if (await bcrypt.compare(password, user.password)) {
+                if (bcrypt.compareSync(password, user.password)) {
                     return done(null, user);
                 } else {
-                    return done(null, false, { message: 'username, password or organisation incorrect' });
+                    return done(null, false, { message: 'password incorrect' });
+                    // return done(null, false, { message: 'username, password or organisation incorrect' });
                 }
             } catch (err) {
                 return done(err);

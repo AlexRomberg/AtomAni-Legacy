@@ -1,21 +1,23 @@
 .content {
-  width: 100%;
-  max-height: calc(100vh - 7em);
+  max-width: 100vw;
+  height: calc(100vh - 7em);
   overflow-y: auto;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   justify-content: space-around
 }
 
 .cardframe {
   background-color: var(--content-bg-col);
   width: 370px;
+  height: 250px;
   border-radius: 8px;
   margin: 20px;
 }
 
 .usercard {
-  width: 100%;
+  background-color: var(--content-bg-col);
+  width: 370px;
   height: 200px;
   border-radius: 8px;
   overflow: hidden;
@@ -89,4 +91,69 @@
 
 .controls button:active {
   background-color: var(--accent-col);
+}
+
+
+/* --- newcard --- */
+#newcard {
+  margin: 20px;
+}
+
+#newcard .newcard {
+  height: 140px;
+  width: 140px;
+  margin: auto;
+}
+
+#newcard .newcardtext {
+  background-color: var(--content-bg-col-dark);
+  height: 60px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+}
+
+/* --- userEditDialog --- */
+.userEditOverlay {
+  position: fixed;
+  top: 5em;
+  bottom: 2em;
+  width: 100%;
+  background-color: #0005;
+  max-height: calc(100vh - 7em);
+}
+
+.userEditDialog {
+  width: 500px;
+  max-width: 100vw;
+  margin: 20px auto;
+  background-color: var(--content-bg-col-dark);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.userEditDialog h2 {
+  margin-bottom: 10px;
+  font-size: 2em
+}
+
+.userEditDialog .formbody {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.userEditDialog .buttongroup {
+  margin-top: 15px;
+  display: flex;
+}
+
+.inputRow {
+  display: grid;
+  grid-template-columns: auto 50%;
+}
+
+.inputRow input {
+  margin: 10px;
 }

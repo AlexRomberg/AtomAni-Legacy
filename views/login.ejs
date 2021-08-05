@@ -22,15 +22,15 @@ Copyright (c) 2021 Alexander Romberg
     <form id="loginForm" class="centered-div full-width-form" action="/login" method="POST">
       <div>
         <label for="name">Benutzername</label>
-        <input class="selectable" type="text" id="name" name="name" required <% if (cookies.username !== undefined) {%>value="<%- cookies.username %>" <%} else {%> autofocus<% } %>>
+        <input class="selectable" type="text" autocomplete="username" id="name" name="name" required <% if (cookies.username !== undefined) {%>value="<%- cookies.username %>" <%} else {%> autofocus<% } %>>
       </div>
       <div>
         <label for="password">Password</label>
-        <input class="selectable" type="password" id="password" name="password" required<%if (cookies.username !== undefined) {%> autofocus<%}%>>
+        <input class="selectable" type="password" autocomplete="current-password" id="password" name="password" required<%if (cookies.username !== undefined) {%> autofocus<%}%>>
       </div>
       <div>
         <label for="organisation">Organisationsname</label>
-        <input class="selectable" type="text" id="organisation" name="organisation" <% if (cookies.orgname !== undefined) {%>value="<%- cookies.orgname %>" <%} %>required>
+        <input class="selectable" type="text" autocomplete="organization" id="organisation" name="organisation" <% if (cookies.orgname !== undefined) {%>value="<%- cookies.orgname %>" <%} %>required>
       </div>
       <input type="hidden" id="username" name="username" value="<% if (cookies.orgname !== undefined) {%><%- cookies.orgname %><%}%>|<% if (cookies.username !== undefined) {%><%- cookies.username %><%}%>" required>
       <button class="btn selectable" type="submit">Login</button>

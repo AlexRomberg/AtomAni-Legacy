@@ -1,6 +1,7 @@
+import bcrypt from 'bcrypt';
 import MariaDB from 'mariadb';
-import CM from './modules/consoleModule';
 import { CValidation } from './CValidation';
+import CM from './modules/consoleModule';
 
 
 // --------------------------------------------------------------------------------------
@@ -226,14 +227,16 @@ export class CDatabase {
     public async addUser(identification: string, name: string, pw: string, canEdit: boolean, isAdmin: boolean, orgId: string): Promise<void> {
         identification = this.Validation.cleanInput(identification, this.Validation.Regex.user.identification);
         name = this.Validation.cleanInput(name, this.Validation.Regex.user.name);
-        pw = this.Validation.cleanInput(pw, this.Validation.Regex.user.pw);
         orgId = this.Validation.cleanInput(orgId, this.Validation.Regex.organisation.id);
         canEdit = canEdit === true;
         isAdmin = isAdmin === true;
 
+        const pwHash = bcrypt.hashSync(pw, 10);
+        console.table({ pw: pw, hash: pwHash, same: bcrypt.compareSync(pw, pwHash) });
+
         if (await this.getOrganisation(orgId) !== null) {
             if (!await this.userExists(identification, orgId)) {
-                this.runSQL(`INSERT INTO ${this.DBName}.TUsers (UserIdentification, UserName, UserPW, UserCanEdit, UserIsAdmin, OrgId) VALUES ('${identification}','${name}', '${pw}', ${canEdit}, ${isAdmin}, '${orgId}');`)
+                this.runSQL(`INSERT INTO ${this.DBName}.TUsers (UserIdentification, UserName, UserPW, UserCanEdit, UserIsAdmin, OrgId) VALUES ('${identification}','${name}', '${pwHash}', ${canEdit}, ${isAdmin}, '${orgId}');`)
             } else {
                 throw new Error(`User with ID '${identification}' does already exist in this organisation`);
             }
